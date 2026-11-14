@@ -13,6 +13,8 @@ const publicPaths = new Set([
   "/setup",
   "/local-admin/login",
   "/api/auth/login",
+  "/api/auth/oidc/start",
+  "/api/auth/oidc/callback",
   "/api/auth/setup",
   "/api/auth/local-admin/login",
   "/api/health",

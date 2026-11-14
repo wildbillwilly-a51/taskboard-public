@@ -832,7 +832,7 @@ export function TaskboardApp({
     displayName: string;
     username?: string;
     role?: "standard" | "manager" | "admin";
-    authProvider?: "local" | "authelia";
+    authProvider?: "local" | "authelia" | "oidc";
     isReservedLocalAdmin?: boolean;
   };
   externalAuthOnly: boolean;

@@ -9,6 +9,13 @@ const saltBytes = 32;
 const keyBytes = 64;
 
 export const minimumLocalAdminPasswordLength = 12;
+export const maximumLocalPasswordLength = 256;
+
+export function validateLocalPassword(password: unknown): asserts password is string {
+  if (typeof password !== "string" || password.length < minimumLocalAdminPasswordLength || password.length > maximumLocalPasswordLength) {
+    throw new Error(`Password must be ${minimumLocalAdminPasswordLength}–${maximumLocalPasswordLength} characters.`);
+  }
+}
 
 async function deriveScryptKey(
   password: string,

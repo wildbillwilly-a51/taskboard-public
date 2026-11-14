@@ -1,8 +1,8 @@
 # Taskboard standalone install
 
 This setup runs Taskboard and PostgreSQL on one machine with Docker and the Docker
-Compose plugin. It uses the existing local administrator login. Ordinary local
-accounts for team members and directory sign-in are later release work.
+Compose plugin. Use local Taskboard accounts, or add one OpenID Connect identity
+provider alongside local sign-in.
 
 ## Start Taskboard
 
@@ -27,6 +27,47 @@ address and any HTTPS proxy to suit your installation.
 To limit Node.js heap usage on a shared build host, set
 `TASKBOARD_BUILD_NODE_OPTIONS=--max-old-space-size=1792` in `.env.standalone`.
 This setting applies only when building the image.
+
+## Add team members
+
+Open **Admin → Users** and use **Add local account**. Give the user their username
+and password securely. The new account has the standard role. In **Teams**, open
+the team and add the user by name, email, or username. Team and board permissions
+are managed in Taskboard.
+
+## Set up OpenID Connect
+
+In your provider, register a confidential web app using authorization code flow.
+Assign the people or groups who should be able to sign in to Taskboard. Configure
+the app to use PKCE (S256), a client secret sent in the token request body
+(`client_secret_post`), and an ID token with an email claim. Copy the following
+values into `.env.standalone` and restart the Compose service with the same
+`up -d --wait` command:
+
+- `TASKBOARD_OIDC_ISSUER` is the provider's HTTPS issuer. For single-tenant
+  Microsoft Entra ID, use `https://login.microsoftonline.com/<tenant-id>/v2.0`.
+- `TASKBOARD_OIDC_CLIENT_ID` and `TASKBOARD_OIDC_CLIENT_SECRET` come from your
+  provider's app registration.
+- `TASKBOARD_OIDC_CALLBACK_URL` is the exact redirect URI you registered, such as
+  `https://taskboard.example.com/api/auth/oidc/callback`. Set
+  `AUTH_COOKIE_SECURE=true` for an HTTPS callback. Use the callback's origin to
+  open Taskboard in the browser.
+
+After the administrator claims the installation, an assigned user can select
+**Sign in with your identity provider**. Their first successful sign-in creates
+a standard Taskboard account. Add them to the appropriate teams in Taskboard.
+Each directory identity keeps the same Taskboard account across sign-ins. If
+its email is already in use by another Taskboard account, the first sign-in
+fails. Use a dedicated app registration and restrict sign-in at your provider.
+For Active Directory or LDAP, use an OpenID Connect provider connected to that
+directory. Keep your local administrator credentials for account recovery.
+
+Disabling a user in **Admin → Users** signs them out of Taskboard and blocks
+new sign-ins. Apply this in Taskboard when removing access immediately. Removing
+access at the identity provider blocks future provider sign-ins.
+
+Local password sign-in limits repeated attempts per account within each
+Taskboard process.
 
 ## Stop and restart
 

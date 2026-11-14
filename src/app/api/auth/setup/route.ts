@@ -5,7 +5,7 @@ import {
   getAuthCookieMaxAge,
   isSessionSigningConfigured,
 } from "@/lib/auth";
-import { hashLocalPassword, minimumLocalAdminPasswordLength } from "@/lib/local-password";
+import { hashLocalPassword, validateLocalPassword } from "@/lib/local-password";
 import {
   getReservedLocalAdminSetupStatus,
   setupReservedLocalAdmin,
@@ -38,9 +38,9 @@ export async function POST(request: NextRequest) {
     displayName?: string;
     password?: string;
   };
-  const username = body.username?.trim().toLowerCase() ?? "";
-  const displayName = body.displayName?.trim() || "Taskboard Owner";
-  const password = body.password ?? "";
+  const username = typeof body?.username === "string" ? body.username.trim().toLowerCase() : "";
+  const displayName = (typeof body?.displayName === "string" && body.displayName.trim()) || "Taskboard Owner";
+  const password = body?.password;
 
   if (!/^[a-z0-9._-]{3,64}$/.test(username)) {
     return NextResponse.json(
@@ -49,14 +49,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (password.length < minimumLocalAdminPasswordLength) {
-    return NextResponse.json(
-      { error: `Password must be at least ${minimumLocalAdminPasswordLength} characters.` },
-      { status: 400 },
-    );
-  }
-
   try {
+    validateLocalPassword(password);
     const user = await setupReservedLocalAdmin({
       username,
       displayName,

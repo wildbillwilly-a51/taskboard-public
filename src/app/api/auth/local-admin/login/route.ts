@@ -15,13 +15,13 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const body = (await request.json().catch(() => ({}))) as {
-    username?: string;
-    password?: string;
-  };
+  if (request.headers.get("content-type")?.split(";")[0].trim() !== "application/json") {
+    return NextResponse.json({ error: "Expected a JSON request." }, { status: 415 });
+  }
+  const body = (await request.json().catch(() => null)) as { username?: string; password?: string } | null;
   const user = await authenticateReservedLocalAdmin({
-    username: body.username,
-    password: body.password ?? "",
+    username: body?.username,
+    password: body?.password ?? "",
     allowLegacyPasswordMigration: false,
     requireUsername: true,
   });

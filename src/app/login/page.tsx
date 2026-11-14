@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/login-form";
 import { isExternalAuthOnly } from "@/lib/auth";
+import { getLoginDestination } from "@/lib/login-destination";
+import { readOidcSettings } from "@/lib/oidc-settings";
 import { getReservedLocalAdminSetupStatus } from "@/lib/taskboard-store";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; oidcError?: string }>;
 }) {
   if (isExternalAuthOnly()) {
     redirect("/");
@@ -21,5 +23,12 @@ export default async function LoginPage({
   }
 
   const params = await searchParams;
-  return <LoginForm nextPath={params.next ?? "/folio"} />;
+  const next = getLoginDestination(params.next);
+  return <LoginForm
+    nextPath={next}
+    showUsername
+    passwordLabel="Password"
+    oidcHref={readOidcSettings() ? `/api/auth/oidc/start?next=${encodeURIComponent(next)}` : undefined}
+    initialError={params.oidcError ? "Identity provider sign-in failed. Try again or ask your Taskboard administrator." : undefined}
+  />;
 }

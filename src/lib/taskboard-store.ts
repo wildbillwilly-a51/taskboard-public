@@ -5,6 +5,9 @@ import { mutationUUID, mutationDate, copyRecurringAttachment, inMutationBatch, w
 import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { PoolClient } from "pg";
+import type { TaskboardSession } from "@/lib/auth";
+import { hashLocalPassword, validateLocalPassword } from "@/lib/local-password";
+import { isAccountEmail } from "@/lib/account-email";
 import { getPool, isDatabaseConfigured } from "@/lib/db";
 import { applyFrozenBaseline } from "@/lib/schema-baseline";
 import { taskReminderBase, taskReminderEligible, taskReminderTrigger } from "@/lib/task-reminder-sql";
@@ -148,6 +151,8 @@ type DbUserAuthRow = {
   local_password_hash: string | null;
   auth_provider: TaskboardAuthProvider;
 };
+
+type SessionUserRow = Omit<DbUserAuthRow, "local_password_hash"> & { session_version: number };
 
 type DbAdminUserRow = {
   id: string;
@@ -831,7 +836,7 @@ async function createPersonalBoardForUser(
 ) {
   const boardId = randomUUID();
   const boardTitle =
-    user.authMode === "password"
+    user.isReservedLocalAdmin || (user.authMode === "password" && !user.id)
       ? seedBoard.title
       : `${user.displayName}'s Board`;
 
@@ -897,7 +902,7 @@ async function ensureUserBoardRow(
     team_member_default_access: null,
     personal_visibility: "private",
     personal_visibility_team_id: null,
-    title: user.authMode === "password" ? seedBoard.title : `${user.displayName}'s Board`,
+    title: user.isReservedLocalAdmin || (user.authMode === "password" && !user.id) ? seedBoard.title : `${user.displayName}'s Board`,
     description: seedBoard.description,
   };
 }
@@ -982,16 +987,8 @@ async function resolveBoardContext(
   };
 }
 
-function userAuthModeForStoredIdentity(email: string): TaskboardUserIdentity["authMode"] {
-  if (email === legacyOwnerEmail) {
-    return "password";
-  }
-
-  return "authelia";
-}
-
 function taskboardUserIdentityFromRow(
-  row: DbUserAuthRow,
+  row: Omit<DbUserAuthRow, "local_password_hash">,
   authMode: TaskboardUserIdentity["authMode"],
 ): TaskboardUserIdentity {
   return {
@@ -1035,24 +1032,73 @@ async function getReservedLocalAdminAuthRow(client: PoolClient) {
   return result.rows[0] ?? null;
 }
 
-export async function getTaskboardUserForSession(userId: string) {
+export async function getTaskboardUserForSession(session: TaskboardSession) {
   await ensureDatabaseReady();
-
-  const pool = getPool();
-  if (!pool) {
+  const result = await getPool()?.query<SessionUserRow>(
+    `SELECT id, email, username, display_name, role, is_disabled, is_reserved_local_admin, auth_provider, session_version
+     FROM users WHERE id = $1 AND NOT is_disabled`,
+    [session.userId],
+  );
+  const user = result?.rows[0];
+  if (!user || user.auth_provider !== session.authProvider
+    || user.is_reserved_local_admin !== session.reservedAdmin || user.session_version !== (session.version ?? 0)) {
     return null;
   }
+  return {
+    ...taskboardUserIdentityFromRow(user, user.auth_provider === "authelia" ? "authelia" : "password"),
+    profileReadOnly: true,
+  };
+}
 
+export async function getLocalAccountForLogin(username: string) {
+  await ensureDatabaseReady();
+  const result = await getPool()?.query<{ id: string; local_password_hash: string; session_version: number }>(
+    `SELECT id, local_password_hash, session_version FROM users
+     WHERE username = $1 AND auth_provider = 'local' AND NOT is_reserved_local_admin AND NOT is_disabled
+       AND local_password_hash IS NOT NULL`,
+    [username],
+  );
+  return result?.rows[0] ?? null;
+}
+
+export async function getOrCreateOidcAccount(identity: {
+  issuer: string; subject: string; email: string | null; displayName: string;
+}) {
+  await ensureDatabaseReady();
+  const pool = getPool();
+  if (!pool) throw new Error("DATABASE_URL is not configured.");
   const client = await pool.connect();
-
   try {
-    const row = await getUserAuthRowById(client, userId);
+    await client.query("BEGIN");
+    // Serialize concurrent first sign-ins before the user row exists.
+    await client.query("SELECT pg_advisory_xact_lock(hashtextextended($1, 0))",
+      [JSON.stringify(["oidc", identity.issuer, identity.subject])]);
+    type Account = { id: string; is_disabled: boolean; session_version: number };
+    const result = await client.query<Account>(
+      `SELECT id, is_disabled, session_version FROM users
+       WHERE auth_provider = 'oidc' AND oidc_issuer = $1 AND oidc_subject = $2`,
+      [identity.issuer, identity.subject],
+    );
 
-    if (!row || row.is_disabled) {
-      return null;
+    let account = result.rows[0];
+    if (!account && identity.email) {
+      const id = randomUUID();
+      const inserted = await client.query<Account>(
+        `INSERT INTO users (id, email, display_name, auth_provider, oidc_issuer, oidc_subject)
+         VALUES ($1, $2, $3, 'oidc', $4, $5) RETURNING id, is_disabled, session_version`,
+        [id, identity.email, identity.displayName, identity.issuer, identity.subject],
+      );
+      account = inserted.rows[0];
+      await createPersonalBoardForUser(client, id, {
+        id, authMode: "password", authProvider: "oidc", email: identity.email, displayName: identity.displayName,
+      });
     }
-
-    return taskboardUserIdentityFromRow(row, userAuthModeForStoredIdentity(row.email));
+    await client.query("COMMIT");
+    return !account || account.is_disabled ? null : { id: account.id, version: account.session_version };
+  } catch (error) {
+    await client.query("ROLLBACK");
+    if (isUserLoginConflict(error)) return null;
+    throw error;
   } finally {
     client.release();
   }
@@ -1229,6 +1275,58 @@ export async function listAdminUsers(actor: TaskboardUserIdentity) {
     `);
 
     return result.rows.map(mapAdminUserRow);
+  } finally {
+    client.release();
+  }
+}
+
+function isUserLoginConflict(error: unknown) {
+  return typeof error === "object" && error !== null
+    && "code" in error && error.code === "23505"
+    && "constraint" in error && (error.constraint === "users_email_key" || error.constraint === "users_username_unique");
+}
+
+export async function createAdminLocalUser(
+  actor: TaskboardUserIdentity,
+  input: { username?: unknown; email?: unknown; displayName?: unknown; password?: unknown },
+) {
+  assertAdminActor(actor);
+  const username = typeof input.username === "string" ? input.username.trim().toLowerCase() : "";
+  const email = typeof input.email === "string" ? input.email.trim().toLowerCase() : "";
+  const displayName = typeof input.displayName === "string" ? input.displayName.trim() : "";
+  if (!/^[a-z0-9._-]{3,64}$/.test(username)) throw new Error("Enter a username of 3–64 letters, numbers, dots, underscores, or hyphens.");
+  if (!isAccountEmail(email)) throw new Error("Enter a valid email address.");
+  if (!displayName || displayName.length > 120) throw new Error("Enter a display name of up to 120 characters.");
+  validateLocalPassword(input.password);
+
+  await ensureDatabaseReady();
+  const pool = getPool();
+  if (!pool) throw new Error("DATABASE_URL is not configured.");
+  const passwordHash = await hashLocalPassword(input.password);
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    const id = randomUUID();
+    const { rows: [user] } = await client.query<DbAdminUserRow>(
+      `INSERT INTO users (id, email, username, display_name, local_password_hash, auth_provider)
+       VALUES ($1, $2, $3, $4, $5, 'local')
+       RETURNING id, email, username, display_name, role, is_disabled, is_reserved_local_admin, auth_provider, created_at, updated_at`,
+      [id, email, username, displayName, passwordHash],
+    );
+    await createPersonalBoardForUser(client, id, { id, authMode: "password", authProvider: "local", email, username, displayName });
+    await client.query(
+      `INSERT INTO admin_audit_events (id, actor_user_id, target_user_id, action, new_values)
+       VALUES ($1, $2, $3, 'user.created', $4::jsonb)`,
+      [randomUUID(), actor.id, id, JSON.stringify({ username, email })],
+    );
+    await client.query("COMMIT");
+    return mapAdminUserRow(user);
+  } catch (error) {
+    await client.query("ROLLBACK");
+    if (isUserLoginConflict(error)) {
+      throw new Error("That username or email address is already in use.");
+    }
+    throw error;
   } finally {
     client.release();
   }
@@ -1685,7 +1783,7 @@ async function mapPersonalBoardMemberGrantRow(
     client,
     {
       id: row.user_id,
-      authMode: row.auth_provider === "local" ? "password" : "authelia",
+      authMode: row.auth_provider === "authelia" ? "authelia" : "password",
       authProvider: row.auth_provider,
       email: row.email,
       username: row.username ?? undefined,
@@ -2347,7 +2445,8 @@ export async function updateAdminUser(
       const updateResult = await client.query<DbAdminUserRow>(
         `
           UPDATE users
-          SET role = $2, is_disabled = $3, updated_at = NOW()
+          SET role = $2, is_disabled = $3, updated_at = NOW(),
+              session_version = session_version + CASE WHEN $3 AND NOT is_disabled THEN 1 ELSE 0 END
           WHERE id = $1
           RETURNING id, email, username, display_name, role, is_disabled, is_reserved_local_admin, auth_provider, created_at, updated_at
         `,
@@ -2439,7 +2538,7 @@ async function mapTeamBoardMemberGrantRow(
     client,
     {
       id: row.user_id,
-      authMode: row.auth_provider === "local" ? "password" : "authelia",
+      authMode: row.auth_provider === "authelia" ? "authelia" : "password",
       authProvider: row.auth_provider,
       email: row.email,
       username: row.username ?? undefined,
@@ -4547,7 +4646,7 @@ export async function setupReservedLocalAdmin(args: {
     }
 
     return taskboardUserIdentityFromRow(
-      { ...row, username: normalizedUsername, display_name: displayName, local_password_hash: args.passwordHash },
+      { ...row, username: normalizedUsername, display_name: displayName },
       "password",
     );
   } catch (error) {

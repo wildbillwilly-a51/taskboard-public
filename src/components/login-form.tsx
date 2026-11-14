@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getLoginDestination } from "@/lib/login-destination";
 
 const LOGIN_LABEL_CLASS = "text-[10px] font-semibold uppercase tracking-[0.14em] text-muted";
 const LOGIN_CONTROL_CLASS =
@@ -18,6 +19,8 @@ export function LoginForm({
   submitLabel = "Sign in",
   showUsername = false,
   showDisplayName = false,
+  oidcHref,
+  initialError,
 }: {
   nextPath: string;
   endpoint?: string;
@@ -27,11 +30,13 @@ export function LoginForm({
   submitLabel?: string;
   showUsername?: boolean;
   showDisplayName?: boolean;
+  oidcHref?: string;
+  initialError?: string;
 }) {
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(initialError ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -39,24 +44,26 @@ export function LoginForm({
     setIsSubmitting(true);
     setError("");
 
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...(showUsername ? { username } : {}),
-        ...(showDisplayName ? { displayName } : {}),
-        password,
-      }),
-    });
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...(showUsername ? { username } : {}),
+          ...(showDisplayName ? { displayName } : {}),
+          password,
+        }),
+      });
 
-    if (!response.ok) {
-      const body = (await response.json().catch(() => null)) as { error?: string } | null;
-      setError(body?.error ?? "Unable to sign in.");
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(body?.error ?? "Unable to sign in.");
+      }
+      window.location.assign(getLoginDestination(nextPath));
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Unable to sign in.");
       setIsSubmitting(false);
-      return;
     }
-
-    window.location.assign(nextPath.startsWith("/") ? nextPath : "/");
   }
 
   return (
@@ -113,7 +120,7 @@ export function LoginForm({
           />
         </label>
 
-        {error ? <p className={`${LOGIN_HELPER_CLASS} text-[var(--danger-fg)]`}>{error}</p> : null}
+        {error ? <p role="alert" className={`${LOGIN_HELPER_CLASS} text-[var(--danger-fg)]`}>{error}</p> : null}
 
         <button
           type="submit"
@@ -122,6 +129,11 @@ export function LoginForm({
         >
           {isSubmitting ? "Submitting..." : submitLabel}
         </button>
+        {oidcHref ? (
+          <a href={oidcHref} className="ui-button ui-button-surface rounded-full border px-4 py-2 text-center text-[11px] font-semibold leading-4">
+            Sign in with your identity provider
+          </a>
+        ) : null}
       </form>
     </main>
   );

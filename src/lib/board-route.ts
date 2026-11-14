@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { BoardAccessError } from "@/lib/board-access";
 import { SubtaskRuleError, subtaskRuleDatabaseError } from "@/lib/subtask-rule";
 import type { BoardContextOptions } from "@/lib/taskboard-store";
+import { TaskboardAuthenticationError } from "@/lib/taskboard-auth-errors";
 
 const invalidExplicitBoardId = "__invalid_explicit_board_id__";
 
@@ -64,6 +65,9 @@ export function explicitBoardIdErrorResponse(
 }
 
 export function boardRouteErrorResponse(error: unknown, fallbackMessage: string) {
+  if (error instanceof TaskboardAuthenticationError) {
+    return NextResponse.json({ error: error.message }, { status: error.status });
+  }
   // Only a page opened before subtasks were simplified still offers subtask
   // detail, so the fix is to reload it.
   const subtaskRule = error instanceof SubtaskRuleError ? error : subtaskRuleDatabaseError(error);

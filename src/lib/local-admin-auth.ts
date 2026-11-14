@@ -4,7 +4,8 @@ import {
   getReservedLocalAdminLoginRecord,
   setReservedLocalAdminPasswordHash,
 } from "@/lib/taskboard-store";
-import { hashLocalPassword, verifyLocalPassword } from "@/lib/local-password";
+import { hashLocalPassword, maximumLocalPasswordLength, verifyLocalPassword } from "@/lib/local-password";
+import { admitLocalLogin, clearLocalLoginAttempts } from "@/lib/local-login-attempts";
 import type { TaskboardUserIdentity } from "@/lib/taskboard-request";
 
 function normalizeUsername(username: string | undefined) {
@@ -33,6 +34,8 @@ export async function authenticateReservedLocalAdmin(args: {
   allowLegacyPasswordMigration: boolean;
   requireUsername: boolean;
 }) {
+  if (typeof args.password !== "string" || !args.password || args.password.length > maximumLocalPasswordLength
+    || (args.username !== undefined && typeof args.username !== "string")) return null;
   const admin = await getReservedLocalAdminLoginRecord();
 
   if (!admin || admin.is_disabled || !admin.is_reserved_local_admin) {
@@ -46,12 +49,13 @@ export async function authenticateReservedLocalAdmin(args: {
       ? true
       : suppliedUsername === storedUsername || suppliedUsername === admin.email.toLowerCase();
 
-  if (!usernameMatches) {
+  if (!usernameMatches || !admitLocalLogin(admin.id)) {
     return null;
   }
 
   if (admin.local_password_hash) {
     const isValid = await verifyLocalPassword(args.password, admin.local_password_hash);
+    if (isValid) clearLocalLoginAttempts(admin.id);
     return isValid ? identityFromAdminRecord(admin) : null;
   }
 
@@ -63,6 +67,7 @@ export async function authenticateReservedLocalAdmin(args: {
 
   const passwordHash = await hashLocalPassword(args.password);
   await setReservedLocalAdminPasswordHash(admin.id, passwordHash);
+  clearLocalLoginAttempts(admin.id);
 
   return identityFromAdminRecord({
     ...admin,

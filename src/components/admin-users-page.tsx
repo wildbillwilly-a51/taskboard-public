@@ -35,17 +35,44 @@ function formatDate(value: string) {
 export function AdminUsersPage({
   currentUserId,
   users: initialUsers,
+  localAccountsEnabled,
 }: {
   currentUserId?: string;
   users: AdminUserListItem[];
+  localAccountsEnabled: boolean;
 }) {
   const [users, setUsers] = useState(initialUsers);
   const [pendingUserId, setPendingUserId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [creating, setCreating] = useState(false);
   const sortedUsers = useMemo(
     () => [...users].sort((a, b) => Number(b.isReservedLocalAdmin) - Number(a.isReservedLocalAdmin) || a.email.localeCompare(b.email)),
     [users],
   );
+
+  async function createUser(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setCreating(true);
+    setMessage("");
+    try {
+      const response = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+      const payload = (await response.json().catch(() => ({}))) as AdminUsersResponse;
+      if (!response.ok || !payload.user) throw new Error(payload.error ?? "Unable to add account.");
+      const user = payload.user;
+      setUsers((current) => [...current, user]);
+      form.reset();
+      setMessage("Local account added.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Unable to add account.");
+    } finally {
+      setCreating(false);
+    }
+  }
 
   async function patchUser(userId: string, body: { role?: TaskboardUserRole; isDisabled?: boolean }) {
     setPendingUserId(userId);
@@ -101,9 +128,33 @@ export function AdminUsersPage({
         </header>
 
         {message ? (
-          <div className="panel-surface rounded-[12px] border border-border/70 px-3 py-2 text-[12px] text-foreground">
+          <div role="status" className="panel-surface rounded-[12px] border border-border/70 px-3 py-2 text-[12px] text-foreground">
             {message}
           </div>
+        ) : null}
+
+        {localAccountsEnabled ? (
+          <form onSubmit={createUser} className="panel-surface rounded-[14px] border border-border/70 px-3 py-3" autoComplete="off">
+            <h2 className="text-[12px] font-semibold text-foreground">Add local account</h2>
+            <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              {([
+                { name: "displayName", label: "Display name", type: "text", maxLength: 120 },
+                { name: "username", label: "Username", type: "text", minLength: 3, maxLength: 64 },
+                { name: "email", label: "Email", type: "email", maxLength: 254 },
+                { name: "password", label: "Password", type: "password", minLength: 12, maxLength: 256 },
+              ] as const).map(({ label, ...input }) => (
+                <label key={input.name} className="flex min-w-0 flex-col gap-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">
+                  {label}
+                  <input {...input} required autoComplete={input.name === "password" ? "new-password" : "off"}
+                    className="ui-control min-w-0 rounded-[8px] border px-2 py-1 text-[11px] font-normal normal-case tracking-normal text-foreground" />
+                </label>
+              ))}
+            </div>
+            <button type="submit" disabled={creating}
+              className="ui-chip-button ui-button-surface mt-2 rounded-[9px] border px-2.5 py-1 text-[11px] font-medium disabled:opacity-60">
+              {creating ? "Adding…" : "Add account"}
+            </button>
+          </form>
         ) : null}
 
         <section className="panel-surface overflow-hidden rounded-[14px] border border-border/70">
@@ -143,7 +194,7 @@ export function AdminUsersPage({
                           </span>
                         ) : null}
                       </td>
-                      <td className="px-3 py-3 align-top text-foreground">{user.authProvider}</td>
+                      <td className="px-3 py-3 align-top text-foreground">{user.authProvider === "oidc" ? "OpenID Connect" : user.authProvider}</td>
                       <td className="px-3 py-3 align-top">
                         <select
                           value={user.role}

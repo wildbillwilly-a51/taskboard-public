@@ -5,7 +5,7 @@ export const DEFAULT_EXTERNAL_AUTH_NAME_HEADER = "Remote-Name";
 export const DEFAULT_EXTERNAL_AUTH_USER_HEADER = "Remote-User";
 
 export type TaskboardAuthMode = "password" | "authelia";
-export type TaskboardAuthProvider = "local" | "authelia";
+export type TaskboardAuthProvider = "local" | "authelia" | "oidc";
 export type TaskboardUserRole = "standard" | "manager" | "admin";
 export type ExternalAuthIdentity = {
   email: string;
@@ -14,6 +14,7 @@ export type ExternalAuthIdentity = {
 };
 export type TaskboardSession = {
   sessionId?: string;
+  version?: number;
   userId: string;
   authProvider: TaskboardAuthProvider;
   reservedAdmin: boolean;
@@ -223,7 +224,8 @@ export async function verifySessionCookieValue(value: string | undefined) {
 
   if (
     !session.userId ||
-    (session.authProvider !== "local" && session.authProvider !== "authelia") ||
+    (session.authProvider !== "local" && session.authProvider !== "authelia" && session.authProvider !== "oidc") ||
+    (session.version !== undefined && (!Number.isSafeInteger(session.version) || session.version < 0)) ||
     typeof session.reservedAdmin !== "boolean"
   ) {
     return null;

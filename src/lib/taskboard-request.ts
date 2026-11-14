@@ -6,6 +6,7 @@ import { taskPushDeviceCookie } from "@/lib/task-push-device-cookie";
 import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import {
   AUTH_COOKIE_NAME,
   getAuthMode,
@@ -19,8 +20,6 @@ import {
 import {
   getOrCreateExternalTaskboardUser,
   getTaskboardUserForSession,
-  legacyOwnerDisplayName,
-  legacyOwnerEmail,
 } from "@/lib/taskboard-store";
 
 export type TaskboardUserIdentity = {
@@ -47,22 +46,11 @@ export type TaskboardCurrentUser = {
   isReservedLocalAdmin?: boolean;
 };
 
-const passwordModeIdentity: TaskboardUserIdentity = {
-  authMode: "password",
-  authProvider: "local",
-  email: legacyOwnerEmail,
-  displayName: legacyOwnerDisplayName,
-  username: "taskboard-owner",
-  role: "admin",
-  isDisabled: false,
-  isReservedLocalAdmin: true,
-};
-
 export function resolveTaskboardUserFromHeaders(
   requestHeaders: Pick<Headers, "get">,
 ): TaskboardUserIdentity | null {
   if (!isExternalAuthOnly()) {
-    return passwordModeIdentity;
+    return null;
   }
 
   const identity = readExternalAuthIdentity(requestHeaders);
@@ -90,7 +78,11 @@ async function resolveTaskboardUserFromCookieValue(cookieValue: string | undefin
     return null;
   }
 
-  const user = await getTaskboardUserForSession(session.userId);
+  if (isExternalAuthOnly() && (session.authProvider !== "local" || !session.reservedAdmin)) {
+    return null;
+  }
+
+  const user = await getTaskboardUserForSession(session);
   if (required && !user) {
     // The legacy session lookup intentionally returns null for disabled accounts.
     // Only the required-identity API path distinguishes a verified disabled session.
@@ -110,6 +102,7 @@ export async function getCurrentTaskboardUser() {
   const headerUser = sessionUser ? null : resolveTaskboardUserFromHeaders(requestHeaders);
   const user = sessionUser ?? (headerUser && isExternalAuthOnly()
     ? await getOrCreateExternalTaskboardUser(headerUser) : headerUser);
+  if (!user && !isExternalAuthOnly()) redirect("/login");
   const deviceId = cookieStore.get(taskPushDeviceCookie)?.value;
   if (process.env.TASKBOARD_WEB_PUSH_ENABLED === "true" && user?.id && deviceId &&
       /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(deviceId)) {
@@ -137,7 +130,8 @@ export async function requireTaskboardUserFromHeaders(
 
   if (!identity) {
     throw new TaskboardAuthenticationError("authentication_required",
-      `Taskboard ${getAuthMode()} mode requires forwarded user identity headers.`,
+      isExternalAuthOnly() ? `Taskboard ${getAuthMode()} mode requires forwarded user identity headers.`
+        : "Sign in to Taskboard.",
     );
   }
 

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AdminUsersPage } from "@/components/admin-users-page";
 import { getCurrentAdminTaskboardUser } from "@/lib/taskboard-request";
 import { listAdminUsers } from "@/lib/taskboard-store";
+import { isExternalAuthOnly } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,7 @@ export default async function UsersAdminPage() {
     <AdminUsersPage
       currentUserId={admin.id}
       users={users}
+      localAccountsEnabled={!isExternalAuthOnly()}
     />
   );
 }

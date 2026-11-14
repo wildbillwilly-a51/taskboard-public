@@ -104,7 +104,7 @@ async function openBoard(page, theme) {
   );
 
   await page.goto(`${baseUrl}/login`, { waitUntil: "networkidle" });
-  await page.getByLabel("App password").fill(password);
+  await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Sign in" }).click();
   await waitForBoardReady(page);
   await cleanupSmokeViews(page);
