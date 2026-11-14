@@ -19,10 +19,10 @@ export async function GET(request: NextRequest, context: RouteContext) {
   }
 
   const { noteId, attachmentId } = await context.params;
-  const user = await requireTaskboardUserFromHeaders(request);
   const disposition = request.nextUrl.searchParams.get("disposition") === "inline" ? "inline" : "attachment";
 
   try {
+    const user = await requireTaskboardUserFromHeaders(request);
     const attachment = await getNoteAttachmentDownload(user, noteId, attachmentId);
     const safeDisposition=disposition==='inline'&&safeInlineNoteMedia(attachment.mimeType,attachment.content)?'inline':'attachment';
     const content = new ReadableStream({
@@ -53,9 +53,9 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
   }
 
   const { noteId, attachmentId } = await context.params;
-  const user = await requireTaskboardUserFromHeaders(request);
 
   try {
+    const user = await requireTaskboardUserFromHeaders(request);
     await deleteNoteAttachment(user, noteId, attachmentId, { permanent: permanentNoteDeleteOption(request.nextUrl.searchParams) });
     return NextResponse.json({ ok: true });
   } catch (error) {

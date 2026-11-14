@@ -18,9 +18,9 @@ export async function POST(request: NextRequest, context: RouteContext) {
   }
 
   const { noteId } = await context.params;
-  const user = await requireTaskboardUserFromHeaders(request);
 
   try {
+    const user = await requireTaskboardUserFromHeaders(request);
     const formData = await boundedMultipart(request,51*1024*1024);
     const files = formData.getAll("files").filter((value): value is File => value instanceof File);
     if(files.length>10||files.reduce((n,f)=>n+f.size,0)>50*1024*1024)return NextResponse.json({error:'Choose up to 10 files totaling no more than 50 MB.'},{status:400});

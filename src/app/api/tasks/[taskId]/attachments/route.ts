@@ -24,9 +24,9 @@ export async function POST(request: NextRequest, context: RouteContext) {
   }
 
   const { taskId } = await context.params;
-  const user = await requireTaskboardUserFromHeaders(request);
 
   try {
+    const user = await requireTaskboardUserFromHeaders(request);
     const formData = await request.formData();
     const boardContext = getBoardContextFromFormData(request, formData);
     const files = formData

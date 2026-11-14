@@ -1,10 +1,5 @@
 * text=auto
 
-*.sh text eol=lf
-*.ps1 text eol=crlf
-
-# new-project-setup:v7:start
-* text=auto
 *.md text eol=lf
 *.json text eol=lf
 *.yaml text eol=lf
@@ -15,9 +10,6 @@
 *.sh text eol=lf
 *.cmd text eol=crlf
 *.bat text eol=crlf
-# new-project-setup:v7:end
 
-# a51-gitlab-line-endings:v1:start
 .gitattributes text eol=lf
 .gitignore text eol=lf
-# a51-gitlab-line-endings:v1:end

@@ -72,3 +72,33 @@ BlockNote brings in further MIT-licensed libraries that are bundled with the
 editor, including Ariakit (`@ariakit/react`), Tiptap (`@tiptap/*`), and
 ProseMirror (`prosemirror-*`). Their license notices are included in their
 packages in `node_modules`.
+
+## Calendar and notifications
+
+[ical.js 2.2.1](https://www.npmjs.com/package/ical.js/v/2.2.1) and
+[web-push 4.0.0](https://www.npmjs.com/package/web-push/v/4.0.0) are used
+unmodified under the [Mozilla Public License 2.0](https://www.mozilla.org/MPL/2.0/).
+The linked npm versions contain their source and license notices.
+
+## Diagrams and HTML sanitization
+
+Mermaid and Khroma are MIT-licensed. ELK.js is available under the Eclipse
+Public License 2.0 or GPL-3.0-or-later. DOMPurify is available under Apache-2.0
+or MPL-2.0. See the source and notices for the versions pinned in
+`package-lock.json`. [Mermaid](https://github.com/mermaid-js/mermaid) ·
+[Khroma](https://github.com/fabiospampinato/khroma) ·
+[ELK.js](https://github.com/kieler/elkjs) ·
+[DOMPurify](https://github.com/cure53/DOMPurify)
+
+## Image processing
+
+The optional native Sharp packages come with platform-specific licenses.
+Sharp is Apache-2.0. Its libvips binaries carry LGPL-3.0-or-later terms.
+[Sharp license notices and sources](https://github.com/lovell/sharp)
+
+## Fonts
+
+The build fetches Public Sans and IBM Plex Mono from Google Fonts. Both are
+available under the SIL Open Font License 1.1. Their source and copyright
+notices are available from Google Fonts. [Public Sans](https://github.com/google/fonts/tree/main/ofl/publicsans) ·
+[IBM Plex Mono](https://github.com/google/fonts/tree/main/ofl/ibmplexmono)

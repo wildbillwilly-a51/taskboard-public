@@ -7,6 +7,7 @@ import path from "node:path";
 import type { PoolClient } from "pg";
 import type { TaskboardSession } from "@/lib/auth";
 import { hashLocalPassword, validateLocalPassword } from "@/lib/local-password";
+import { verifiedPreview } from "@/lib/public-task-share-content";
 import { isAccountEmail } from "@/lib/account-email";
 import { getPool, isDatabaseConfigured } from "@/lib/db";
 import { applyFrozenBaseline } from "@/lib/schema-baseline";
@@ -105,7 +106,6 @@ import {
   type RecycleBinItem,
   type Task,
   type TaskAttachment,
-  type TaskAttachmentPreviewKind,
   type TaskIcon,
   type TaskNote,
   type TaskNotification,
@@ -11625,7 +11625,7 @@ function mapTaskAttachmentRow(row: DbTaskAttachmentRow): TaskAttachment {
     mimeType: row.mime_type,
     sizeBytes: row.size_bytes,
     createdAt: row.created_at,
-    previewKind: getTaskAttachmentPreviewKind(row.mime_type),
+    previewKind: verifiedPreview(row.mime_type),
   };
 }
 
@@ -11727,18 +11727,6 @@ async function mirrorTaskSummaryToPrimaryNote(
     `,
     [boardId, taskId, normalizedSummary, userId],
   );
-}
-
-function getTaskAttachmentPreviewKind(mimeType: string): TaskAttachmentPreviewKind {
-  if (mimeType === "application/pdf") {
-    return "pdf";
-  }
-
-  if (mimeType.toLowerCase().startsWith("image/")) {
-    return "image";
-  }
-
-  return "none";
 }
 
 async function ensureTaskAttachmentUploadRoot() {

@@ -80,3 +80,36 @@ docker compose -p taskboard-standalone --env-file .env.standalone -f compose.sta
 The project stores PostgreSQL data and uploaded files in separate Docker volumes.
 Keep both volumes and the same project name when restarting. `down -v` deletes
 both volumes. To inspect startup, run `logs app db` with the same Compose options.
+
+## Back up and upgrade
+
+Stop the app before a backup so database records and uploaded files stay in
+sync. Keep the database dump, upload archive, and a protected copy of
+`.env.standalone` together. From a shell on the Docker host:
+
+```sh
+tb() { docker compose -p taskboard-standalone --env-file .env.standalone -f compose.standalone.yaml "$@"; }
+tb stop app
+tb exec -T db pg_dump -U taskboard --no-owner --no-privileges taskboard > taskboard.sql
+tb run --rm --no-deps -T --entrypoint tar app -czf - -C /app/uploads . > uploads.tar.gz
+tb start app
+```
+
+Before upgrading, take a backup and check out the release you want to run.
+Rebuild with `tb up -d --build --wait`. Startup applies pending database
+migrations. The build needs internet access for npm packages and the Google
+Fonts it bundles.
+
+To restore, use empty volumes with the release that took the backup and its
+saved environment file. Start only the database and wait for it to be healthy.
+Restore the dump and uploads before starting the app.
+
+```sh
+tb up -d --wait db
+tb exec -T db psql -X -v ON_ERROR_STOP=1 -U taskboard taskboard < taskboard.sql
+tb run --rm --no-deps -T --entrypoint tar app -xzf - -C /app/uploads < uploads.tar.gz
+tb up -d --wait
+```
+
+Use a fresh database for a first public install. The public migration history is
+independent of the private deployment history.

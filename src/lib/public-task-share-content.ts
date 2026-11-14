@@ -131,7 +131,7 @@ export function sanitizeSharedNoteContent(value: unknown, resolveUrl: (url: stri
 export function verifiedPreview(mime: string, bytes?: Uint8Array): "image" | "pdf" | "none" {
     if (!bytes)
         return ["image/png", "image/jpeg", "image/gif", "image/webp"].includes(mime) ? "image" : mime === "application/pdf" ? "pdf" : "none";
-    const b = Buffer.from(bytes), ascii = (start: number, end: number) => b.subarray(start, end).toString("ascii");
+    const b = Buffer.from(bytes.subarray(0, 12)), ascii = (start: number, end: number) => b.subarray(start, end).toString("ascii");
     if (mime === "application/pdf" && ascii(0, 5) === "%PDF-")
         return "pdf";
     if (mime === "image/png" && b.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])))
