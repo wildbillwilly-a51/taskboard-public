@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+uploads/
+postgres/
+coverage/
+test-artifacts/
+test-results/
+playwright-report/
+.env*
+*.local.md
+*.tsbuildinfo
+next-env.d.ts

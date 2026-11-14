@@ -1,0 +1,196 @@
+/* Notes' chosen Linen treatment. Every selector is rooted in this module's
+   local class; shared chrome and editors rendered elsewhere keep their skin. */
+:global(html[data-ui-skin="architecture"]) .root {
+  --notes-ui-accent: #0f766e;
+  --notes-accent-ink: color-mix(in oklab, var(--notes-ui-accent) var(--bucket-ink-mix), #ffffff);
+  --focus-ring: var(--notes-accent-ink);
+}
+
+/* BlockNote 0.56 sets the content font directly; its --bn-font-family token
+   does not reach .bn-default-styles. Keep this adapter inside Notes. */
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-editor-view .bn-default-styles) {
+  font-family: var(--font-ui-sans), sans-serif;
+}
+
+/* Phone reading and editing share the approved 16px * reading-scale body.
+   Blocks otherwise replace the editor's 1.7 rhythm with BlockNote's 1.5. */
+:global(html[data-ui-skin="architecture"]) .root:not([data-editor-scale="true"]) :global(.notes-editor-view .bn-block-outer) {
+  line-height: inherit;
+}
+
+/* Preserve code's existing compact rhythm and monospace type. */
+:global(html[data-ui-skin="architecture"]) .root:not([data-editor-scale="true"]) :global(.notes-editor-view .bn-block-content[data-content-type="codeBlock"]) {
+  line-height: 1.5;
+}
+
+/* Use BlockNote's heading slots: its structural font-size selectors beat the
+   old phone 1.2em declaration. Cover the previous-level animation slot too. */
+:global(html[data-ui-skin="architecture"]) .root:not([data-editor-scale="true"]) :global(.notes-editor-view .bn-block-content[data-content-type="heading"]) {
+  --level: 1.2em;
+}
+
+:global(html[data-ui-skin="architecture"]) .root:not([data-editor-scale="true"]) :global(.notes-editor-view [data-prev-level]) {
+  --prev-level: 1.2em;
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global([data-notes-context="bucket"]) {
+  --notes-context-ink: color-mix(in oklab, var(--notes-context-color) var(--bucket-ink-mix), #ffffff);
+}
+
+/* Desktop panes separate by existing surface lightness. Phone reading keeps
+   its approved single-pane surface and geometry. */
+:global(html[data-ui-skin="architecture"]) .root[data-editor-scale="true"] {
+  --notes-reading-surface: var(--surface-subtle);
+}
+
+:global(html[data-ui-skin="architecture"][data-theme="light"]) .root[data-editor-scale="true"] {
+  --notes-reading-surface: var(--surface-raised);
+}
+
+:global(html[data-ui-skin="architecture"]) .root[data-editor-scale="true"] :global(.notes-desktop-folders) {
+  background: var(--background);
+}
+
+:global(html[data-ui-skin="architecture"]) .root[data-editor-scale="true"] :global(.notes-list-pane) {
+  background: var(--panel);
+}
+
+:global(html[data-ui-skin="architecture"]) .root[data-editor-scale="true"] :global(.notes-editor-pane) {
+  background: var(--notes-reading-surface);
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-list-pane[data-notes-context="bucket"]) {
+  background: color-mix(in srgb, var(--notes-context-color) var(--bucket-zone-tint), var(--panel));
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-list-pane[data-notes-context="bucket"] > .notes-pane-header) {
+  background: color-mix(in srgb, var(--notes-context-color) var(--bucket-header-tint), var(--panel));
+  box-shadow: inset 0 3px 0 var(--notes-context-color);
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-list-item[data-active="true"][data-notes-context="bucket"]),
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-list-item[data-active="true"][data-notes-context="bucket"]:hover) {
+  background: color-mix(in srgb, var(--notes-context-color) var(--bucket-selected-tint), var(--panel));
+  box-shadow: var(--raise-highlight);
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-list-item[data-active="true"][data-notes-context="bucket"]) :global(:is(.notes-list-line, .notes-list-date, .notes-list-snippet, .notes-mobile-updated)) {
+  color: color-mix(in srgb, var(--muted) 85%, var(--foreground));
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-nav-item[data-active="true"][data-notes-context="bucket"]) {
+  background: color-mix(in srgb, var(--notes-context-color) var(--bucket-header-tint), var(--panel));
+  box-shadow: var(--raise-highlight);
+}
+
+:global(html[data-ui-skin="architecture"][data-theme="light"]) .root[data-editor-scale="true"] :global(.notes-nav-item[data-active="true"]:not([data-notes-context="bucket"])) {
+  background: var(--surface-raised);
+  box-shadow: var(--elev-1), var(--raise-highlight);
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-context-mark) {
+  align-items: center;
+  background: color-mix(in srgb, var(--notes-context-color) 24%, transparent);
+  border-radius: var(--tb-radius, 3px);
+  color: var(--notes-context-ink);
+  display: inline-flex;
+  flex: none;
+  height: 18px;
+  justify-content: center;
+  vertical-align: middle;
+  width: 18px;
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-context-mark > svg) {
+  height: 12px;
+  width: 12px;
+}
+
+/* A context marker must fit the existing second line, including Normal
+   text size, so mixed lists keep uniform row heights. */
+:global(html[data-ui-skin="architecture"]) .root[data-editor-scale="true"] :global(:is(.notes-list-context, .notes-nav-item) .notes-context-mark) {
+  height: min(18px, var(--tb-editor-line-height));
+  width: min(18px, var(--tb-editor-line-height));
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-list-context) {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-context-text) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-mobile-path > .notes-context-mark) {
+  margin-inline-end: 5px;
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-mobile-preview-line) {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+  width: 100%;
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-mobile-bucket-label) {
+  color: var(--muted);
+  flex: 0 1 auto;
+  font-size: 13px;
+  line-height: 18px;
+  max-width: 45%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-mobile-preview-line .notes-list-snippet) {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Accent marks and focus belong to Notes, not the shared navigation or the
+   primary button's neutral ink fill. Pin, Saved and task status stay semantic. */
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-nav-heading) {
+  gap: 6px;
+  justify-content: flex-start;
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-nav-heading > span) {
+  flex: 1;
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-nav-heading)::before,
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-mobile-folders .notes-mobile-section)::before {
+  background: var(--notes-accent-ink);
+  border-radius: 1px;
+  content: "";
+  display: inline-block;
+  flex: none;
+  height: 10px;
+  vertical-align: middle;
+  width: 3px;
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-mobile-folders .notes-mobile-section)::before {
+  margin-inline-end: 6px;
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(:is(.notes-pane-header, .notes-property-strip, .notes-editor-toolbar)) {
+  border-bottom-color: var(--architecture-divider, var(--border));
+}
+
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-property-strip button:not(:disabled):is(:hover, :focus-visible) > svg),
+:global(html[data-ui-skin="architecture"]) .root :global(.notes-list-create:not(:disabled):is(:hover, :focus-visible) > svg) {
+  color: var(--notes-accent-ink);
+}
+
+:global(html[data-ui-skin="architecture"]) .root:global(.notes-frame) :global(.notes-workspace :is(.ui-button, .notes-icon-button, button, select, a):focus-visible) {
+  outline: 2px solid var(--notes-accent-ink);
+  outline-offset: 2px;
+}

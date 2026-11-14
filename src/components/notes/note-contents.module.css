@@ -1,0 +1,26 @@
+.panel { position: fixed; inset: auto; top: var(--contents-top, 140px); left: var(--contents-left, 32px); width: min(280px, calc(100vw - 24px)); max-height: min(65dvh, 560px); margin: 0; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-raised, #fff); color: var(--foreground, #24272c); box-shadow: 0 12px 36px #0003; overflow-y: auto; font: inherit; font-size: 13px; }
+.panel::backdrop { background: transparent; }
+.panel header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.panel button { border: 0; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; font: inherit; }
+.panel button:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+.panel header button { display: grid; place-items: center; width: 32px; height: 32px; }
+.panel ol { list-style: none; margin: 0; padding: 0; }
+.panel li { display: flex; align-items: center; min-width: 0; }
+.panel li > button:first-child { text-align: start; flex: 1; min-width: 0; padding: 9px 10px; overflow-wrap: anywhere; border-inline-start: 2px solid transparent; }
+.panel button:hover { background: color-mix(in srgb, currentColor 6%, transparent); }
+.panel [aria-current="location"] { font-weight: 650; border-inline-start-color: currentColor !important; background: color-mix(in srgb, currentColor 8%, transparent); }
+.panel .copy { flex: none; width: 32px; height: 32px; display: grid; place-items: center; opacity: .65; }
+.panel p { margin: 10px 6px; color: var(--muted); }
+.panel input { box-sizing: border-box; width: 100%; padding: 8px; font: inherit; color: inherit; background: transparent; border: 1px solid var(--border); }
+.notice { position: fixed; inset: auto auto 20px 50%; transform: translateX(-50%); width: min(340px, calc(100vw - 40px)); z-index: 50; background: var(--surface-raised, #fff); color: var(--foreground); border: 1px solid var(--border); padding: 8px; font-size: 12px; }
+.notice button { float: right; background: transparent; color: inherit; border: 0; }
+.panel[data-mobile="true"] { inset: auto 0 0; width: 100%; max-width: none; max-height: 65dvh; box-sizing: border-box; padding: 12px 12px max(16px, env(safe-area-inset-bottom)); border-radius: 16px 16px 0 0; }
+.panel[data-mobile="true"]::backdrop { background: #0004; }
+.panel[data-mobile="true"] li > button:first-child { min-height: 44px; padding-block: 12px; }
+.panel[data-mobile="true"] .copy { height: 44px; width: 44px; }
+
+/* The wide rail is a real left column in Folio's scroll body, never a modal. */
+.panel.rail { position: static; width: 100%; max-height: calc(100dvh - 210px); padding: 8px 12px 12px 0; border: 0; border-inline-end: 1px solid var(--border); border-radius: 0; box-shadow: none; background: transparent; box-sizing: border-box; color: var(--muted); }
+.rail header strong { color: var(--foreground); font-size: 13px; }
+.rail li > button:first-child { padding: 8px 6px; }
+.rail [aria-current="location"] { color: var(--foreground); }

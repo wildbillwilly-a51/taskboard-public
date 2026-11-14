@@ -1,0 +1,18 @@
+"use client";
+import { WikiButton } from "./wiki-controls";
+import { useEffect, useState } from "react";
+import type { WikiVersionDetail, WikiVersionList } from "@/lib/wiki-model";
+import { fetchWikiVersion, fetchWikiVersions } from "@/lib/wiki-client";
+import { isWikiDocumentSupported, useWikiFormatInventory } from "./wiki-format";
+import { WikiReader } from "./wiki-reader";
+
+export function WikiHistory({ noteId, spaceId, versionId, canRestore, busy, onSelect, onRestore, onClose }: { noteId: string; spaceId?: string; versionId?: string; canRestore: boolean; busy: boolean; onSelect: (id: string) => void; onRestore: (version: WikiVersionDetail) => void; onClose: () => void }) {
+  const inventory = useWikiFormatInventory();
+  const [listing, setListing] = useState<WikiVersionList | null>(null), [version, setVersion] = useState<WikiVersionDetail | null>(null), [error, setError] = useState("");
+  useEffect(() => { let active = true; void fetchWikiVersions(noteId).then(result => { if (active) setListing(result); }).catch(() => { if (active) setError("Unable to load history."); }); return () => { active = false; }; }, [noteId]);
+  const selected = versionId ?? listing?.versions[0]?.id;
+  useEffect(() => { let active = true; if (selected) void fetchWikiVersion(noteId, selected).then(result => { if (active) { setVersion(result); setError(""); } }).catch(() => { if (active) setError("This version is unavailable."); }); return () => { active = false; }; }, [noteId, selected]);
+  // Never show the previous preview under a newly selected revision's controls.
+  const shown = version?.id === selected ? version : null;
+  return <section className="wiki-history wiki-panel" aria-label="Page history"><div className="wiki-heading"><h2>History</h2><WikiButton onClick={onClose}>Back to page</WikiButton></div><p className="wiki-muted">Restoring adds a new version. Files added after that version remain current. Current topic assignments are kept.</p>{error ? <p role="alert">{error}</p> : null}<div className="wiki-history-grid"><aside><ol>{listing?.versions.map(item => <li key={item.id}><WikiButton aria-pressed={selected === item.id} onClick={() => onSelect(item.id)}><strong>Version {item.versionNumber} · {item.kind}</strong><span>{item.authorDisplayName ?? "Former user"}</span><time>{item.savedAt.replace("T", " ").slice(0, 16)} UTC</time></WikiButton></li>)}</ol>{listing?.hasMore ? <WikiButton onClick={async () => { try { const next = await fetchWikiVersions(noteId, listing.offset + listing.limit); setListing({ ...next, versions: [...listing.versions, ...next.versions] }); } catch { setError("Unable to load more history."); } }}>Load older versions</WikiButton> : null}</aside><div>{shown ? <><h3>{shown.title || "Untitled page"}</h3><WikiReader key={shown.id} content={shown.content} format={shown.contentFormatVersion} wikiContext={spaceId ? { spaceId, noteId } : undefined} unavailableIds={[...shown.unavailableAttachmentIds, ...shown.attachments.filter(file => !file.available).map(file => file.id)]} /><h3>Files in this version</h3><ul>{shown.attachments.map(file => <li key={file.id}>{file.available ? <a href={`/api/notes/${noteId}/attachments/${file.id}`} download={file.originalName}>{file.originalName}</a> : <span>{file.originalName} · File unavailable</span>}{file.removed ? " · Removed from current files" : ""}</li>)}{shown.unavailableAttachmentIds.map(id => <li key={id}>File unavailable</li>)}</ul>{canRestore ? <WikiButton disabled={busy || !isWikiDocumentSupported(shown.content, shown.contentFormatVersion, inventory)} onClick={() => onRestore(shown)}>Restore version {shown.versionNumber}</WikiButton> : null}</> : <p role="status">Loading version…</p>}</div></div></section>;
+}

@@ -1,0 +1,117 @@
+/* Calendar owns accents only. All neutral surfaces come from Taskboard. */
+.taskboard-calendar-proof,
+.phone-calendar,
+.calendar-entry-workspace {
+  --calendar-accent: #edaa72;
+  --calendar-accent-ink: #24180f;
+  --calendar-support: #8fcfc3;
+  --calendar-selection: #a9c8ed;
+}
+
+html[data-theme="light"] :is(.taskboard-calendar-proof, .phone-calendar, .calendar-entry-workspace) {
+  --calendar-accent: #9b5429;
+  --calendar-accent-ink: #ffffff;
+  --calendar-support: #216b64;
+  --calendar-selection: #315f91;
+}
+
+.taskboard-calendar-proof .calendar-proof-header button.is-active,
+.taskboard-calendar-proof .calendar-proof-new-entry-button:not(.calendar-proof-clear-slot-button),
+.taskboard-calendar-proof .calendar-proof-filter-menu[open] summary,
+.taskboard-calendar-proof .calendar-proof-filter-menu__option.is-active,
+:is(.taskboard-calendar-proof, .calendar-entry-workspace) .calendar-entry-form__primary,
+.phone-calendar .phone-calendar-new,
+.phone-calendar .calendar-entry-form__primary {
+  background: var(--calendar-accent);
+  color: var(--calendar-accent-ink);
+}
+
+.taskboard-calendar-proof .calendar-proof-new-entry-button:not(.calendar-proof-clear-slot-button):hover,
+:is(.taskboard-calendar-proof, .calendar-entry-workspace) .calendar-entry-form__primary:hover {
+  background: color-mix(in srgb, var(--calendar-accent) 88%, var(--foreground));
+}
+
+.taskboard-calendar-proof .calendar-proof-header__today,
+.taskboard-calendar-proof .calendar-proof-header__title,
+.phone-calendar .phone-calendar-date-title,
+.phone-calendar .phone-calendar-month-nav > strong {
+  color: var(--calendar-support);
+}
+
+.taskboard-calendar-proof .taskboard-calendar-proof__calendar .fc :is(.fc-daygrid-day, .fc-timegrid-col).fc-day-today {
+  background: color-mix(in srgb, var(--calendar-support) 8%, var(--calendar-proof-grid-bg));
+}
+
+.taskboard-calendar-proof .taskboard-calendar-proof__calendar .fc :is(.fc-daygrid-day, .fc-timegrid-col).calendar-proof-day--selected {
+  background: color-mix(in srgb, var(--calendar-selection) 16%, var(--calendar-proof-grid-bg));
+}
+
+.taskboard-calendar-proof .taskboard-calendar-proof__calendar .fc .fc-highlight {
+  background: color-mix(in srgb, var(--calendar-selection) 24%, transparent);
+}
+
+.taskboard-calendar-proof input[type="checkbox"],
+.phone-calendar input[type="checkbox"] {
+  accent-color: var(--calendar-accent);
+}
+
+.taskboard-calendar-proof .calendar-proof-outages-toggle:has(input:checked) {
+  background: color-mix(in srgb, var(--calendar-accent) 14%, var(--control));
+}
+
+.taskboard-calendar-proof.taskboard-calendar-proof--embedded .calendar-proof-outages-toggle {
+  font-size: var(--calendar-proof-control-font);
+}
+
+.phone-calendar .phone-calendar-week [aria-pressed="true"] b,
+.phone-calendar .phone-calendar-month [aria-pressed="true"] {
+  background: var(--calendar-accent);
+  color: var(--calendar-accent-ink);
+}
+
+.phone-calendar .phone-calendar-week [data-today] > span,
+.phone-calendar .phone-calendar-month [data-today]:not([aria-pressed="true"]) {
+  color: var(--calendar-support);
+}
+
+.phone-calendar .phone-calendar-popover > button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--calendar-accent) 16%, var(--control));
+}
+
+/* Details' inline baseline gave the filter a four-pixel vertical offset.
+   Use the same shared control height as the neighboring navigation buttons. */
+.taskboard-calendar-proof .calendar-proof-filter-menu,
+.taskboard-calendar-proof .calendar-proof-filter-menu summary {
+  display: flex;
+  align-items: center;
+}
+
+.taskboard-calendar-proof .calendar-proof-filter-menu summary {
+  background: var(--control);
+  height: var(--calendar-proof-control-height);
+}
+
+.taskboard-calendar-proof .calendar-proof-filter-menu[open] summary {
+  background: var(--calendar-accent);
+}
+
+.taskboard-calendar-proof .calendar-proof-clear-slot-button {
+  display: grid;
+  place-items: center;
+  height: var(--calendar-proof-control-height);
+  background: var(--control);
+}
+
+.taskboard-calendar-proof .calendar-proof-clear-slot-button:disabled {
+  opacity: 1;
+  color: var(--faint);
+}
+
+.taskboard-calendar-proof .calendar-proof-filter-menu__close {
+  justify-content: space-between;
+}
+
+:is(.taskboard-calendar-proof, .phone-calendar, .calendar-entry-workspace) :is(button, summary, input, select):focus-visible {
+  outline: 2px solid var(--calendar-selection);
+  outline-offset: 2px;
+}

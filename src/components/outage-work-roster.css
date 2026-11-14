@@ -1,0 +1,24 @@
+.taskboard-shell .work-list[data-people="true"] { container:work-roster-list / inline-size; }
+.taskboard-shell .work-roster-slot { display:block;flex:none;width:clamp(180px,14vw,240px);min-width:0; }
+.taskboard-shell .work-roster-button { position:relative;display:block;width:100%;height:28px;padding:0;border:0;background:transparent;color:var(--foreground);font-size:var(--tb-work-small-size);line-height:1.15;text-align:left; }
+.taskboard-shell .work-roster-line { display:flex;gap:5px;min-width:0;height:1.15em;align-items:baseline; }
+.taskboard-shell .work-roster-line>span { overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0; }
+.taskboard-shell .work-roster-line b { margin-left:auto;flex:none;font-weight:500;color:var(--accent); }
+.taskboard-shell .work-roster-inherited { color:var(--muted); }
+.taskboard-shell .work-roster-count { display:flex;align-items:center;gap:5px; }
+.taskboard-shell .work-roster-count svg { width:13px;height:13px; }
+.taskboard-shell .work-roster-probe { position:absolute;visibility:hidden;pointer-events:none;width:1ch;height:1.15em; }
+.taskboard-shell .work-row:has(.work-title-input) .work-roster-slot { display:none; }
+.taskboard-shell.work-roster-dialog { position:fixed;inset:0;margin:auto;width:min(520px,calc(100vw - 24px));max-height:80dvh;overflow:auto;padding:12px;border:1px solid var(--border);border-radius:var(--tb-radius-panel);background:var(--popover-base);color:var(--foreground);box-shadow:var(--elev-2);font-size:var(--tb-work-text-size); }
+.taskboard-shell.work-roster-dialog::backdrop { background:rgb(0 0 0 / .2); }
+.taskboard-shell.work-roster-dialog header { display:flex;justify-content:space-between;align-items:start;gap:10px; }
+.taskboard-shell.work-roster-dialog h2 { font-size:var(--tb-work-title-size);font-weight:600;overflow-wrap:anywhere;margin:0; }
+.taskboard-shell.work-roster-dialog h3 { font-size:var(--tb-work-text-size);font-weight:500;overflow-wrap:anywhere;margin:10px 0 4px; }
+.taskboard-shell.work-roster-dialog svg { width:16px;height:16px; }
+.taskboard-shell .work-roster-person { display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;padding:5px 0;border-top:1px solid var(--border); }
+.taskboard-shell .work-roster-person small { font-size:var(--tb-work-small-size);color:var(--muted); }
+.taskboard-shell .work-list:has(.work-roster-button[data-large-text="true"]) .work-roster-slot { width:48px; }
+@container work-roster-list (min-width:900px) { .taskboard-shell .work-row:has(.work-roster-slot) .work-row-meta { display:flex;width:max-content;min-width:max(360px,calc(var(--tb-root-size) * 19.46));flex-wrap:nowrap;justify-content:flex-end; } }
+@container work-roster-list (max-width:899px) { .taskboard-shell .work-roster-slot { width:48px; } }
+@container work-roster-list (max-width:899px) { .taskboard-shell .work-row:has(.work-warn) .work-roster-slot { width:32px; } .taskboard-shell .work-row:has(.work-warn) .work-roster-count { gap:2px;font-size:min(var(--tb-work-small-size),12px); } .taskboard-shell .work-row:has(.work-warn) .work-roster-count svg { width:11px; } }
+@media(max-width:767px) { .taskboard-shell .work-roster-slot { display:none; } }

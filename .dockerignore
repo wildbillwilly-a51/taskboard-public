@@ -1,0 +1,15 @@
+.git
+.env
+.env.*
+.next
+node_modules
+postgres
+uploads
+test-artifacts
+test-results
+playwright-report
+npm-debug.log*
+Dockerfile
+compose*.yaml
+README.md
+docs

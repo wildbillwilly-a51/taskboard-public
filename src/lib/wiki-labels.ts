@@ -1,0 +1,2 @@
+export const wikiProductName = "Wiki";
+export const wikiLabels = { productName: wikiProductName, page: `${wikiProductName} page`, newPage: `New ${wikiProductName.toLowerCase()} page`, allSpaces: `All ${wikiProductName.toLowerCase()} spaces`, open: `Open in ${wikiProductName.toLowerCase()}`, add: `Add to ${wikiProductName.toLowerCase()}`, back: `Back to ${wikiProductName.toLowerCase()}` } as const;

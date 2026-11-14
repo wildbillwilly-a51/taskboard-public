@@ -1,0 +1,7 @@
+.public-task-workspace { height:100dvh; padding:12px; color:var(--foreground); }
+.public-task-workspace.public-share-state { display:grid; place-content:center; }
+.public-task-workspace .taskboard-task-workspace-panel { width:100%; max-width:2400px; margin-inline:auto; container-type:inline-size; container-name:task-editor-expanded; }
+.public-task-workspace .workspace-title { min-width:0; flex:1; overflow-wrap:anywhere; }
+.public-task-workspace .task-note-title { margin:8px 0 12px; overflow-wrap:anywhere; }
+.public-task-workspace .task-note-document { min-width:0; }
+@media(max-width:767px) { .public-task-workspace {padding:0;} }

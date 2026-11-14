@@ -1,0 +1,801 @@
+/* Folio shares Taskboard's neutral theme; only its accents are feature-owned. */
+.root,
+:global(html[data-ui-skin]) .root:global(.notes-frame) {
+  min-width: 0;
+  --folio-paper: var(--panel);
+  --folio-rail: var(--background);
+  --folio-list: var(--panel);
+  --folio-header-bg: var(--panel-strong);
+  --folio-accent: #e5ad80;
+  --folio-accent-ink: #e5ad80;
+  --folio-selection: #443024;
+  --notes-ui-accent: var(--folio-accent);
+  --notes-accent-ink: var(--folio-accent-ink);
+  --focus-ring: var(--folio-accent-ink);
+  --folio-list-title-size: var(--tb-fs-12-5, 12.5px);
+  --folio-list-date-size: var(--tb-fs-11, 11px);
+  --folio-body-size: calc(var(--tb-fs-14-5, 14.5px) * 1.1);
+  --folio-title-size: calc(var(--tb-fs-14-5, 14.5px) * 2);
+  color: var(--foreground);
+}
+:global(html[data-theme="light"]) .root,
+:global(html[data-ui-skin][data-theme="light"]) .root:global(.notes-frame) {
+  --folio-accent: #315a9b;
+  --folio-accent-ink: #315a9b;
+  --folio-selection: #e8effa;
+}
+.root:global(.notes-frame) :global(.notes-sidebar) { background: var(--folio-rail); }
+.root:global(.notes-frame) :global(.notes-list-pane) { background: var(--folio-list); }
+.root:global(.notes-frame) :global(.notes-editor-shell) { background: var(--folio-paper); }
+:global(html[data-theme]) .root:global(.notes-frame) :global(.notes-workspace .notes-nav-item[data-active="true"]),
+:global(html[data-theme]) .root:global(.notes-frame)[data-editor-scale="true"] :global(.notes-workspace .notes-sidebar .notes-nav-item[data-active="true"]) {
+  background: var(--folio-selection);
+  color: var(--foreground);
+  box-shadow: inset 3px 0 0 var(--folio-accent-ink);
+}
+.root:global(.notes-frame) :global(.notes-workspace .notes-list) .noteListItem {
+  min-height: 52px;
+  gap: 3px;
+  padding: 8px 10px;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+}
+.root:global(.notes-frame)
+  :global(.notes-workspace .notes-list)
+  .noteListItem[data-active="true"] {
+  background: var(--folio-selection);
+  box-shadow: inset 3px 0 0 var(--folio-accent-ink);
+}
+.root:global(.notes-frame) .noteListItem :global(.notes-list-title) {
+  width: 100%;
+  min-width: 0;
+  font-size: var(--folio-list-title-size);
+  font-weight: 600;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+.root:global(.notes-frame)
+  .noteListItem
+  :global(.notes-list-title > .truncate) {
+  flex: 1;
+  min-width: 0;
+}
+.root:global(.notes-frame) .noteListItem :global(.notes-list-title > svg) {
+  color: var(--muted);
+}
+.noteDate {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--foreground) 78%, var(--panel));
+  font-size: var(--folio-list-date-size);
+  font-weight: 400;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* Preserve the existing phone touch-row geometry; only its two text lines
+   change. User desktop text-scale settings continue to scale both lines. */
+.root:not([data-editor-scale="true"]) {
+  --folio-list-title-size: 16px;
+  --folio-list-date-size: 12px;
+}
+.root:not([data-editor-scale="true"]):global(.notes-frame)
+  :global(.notes-workspace .notes-list)
+  .noteListItem {
+  min-height: 64px;
+}
+.connections .chip { border-color: var(--border); background: var(--surface-subtle); }
+.root :global(.notes-workspace[data-history="true"]) {
+  grid-template-areas: "sidebar sep-sidebar editor";
+  grid-template-columns: var(--notes-sidebar-width, 224px) 1px minmax(0, 1fr);
+}
+.root :global(.notes-workspace[data-history="true"] .notes-list-pane),
+.root
+  :global(
+    .notes-workspace[data-history="true"] .notes-separator[data-column="list"]
+  ) {
+  display: none;
+}
+@container notes-frame (max-width:959.98px) {
+  .root :global(.notes-workspace[data-history="true"]) {
+    grid-template-areas: "editor";
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .root :global(.notes-workspace[data-history="true"] .notes-sidebar),
+  .root :global(.notes-workspace[data-history="true"] .notes-separator) {
+    display: none;
+  }
+  .root :global(.notes-workspace[data-history="true"] .notes-editor-pane) {
+    display: flex;
+    grid-area: editor;
+  }
+}
+/* Keep Folio control appearance; shared ed-* roles own type and geometry. */
+.root :global(.ui-button:where(:not(.ed-icon-button))) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--tb-radius);
+  background: var(--surface-subtle);
+  color: var(--foreground);
+}
+/* Shared consumers such as attachments still expose the legacy ui-button API. */
+.root :global(.ui-button:where(:not(.ed-button))) {
+  font-size: var(--tb-editor-text-size);
+  line-height: var(--tb-editor-line-height);
+  min-height: var(--tb-editor-field-height);
+  padding: var(--tb-editor-field-padding);
+}
+.root :global(.ui-button:hover) {
+  background: var(--surface-hover);
+}
+.root :global(.ui-button:disabled) {
+  opacity: 0.5;
+  cursor: default;
+}
+.root :global(.ui-button-primary) {
+  background: var(--chip);
+  font-weight: 600;
+}
+.root :global(.notes-mobile-title) {
+  display: block;
+  width: 100%;
+  resize: none;
+  min-height: 3em;
+  max-height: 10em;
+}
+.root svg {
+  flex-shrink: 0;
+}
+.root :global(.page-mention) {
+  border-radius: 4px;
+  background: color-mix(
+    in srgb,
+    var(--folio-accent) 12%,
+    transparent
+  );
+  padding: 1px 3px;
+}
+.root :global(.page-mention button) {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.root :global(a.page-mention),
+.root :global(.page-mention-open) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.root details {
+  position: relative;
+}
+.root summary {
+  cursor: pointer;
+  list-style: none;
+}
+.bottom {
+  margin-top: auto;
+  padding-top: 14px;
+}
+.search {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 8px;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+}
+.search input {
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--foreground);
+  font-size: 12px;
+}
+.spaceTools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 4px 8px 8px;
+}
+.spaceActions, .spaceFormActions { display: flex; align-items: center; gap: 6px; }
+.spaceFormActions { justify-content: space-between; flex-wrap: wrap; }
+.spaceSelection {
+  max-height: 30dvh;
+  overflow-y: auto;
+  border-block: 1px solid var(--border);
+}
+.dialog label.spaceSelectionRow {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 4px 6px;
+  min-height: var(--tb-editor-field-height);
+  overflow-wrap: anywhere;
+}
+.spaceSelectionRow:hover { background: var(--surface-hover); }
+.dialog .spaceSelectionRow input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+:global(html[data-ui-skin]) .root:global(.notes-frame) .spaceDelete { color: var(--folio-danger); }
+.menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 25;
+  display: grid;
+  min-width: 180px;
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--panel);
+  box-shadow: 0 8px 25px #0003;
+}
+.menu button {
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 12px;
+  border: 0;
+  background: transparent;
+  border-radius: 5px;
+  color: var(--foreground);
+}
+.menu button:hover {
+  background: var(--surface-hover);
+}
+.properties {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+}
+.properties small {
+  color: var(--muted);
+}
+.connections {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.connections > span:first-child {
+  color: var(--muted);
+  margin-right: 3px;
+}
+.connections input {
+  width: 130px;
+  color: var(--foreground);
+  background: transparent;
+  border: 0;
+  font-size: 12px;
+  padding: 4px;
+}
+.chip {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 3px 7px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--surface-subtle);
+  font-size: var(--tb-editor-text-size);
+}
+.chip button {
+  display: inline-flex;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tb-editor-icon-button-size);
+  min-height: var(--tb-editor-icon-button-size);
+}
+.home {
+  overflow-y: auto;
+  padding: clamp(24px, 4vw, 64px);
+  max-width: 850px;
+}
+.home h1 {
+  font-size: 36px;
+  font-weight: 650;
+  margin: 8px 0 14px;
+  letter-spacing: -1px;
+}
+.home h2 {
+  font-size: 15px;
+  font-weight: 650;
+  margin: 26px 0 12px;
+}
+.home p {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 14px;
+}
+.eyebrow {
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+.homeStats {
+  display: flex;
+  gap: 50px;
+  padding: 25px 0;
+  border-bottom: 1px solid var(--border);
+}
+.homeStats div {
+  display: grid;
+  gap: 5px;
+}
+.homeStats strong {
+  font-size: 28px;
+  font-weight: 600;
+}
+.homeStats span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.homeSpaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.activity {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  text-align: left;
+  align-items: center;
+  padding: 10px 0;
+  border: 0;
+  background: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground);
+  font-size: 13px;
+}
+.activity small,
+.historyRow small,
+.pickerName small,
+.pageList small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+}
+.banner {
+  position: relative;
+  margin: 0 0 18px;
+}
+.banner img {
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 9px;
+}
+.banner button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+.pageControls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+.pageControls label {
+  cursor: pointer;
+}
+.pageList {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  margin: 20px 0;
+  padding: 16px;
+  font-size: 13px;
+}
+.pageList header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pageList h3 {
+  font-size: 13px;
+  font-weight: 650;
+  margin-right: auto;
+}
+.pageList > div {
+  padding: 9px 0;
+  border-top: 1px solid var(--border);
+}
+.pageList a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pageList p {
+  color: var(--muted);
+  padding-top: 10px;
+}
+.footer {
+  padding: 8px 16px;
+  font-size: 10px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+.files {
+  margin: 24px 0;
+  font-size: 12px;
+}
+.files summary {
+  padding: 8px 0;
+}
+.dialog p {
+  color: var(--muted);
+}
+.dialog form {
+  display: grid;
+  gap: 8px;
+}
+.dialog form > label {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+.dialog :global(.ed-field) {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface-subtle);
+  color: var(--foreground);
+  border-radius: var(--tb-radius);
+}
+.dialog .search {
+  display: flex;
+  margin: 8px 0;
+  padding: 0 7px;
+  gap: 6px;
+}
+.dialog .search input {
+  border: 0;
+  background: transparent;
+  padding-inline: 0;
+}
+.dialog small {
+  font-size: var(--tb-editor-meta-size);
+  color: var(--muted);
+  line-height: 1.6;
+}
+.pickerTabs {
+  display: flex;
+  gap: 4px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+.pickerTabs [aria-pressed="true"] {
+  background: var(--chip);
+}
+.pickerResults {
+  margin: 10px 0;
+  min-height: 80px;
+  max-height: 350px;
+  overflow: auto;
+}
+.pickerRow,
+.historyRow,
+.archiveRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.pickerName {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: 0;
+  color: var(--foreground);
+  text-align: left;
+  font-size: var(--tb-editor-text-size);
+  min-height: var(--tb-editor-field-height);
+}
+.pickerName span {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+.historyRow {
+  font-size: 12px;
+}
+.historyRow > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 679px) {
+  /* Phone Folio keeps its reading layout, while controls use shared roles. */
+  .root {
+    --tb-editor-text-size: var(--tb-fs-12);
+    --tb-editor-input-size: max(16px, var(--tb-editor-text-size));
+    --tb-editor-line-height: calc(var(--tb-editor-text-size) + 4px);
+    --tb-editor-field-height: 44px;
+    --tb-editor-field-padding: 2px 7px;
+    --tb-editor-icon-button-size: 44px;
+  }
+  .root :global(.notes-sidebar) {
+    display: none;
+  }
+  .root :global(.notes-workspace[data-pane="nav"] .notes-sidebar) {
+    display: flex;
+  }
+  .root :global(.notes-nav-item),
+  .root :global(.notes-icon-button),
+  .dialog button {
+    min-height: 44px;
+  }
+  .root :global(.notes-editor-toolbar) {
+    flex-wrap: wrap;
+  }
+  .root :global(.notes-title-input) {
+    min-width: 120px;
+    flex: 1;
+  }
+  .properties {
+    padding: 12px;
+  }
+  .home {
+    padding: 24px;
+  }
+  .footer {
+    font-size: 11px;
+  }
+  .chip button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .root :global(.notes-editor-body) {
+    padding-inline: 15px;
+  }
+}
+
+/* Leave room for the same compact action affordance used by Notes. */
+.root :global(.notes-nav-row[data-space-row] > .notes-nav-item) {
+  flex: 1 1 0;
+  width: 0;
+}
+
+/* Document composition: prose has a comfortable measure; wide blocks and the
+   editable space notes block retain the full available content column. */
+.root:global(.notes-frame) :global(.notes-editor-toolbar) { box-shadow: none; background: var(--folio-paper); }
+.toolbarSpacer { flex: 1; }
+.root:global(.notes-frame) :global(.notes-editor-body) { padding: 24px 24px 48px; }
+.readingLayout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; max-width: 1420px; margin-inline: auto; align-items: start; }
+.readingLayout:has(> .railSlot > aside) { grid-template-columns: 210px minmax(0, 1fr); }
+.railSlot { position: sticky; top: 0; min-width: 0; }
+.railSlot:empty { display: none; }
+.articleContent { min-width: 0; width: 100%; max-width: 1120px; margin-inline: auto; font-size: var(--folio-body-size); }
+.documentHeader { max-width: 72ch; margin: 6px auto 22px; padding-inline: 6px; }
+.root .documentTitle { box-sizing: border-box; display: block; width: 100%; margin: 0 0 14px; padding: 0; border: 0; border-radius: 0; box-shadow: none; background: transparent; color: var(--foreground); resize: none; overflow: hidden; font-family: var(--font-ui-sans), sans-serif; font-size: var(--folio-title-size); font-weight: 650; line-height: 1.22; letter-spacing: -.025em; overflow-wrap: anywhere; }
+.root .documentTitle:focus-visible { outline: 2px solid var(--folio-accent); outline-offset: 5px; }
+.root .properties { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; border: 0; padding: 0; font-size: 12px; }
+.root .properties > .connections { flex-basis: 100%; }
+.root .metaRow { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; width: 100%; color: var(--muted); font-size: 12px; }
+.metaRow :global(.notes-icon-button) { width: var(--tb-editor-icon-button-size); height: var(--tb-editor-icon-button-size); }
+.root :global(.bn-container) { --bn-colors-editor-background: var(--folio-paper); --bn-colors-editor-text: var(--foreground); --bn-colors-menu-background: var(--popover); --bn-colors-menu-text: var(--foreground); }
+.root:global(.notes-frame) :global(.notes-editor-view .bn-editor) { background: transparent; font-size: var(--folio-body-size); line-height: 1.7; padding: 0 6px 0 32px; }
+.root :global(.bn-editor > .bn-block-group > .bn-block-outer) { max-width: calc(72ch + 6px); margin-inline: auto; }
+.root :global(.bn-editor > .bn-block-group > .bn-block-outer:has(> .bn-block > :is([data-content-type="table"], [data-content-type="codeBlock"], [data-content-type="image"], [data-content-type="video"], [data-content-type="audio"], [data-content-type="file"]))) { max-width: none; }
+.root :global(.bn-block-content[data-content-type="heading"]) { margin-block-start: .8em; }
+.root :global(.notes-editor-view .bn-block-outer) { line-height: inherit; }
+.root :global(.bn-block-content[data-content-type="codeBlock"]) { line-height: 1.5; }
+.root:global(.notes-frame) :global(.notes-editor-view .bn-block-content[data-content-type="codeBlock"]) { background: var(--surface-subtle); color: var(--foreground); }
+.root:global(.notes-frame) :global(.notes-editor-view .bn-block-content[data-content-type="codeBlock"] > pre) { background: transparent; color: inherit; }
+.root :global(.notes-workspace a:not(.ui-button)) { color: var(--folio-accent); text-underline-offset: 3px; }
+.root :global(.notes-nav-item[data-active="true"] > svg),
+.root .noteListItem[data-active="true"] :global(.notes-list-title > svg) { color: var(--folio-accent); }
+.root :global(.notes-new-button.ui-button-primary) { background: var(--folio-accent); border-color: var(--folio-accent); color: var(--folio-paper); box-shadow: none; }
+.root :global(.notes-new-button.ui-button-primary:hover) { filter: brightness(1.08); }
+.root .pageList { max-width: 72ch; margin: 28px auto; border: 0; border-block-start: 1px solid var(--border); border-radius: 0; padding: 18px 6px; font-size: var(--folio-body-size); }
+.pageList header { margin-bottom: 12px; }
+.pageList h3 { font-size: 1em; }
+.pageList > div { border: 0; padding: 10px 0; }
+.root .pageControls { max-width: 72ch; margin: 12px auto 20px; }
+.root .banner { margin-bottom: 24px; }
+.banner img { border-radius: 4px; }
+.subspaces { max-width: 72ch; margin: 26px auto; padding-inline: 6px; }
+.subspaces h2 { font: 650 1em var(--font-ui-sans), sans-serif; margin-bottom: 10px; }
+.subspaces button { display: flex; align-items: center; gap: 10px; width: 100%; text-align: start; border: 0; border-bottom: 1px solid var(--border); background: transparent; padding: 12px 0; font: inherit; color: var(--foreground); }
+.subspaces button > svg:last-child { margin-left: auto; }
+.subspaces button:hover { background: var(--surface-hover); }
+.root .files { max-width: 72ch; margin: 28px auto 0; padding-inline: 6px; }
+.root .dialog h3 { margin-block: 18px 10px; font-size: 14px; }
+.dialog .connections input { width: 100%; }
+.root :global(.folio-section-hidden) { display: none !important; }
+.root :global(.folio-section-toggle) { position: relative; float: left; margin-inline-start: -28px; width: 24px; height: 28px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font: 18px/28px sans-serif; cursor: pointer; }
+.root :global(.folio-section-toggle:hover) { background: var(--surface-hover); color: var(--foreground); }
+.root :global(.folio-section-toggle:focus-visible) { outline: 2px solid var(--folio-accent); outline-offset: 1px; }
+.root:not([data-editor-scale="true"]) { --folio-body-size: calc(16px * var(--notes-reading-scale, 1)); --folio-title-size: calc(29px * var(--notes-reading-scale, 1)); }
+@media (max-width: 679px) {
+  .root:global(.notes-frame) :global(.notes-editor-body) { padding: 20px 18px 36px; }
+  .readingLayout { gap: 0; }
+  .documentHeader { padding-inline: 12px 4px; }
+  .root :global(.notes-editor-view .bn-editor) { padding-inline: 28px 4px; }
+  .root .properties { font-size: 12px; }
+  .root .metaRow { font-size: 11px; }
+  .root .properties .chip button { min-width: 44px; min-height: 44px; }
+}
+/* Headings support the document title rather than overtaking it. */
+.root:global(.notes-frame) :global(.notes-editor-view .bn-block-content[data-content-type="heading"]) { --level: 1.65em; font-size: 1.65em; line-height: 1.3; margin-block-start: .9em; }
+.root:global(.notes-frame) :global(.notes-editor-view .bn-block-content[data-content-type="heading"][data-level="2"]) { --level: 1.35em; font-size: 1.35em; }
+.root:global(.notes-frame) :global(.notes-editor-view .bn-block-content[data-content-type="heading"][data-level="3"]) { --level: 1.18em; font-size: 1.18em; }
+.root:global(.notes-frame) :global(.notes-editor-view .bn-block-content[data-content-type="heading"]:is([data-level="4"], [data-level="5"], [data-level="6"])) { --level: 1.05em; font-size: 1.05em; }
+.root :global(.bn-editor > .bn-block-group > .bn-block-outer:first-child .bn-block-content[data-content-type="heading"]) { margin-block-start: .2em; }
+/* Reading-scale preferences live on the workspace, so resolve phone tokens
+   there rather than at an ancestor where their variable is unavailable. */
+.root:global(.notes-frame):not([data-editor-scale="true"]) :global(.notes-workspace) {
+  --folio-body-size: calc(16px * var(--notes-reading-scale, 1));
+  --folio-title-size: calc(29px * var(--notes-reading-scale, 1));
+  --folio-list-title-size: 16px;
+  --folio-list-date-size: 12px;
+}
+/* Mermaid widgets are view decorations; raw saved code remains unchanged. */
+:global(.folio-mermaid-source){display:none!important}
+:global(.folio-mermaid-render){margin:18px 0;max-width:100%;overflow:auto}
+:global(.folio-mermaid-render svg){max-width:100%;height:auto}
+:global(.folio-mermaid-render summary){cursor:pointer;font-size:12px;opacity:.7;margin-top:8px}
+
+/* Color has a job: identity, selection, and a clear next action. Neutral
+   surfaces follow the shared theme; authored block colors remain unchanged. */
+.root,
+:global(html[data-ui-skin]) .root:global(.notes-frame) {
+  --folio-accent: #edaa72;
+  --folio-accent-ink: #f3ba8a;
+  --folio-action-ink: #24180f;
+  --folio-selection: #563b28;
+  --folio-personal: #c6a5fa;
+  --folio-personal-bg: #372b4b;
+  --folio-shared: #9bbfff;
+  --folio-shared-bg: #283a56;
+  --folio-board: #f1bf73;
+  --folio-board-bg: #4a3824;
+  --folio-task: #b7adff;
+  --folio-task-bg: #34304c;
+  --folio-rose: #f1a2bf;
+  --folio-danger: #f3a4ad;
+}
+:global(html[data-theme="light"]) .root,
+:global(html[data-ui-skin][data-theme="light"]) .root:global(.notes-frame) {
+  --folio-accent: #2859c5;
+  --folio-accent-ink: #214eae;
+  --folio-action-ink: #ffffff;
+  --folio-selection: #d7e4ff;
+  --folio-personal: #7444ad;
+  --folio-personal-bg: #eee2ff;
+  --folio-shared: #2459bb;
+  --folio-shared-bg: #dce8ff;
+  --folio-board: #905408;
+  --folio-board-bg: #ffebc7;
+  --folio-task: #6550a8;
+  --folio-task-bg: #eae4ff;
+  --folio-rose: #a73864;
+  --folio-danger: #b42336;
+}
+.root [data-space-kind="personal"], .root [data-folio-tone="personal"] { --folio-tone: var(--folio-personal); --folio-tone-bg: var(--folio-personal-bg); }
+.root [data-space-kind="shared"], .root [data-folio-tone="shared"] { --folio-tone: var(--folio-shared); --folio-tone-bg: var(--folio-shared-bg); }
+.root [data-space-kind="board"], .root [data-folio-tone="board"] { --folio-tone: var(--folio-board); --folio-tone-bg: var(--folio-board-bg); }
+.root [data-space-kind="task"] { --folio-tone: var(--folio-task); --folio-tone-bg: var(--folio-task-bg); }
+.root:global(.notes-frame) :global(.notes-new-button.ui-button-primary),
+.root:global(.notes-frame) :global(.ui-button.ui-button-primary),
+.root:global(.notes-frame) .editAction[aria-pressed="false"] {
+  background: var(--folio-accent);
+  color: var(--folio-action-ink);
+  border-color: var(--folio-accent);
+  font-weight: 650;
+}
+.root:global(.notes-frame) :global(.notes-new-button.ui-button-primary):hover,
+.root:global(.notes-frame) :global(.ui-button.ui-button-primary):hover,
+.root:global(.notes-frame) .editAction[aria-pressed="false"]:hover {
+  background: color-mix(in srgb, var(--folio-accent) 88%, var(--foreground));
+}
+.root:global(.notes-frame) :global(.notes-workspace .notes-list-pane > .notes-pane-header) {
+  background: var(--folio-header-bg);
+  box-shadow: inset 0 3px 0 var(--folio-accent);
+}
+.root:global(.notes-frame) :global(.notes-workspace .notes-pane-title),
+.root:global(.notes-frame) :global(.notes-workspace .notes-pane-count) { color: var(--folio-accent-ink); }
+.root:global(.notes-frame) :global(.notes-workspace .notes-nav-heading) { color: var(--folio-tone, var(--folio-accent-ink)); }
+.root:global(.notes-frame) :global(.notes-workspace .notes-nav-heading)::before { display: block; background: var(--folio-tone, var(--folio-accent)); }
+.root:global(.notes-frame) :global(.notes-nav-item[data-folio-tone="board"]) { color: var(--folio-board); font-weight: 650; }
+.root:global(.notes-frame) :global(.notes-nav-item[data-folio-view="favorites"] > svg) { color: var(--folio-board); fill: color-mix(in srgb,var(--folio-board) 20%,transparent); }
+.root:global(.notes-frame) :global(.notes-nav-item[data-folio-view="home"] > svg) { color: var(--folio-rose); }
+.spaceIcon { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 6px; flex: none; color: var(--folio-tone, var(--folio-shared)); background: var(--folio-tone-bg, var(--folio-shared-bg)); }
+.spaceName { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+.spaceName > span { display: block; }
+.boardLoading { display: block; padding: 3px 14px 5px 40px; color: var(--muted); font-size: 11px; }
+.spaceName small { color: var(--muted); font-size: .82em; line-height: 1.25; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Collapsed panes keep an explicit, stable route between navigation levels.
+   The trail stays mounted while switching panes, preserving keyboard focus. */
+.paneNavigation { display: none; }
+@container notes-frame (max-width: 959.98px) {
+  .root :global(.notes-workspace),
+  .root :global(.notes-workspace[data-pane="nav"]) {
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas: "trail trail trail" "list sep-list editor";
+  }
+  .root :global(.notes-workspace[data-pane="nav"]) {
+    grid-template-areas: "trail trail trail" "sidebar sep-sidebar editor";
+  }
+  .root :global(.notes-workspace[data-history="true"]) {
+    grid-template-areas: "trail" "editor";
+  }
+  .paneNavigation {
+    grid-area: trail; display: flex; align-items: center; gap: 6px;
+    min-width: 0; padding: 8px 12px; border-bottom: 1px solid var(--border);
+    background: var(--folio-rail); color: var(--muted);
+  }
+  .paneNavigation > svg { flex: none; }
+  .paneNavigation button {
+    display: inline-flex; align-items: center; gap: 6px; min-width: 0;
+    max-width: 40%; border: 1px solid var(--border); border-radius: var(--tb-radius, 6px);
+    background: var(--control); color: var(--foreground); cursor: pointer;
+  }
+  .paneNavigation button:first-child { flex: none; max-width: none; }
+  .paneNavigation button > svg { flex: none; }
+  .paneNavigation button > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .root:global(.notes-frame) .paneNavigation button[aria-current] { border-color: var(--folio-accent); background: var(--folio-selection); }
+  .paneNavigation button:hover { background: var(--surface-hover); }
+  .paneNavigation button:focus-visible { outline: 2px solid var(--folio-accent); outline-offset: 2px; }
+}
+@container notes-frame (max-width: 679.98px) {
+  .root :global(.notes-workspace),
+  .root :global(.notes-workspace[data-pane="nav"]) { grid-template-areas: "trail" "pane"; }
+  .root :global(.notes-workspace[data-history="true"]) { grid-template-areas: "trail" "editor"; }
+  .paneNavigation { gap: 4px; padding: 6px 8px; }
+  .paneNavigation button { min-height: 44px; }
+}
+
+/* A space landing page is an index. Its directory follows the same type scale
+   as the note list; the reading-size preference continues to govern prose. */
+.root .articleContent[data-space-page] .documentTitle { font-size: var(--tb-board-title-size, 18px); }
+.root .articleContent[data-space-page] .properties { font-size: var(--folio-list-date-size); }
+.root .articleContent[data-space-page] .metaRow { font-size: var(--folio-list-date-size); }
+.root .pageList,
+.root .subspaces { font-size: var(--folio-list-title-size); }
+.root .pageList h3,
+.root .subspaces h2 { font-size: var(--tb-fs-15, 15px); font-weight: 650; }
+.root .pageList a { font-size: inherit; line-height: 1.5; overflow-wrap: anywhere; text-decoration-thickness: 1px; }
+.root .pageList small { font-size: var(--folio-list-date-size); }
+.root:global(.notes-frame) :global(.notes-nav-row[data-space-kind="board"] > .notes-nav-item) { min-height: 42px; }
+.disclosure, .disclosureSpacer { width: 22px; min-width: 22px; flex: none; }
+.disclosureSpacer { height: 22px; }
+.root:global(.notes-frame) .disclosure { padding: 2px; color: var(--folio-tone, var(--muted)); }
+.root:global(.notes-frame) :global(.notes-nav-row[data-space-row] > .notes-nav-item) { gap: 7px; padding-inline-start: 2px; }
+.root .connections .chip[data-space-kind] { color: var(--folio-tone); border-color: color-mix(in srgb,var(--folio-tone) 45%,var(--border)); background: var(--folio-tone-bg); font-weight: 550; }
+.root .documentHeader::before { content: ""; display: block; width: 44px; height: 4px; border-radius: 2px; background: var(--folio-accent); margin-bottom: 16px; }
+.root .subspaces button { border-inline-start: 3px solid var(--folio-shared); background: color-mix(in srgb,var(--folio-shared-bg) 60%,var(--panel)); }
+.root .subspaces button svg:first-child { color: var(--folio-shared); }
+.root .home > h1 { color: var(--folio-accent-ink); }
+.root .homeStats > div:nth-child(1) { border-block-start: 3px solid var(--folio-shared); }
+.root .homeStats > div:nth-child(2) { border-block-start: 3px solid var(--folio-personal); }
+.root .homeStats > div:nth-child(3) { border-block-start: 3px solid var(--folio-board); }
+@media (max-width: 679px) {
+  .spaceActions > button { min-width: 44px; min-height: 44px; }
+  .root:global(.notes-frame) .disclosure { min-width: 32px; width: 32px; min-height: 44px; }
+  .disclosureSpacer { min-width: 32px; width: 32px; }
+}

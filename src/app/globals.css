@@ -1,0 +1,5603 @@
+@import "tailwindcss";
+
+/* Linen palette. Dark is the default. Surfaces are opaque and separate by
+   lightness: page < panels < cards < raised controls, with recessed fields
+   below the page. Depth uses one four-step scale (--elev-1..4). */
+:root,
+html[data-theme="dark"],
+.taskboard-settings-root[data-theme="dark"] {
+  --background: #242220;
+  --foreground: #eeeae3;
+  --panel-base: #2a2825;
+  --panel-strong-base: #2c2a27;
+  --border-base: rgba(238, 234, 227, 0.12);
+  --muted: #b5aea2;
+  --faint: #8f887c;
+  --surface-subtle-base: #302e2a;
+  --surface-raised-base: #3a3731;
+  --surface-hover-base: #413d37;
+  --control-base: #38352f;
+  --control-hover-base: #403c36;
+  --control-active: #eeeae3;
+  --control-active-fg: #22201d;
+  --chip-base: #3a3732;
+  --chip-hover-base: #433f39;
+  --popover-base: #35322d;
+  --field: #1f1d1b;
+  --danger-bg: rgba(226, 109, 95, 0.16);
+  --danger-border: rgba(240, 139, 126, 0.36);
+  --danger-fg: #f6b4aa;
+  --danger-solid: #e26d5f;
+  --danger-solid-fg: #1c0f0d;
+  --status-todo: #8d96a3;
+  --status-active: #f0a43a;
+  --status-waiting: #4fb3e8;
+  --status-done: #3fbf8a;
+  --focus-ring: rgba(238, 234, 227, 0.5);
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.45);
+  --elev-2: 0 2px 6px rgba(0, 0, 0, 0.32), 0 10px 24px rgba(0, 0, 0, 0.3);
+  --elev-3: 0 6px 14px rgba(0, 0, 0, 0.4), 0 22px 48px rgba(0, 0, 0, 0.5);
+  --elev-4: 0 12px 30px rgba(0, 0, 0, 0.5), 0 40px 90px rgba(0, 0, 0, 0.6);
+  --raise-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --ink-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  --well-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+  --card-lift-shadow: 0 2px 6px rgba(0, 0, 0, 0.34), 0 12px 26px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --bucket-header-tint: 26%;
+  --bucket-zone-tint: 8%;
+  --bucket-selected-tint: 32%;
+  --bucket-ink-mix: 68%;
+  --shadow-base: var(--elev-2);
+  --shadow-low: 0 1px 3px rgba(0, 0, 0, 0.3), 0 6px 14px rgba(0, 0, 0, 0.22);
+  --shadow-strong: 0 3px 8px rgba(0, 0, 0, 0.4), 0 16px 34px rgba(0, 0, 0, 0.4);
+  --popover-shadow-base: var(--elev-3);
+  --popover-shadow-low: 0 4px 10px rgba(0, 0, 0, 0.34), 0 16px 34px rgba(0, 0, 0, 0.4);
+  --popover-shadow-strong: 0 8px 18px rgba(0, 0, 0, 0.46), 0 28px 60px rgba(0, 0, 0, 0.58);
+  --card-shadow-base: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --card-shadow-hover-base: 0 2px 6px rgba(0, 0, 0, 0.32), 0 10px 22px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --card-shadow-low: 0 1px 1px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --card-shadow-hover-low: 0 2px 5px rgba(0, 0, 0, 0.3), 0 6px 14px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --card-shadow-strong: 0 2px 4px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --card-shadow-hover-strong: 0 4px 10px rgba(0, 0, 0, 0.4), 0 14px 30px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --overlay-shadow-base: var(--elev-4);
+  --overlay-shadow-low: 0 8px 20px rgba(0, 0, 0, 0.4), 0 28px 60px rgba(0, 0, 0, 0.46);
+  --overlay-shadow-strong: 0 14px 34px rgba(0, 0, 0, 0.56), 0 46px 100px rgba(0, 0, 0, 0.66);
+  --control-shadow-base: 0 1px 2px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --control-shadow-hover-base: 0 2px 5px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --control-shadow-low: 0 1px 1px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --control-shadow-hover-low: 0 1px 3px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --control-shadow-strong: 0 1px 3px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --control-shadow-hover-strong: 0 3px 7px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  --scrollbar-thumb: rgba(238, 234, 227, 0.24);
+  --panel-blur-base: 0px;
+  --page-background: linear-gradient(180deg, #282623 0%, #242220 40%, #22201e 100%);
+  --page-background-size: auto;
+  --panel: var(--panel-base);
+  --panel-strong: var(--panel-strong-base);
+  --border: var(--border-base);
+  --surface-subtle: var(--surface-subtle-base);
+  --surface-raised: var(--surface-raised-base);
+  --surface-hover: var(--surface-hover-base);
+  --control: var(--control-base);
+  --control-hover: var(--control-hover-base);
+  --chip: var(--chip-base);
+  --chip-hover: var(--chip-hover-base);
+  --popover: var(--popover-base);
+  --shadow: var(--shadow-base);
+  --popover-shadow: var(--popover-shadow-base);
+  --card-shadow: var(--card-shadow-base);
+  --card-shadow-hover: var(--card-shadow-hover-base);
+  --overlay-shadow: var(--overlay-shadow-base);
+  --control-shadow: var(--control-shadow-base);
+  --control-shadow-hover: var(--control-shadow-hover-base);
+  --panel-blur: var(--panel-blur-base);
+}
+
+html[data-theme="light"],
+.taskboard-settings-root[data-theme="light"] {
+  --background: #eeebe5;
+  --foreground: #24211d;
+  --panel-base: #f8f6f2;
+  --panel-strong-base: #f6f4ef;
+  --border-base: rgba(36, 33, 29, 0.13);
+  --muted: #625c54;
+  --faint: #8e877d;
+  --surface-subtle-base: #f3f0eb;
+  --surface-raised-base: #ffffff;
+  --surface-hover-base: #fffdfa;
+  --control-base: #ffffff;
+  --control-hover-base: #f6f4f0;
+  --control-active: #24211d;
+  --control-active-fg: #ffffff;
+  --chip-base: #ece8e1;
+  --chip-hover-base: #e4dfd7;
+  --popover-base: #ffffff;
+  --field: #f1eee8;
+  --danger-bg: #fdf0ee;
+  --danger-border: rgba(180, 35, 24, 0.24);
+  --danger-fg: #9b1c12;
+  --danger-solid: #b42318;
+  --danger-solid-fg: #ffffff;
+  --status-todo: #94a3b8;
+  --status-active: #e8930c;
+  --status-waiting: #0ea5e9;
+  --status-done: #10b981;
+  --focus-ring: rgba(36, 33, 29, 0.4);
+  --elev-1: 0 1px 2px rgba(28, 24, 20, 0.1);
+  --elev-2: 0 1px 3px rgba(28, 24, 20, 0.06), 0 6px 16px rgba(28, 24, 20, 0.08);
+  --elev-3: 0 4px 10px rgba(28, 24, 20, 0.08), 0 18px 40px rgba(28, 24, 20, 0.18);
+  --elev-4: 0 10px 24px rgba(28, 24, 20, 0.14), 0 36px 80px rgba(28, 24, 20, 0.28);
+  --raise-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  --ink-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  --well-shadow: inset 0 1px 2px rgba(28, 24, 20, 0.09);
+  --card-lift-shadow: 0 2px 5px rgba(28, 24, 20, 0.08), 0 12px 26px rgba(28, 24, 20, 0.14);
+  --bucket-header-tint: 16%;
+  --bucket-zone-tint: 5%;
+  --bucket-selected-tint: 20%;
+  --bucket-ink-mix: 100%;
+  --shadow-base: var(--elev-2);
+  --shadow-low: 0 1px 2px rgba(28, 24, 20, 0.05), 0 4px 10px rgba(28, 24, 20, 0.05);
+  --shadow-strong: 0 2px 5px rgba(28, 24, 20, 0.08), 0 12px 28px rgba(28, 24, 20, 0.12);
+  --popover-shadow-base: var(--elev-3);
+  --popover-shadow-low: 0 3px 8px rgba(28, 24, 20, 0.07), 0 12px 28px rgba(28, 24, 20, 0.12);
+  --popover-shadow-strong: 0 6px 14px rgba(28, 24, 20, 0.1), 0 24px 52px rgba(28, 24, 20, 0.22);
+  --card-shadow-base: 0 1px 2px rgba(28, 24, 20, 0.09), 0 0 0 1px rgba(28, 24, 20, 0.04);
+  --card-shadow-hover-base: 0 2px 5px rgba(28, 24, 20, 0.07), 0 8px 18px rgba(28, 24, 20, 0.1);
+  --card-shadow-low: 0 1px 1px rgba(28, 24, 20, 0.07), 0 0 0 1px rgba(28, 24, 20, 0.04);
+  --card-shadow-hover-low: 0 2px 4px rgba(28, 24, 20, 0.06), 0 6px 14px rgba(28, 24, 20, 0.08);
+  --card-shadow-strong: 0 1px 3px rgba(28, 24, 20, 0.12), 0 0 0 1px rgba(28, 24, 20, 0.06);
+  --card-shadow-hover-strong: 0 3px 7px rgba(28, 24, 20, 0.1), 0 12px 24px rgba(28, 24, 20, 0.14);
+  --overlay-shadow-base: var(--elev-4);
+  --overlay-shadow-low: 0 6px 16px rgba(28, 24, 20, 0.1), 0 24px 54px rgba(28, 24, 20, 0.18);
+  --overlay-shadow-strong: 0 14px 30px rgba(28, 24, 20, 0.18), 0 44px 96px rgba(28, 24, 20, 0.32);
+  --control-shadow-base: 0 1px 2px rgba(28, 24, 20, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  --control-shadow-hover-base: 0 2px 4px rgba(28, 24, 20, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --control-shadow-low: 0 1px 1px rgba(28, 24, 20, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --control-shadow-hover-low: 0 1px 3px rgba(28, 24, 20, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --control-shadow-strong: 0 1px 3px rgba(28, 24, 20, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --control-shadow-hover-strong: 0 3px 6px rgba(28, 24, 20, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --scrollbar-thumb: rgba(36, 33, 29, 0.26);
+  --panel-blur-base: 0px;
+  --page-background: linear-gradient(180deg, #f2efea 0%, #eeebe5 40%, #ebe7e0 100%);
+  --page-background-size: auto;
+  --panel: var(--panel-base);
+  --panel-strong: var(--panel-strong-base);
+  --border: var(--border-base);
+  --surface-subtle: var(--surface-subtle-base);
+  --surface-raised: var(--surface-raised-base);
+  --surface-hover: var(--surface-hover-base);
+  --control: var(--control-base);
+  --control-hover: var(--control-hover-base);
+  --chip: var(--chip-base);
+  --chip-hover: var(--chip-hover-base);
+  --popover: var(--popover-base);
+  --shadow: var(--shadow-base);
+  --popover-shadow: var(--popover-shadow-base);
+  --card-shadow: var(--card-shadow-base);
+  --card-shadow-hover: var(--card-shadow-hover-base);
+  --overlay-shadow: var(--overlay-shadow-base);
+  --control-shadow: var(--control-shadow-base);
+  --control-shadow-hover: var(--control-shadow-hover-base);
+  --panel-blur: var(--panel-blur-base);
+}
+
+html[data-background-style="minimal"][data-theme="light"] {
+  --page-background: var(--background);
+  --page-background-size: auto;
+}
+
+html[data-background-style="minimal"][data-theme="dark"] {
+  --page-background: var(--background);
+  --page-background-size: auto;
+}
+
+.taskboard-settings-root[data-background-style="minimal"][data-theme="light"] {
+  --page-background: var(--background);
+  --page-background-size: auto;
+}
+
+.taskboard-settings-root[data-background-style="minimal"][data-theme="dark"] {
+  --page-background: var(--background);
+  --page-background-size: auto;
+}
+
+html[data-surface-style="low"],
+.taskboard-settings-root[data-surface-style="low"] {
+  --panel: color-mix(in srgb, var(--panel-base) 76%, transparent);
+  --panel-strong: color-mix(in srgb, var(--panel-strong-base) 84%, transparent);
+  --surface-subtle: color-mix(in srgb, var(--surface-subtle-base) 72%, transparent);
+  --surface-raised: color-mix(in srgb, var(--surface-raised-base) 84%, transparent);
+  --surface-hover: color-mix(in srgb, var(--surface-hover-base) 88%, transparent);
+  --control: color-mix(in srgb, var(--control-base) 76%, transparent);
+  --control-hover: color-mix(in srgb, var(--control-hover-base) 82%, transparent);
+  --chip: color-mix(in srgb, var(--chip-base) 84%, transparent);
+  --chip-hover: color-mix(in srgb, var(--chip-hover-base) 88%, transparent);
+  --popover: color-mix(in srgb, var(--popover-base) 92%, var(--background));
+  --border: color-mix(in srgb, var(--border-base) 72%, transparent);
+  --shadow: var(--shadow-low);
+  --popover-shadow: var(--popover-shadow-low);
+  --card-shadow: var(--card-shadow-low);
+  --card-shadow-hover: var(--card-shadow-hover-low);
+  --overlay-shadow: var(--overlay-shadow-low);
+  --control-shadow: var(--control-shadow-low);
+  --control-shadow-hover: var(--control-shadow-hover-low);
+  --panel-blur: 0px;
+}
+
+html[data-surface-style="strong"],
+.taskboard-settings-root[data-surface-style="strong"] {
+  --panel: color-mix(in srgb, var(--panel-base) 92%, var(--panel-strong-base));
+  --panel-strong: color-mix(in srgb, var(--panel-strong-base) 94%, var(--surface-hover-base));
+  --surface-subtle: color-mix(in srgb, var(--surface-subtle-base) 92%, var(--panel-base));
+  --surface-raised: color-mix(in srgb, var(--surface-raised-base) 96%, var(--surface-hover-base));
+  --surface-hover: color-mix(in srgb, var(--surface-hover-base) 96%, var(--panel-strong-base));
+  --control: color-mix(in srgb, var(--control-base) 94%, var(--control-hover-base));
+  --control-hover: color-mix(in srgb, var(--control-hover-base) 96%, var(--surface-hover-base));
+  --chip: color-mix(in srgb, var(--chip-base) 94%, var(--surface-hover-base));
+  --chip-hover: color-mix(in srgb, var(--chip-hover-base) 96%, var(--surface-hover-base));
+  --popover: color-mix(in srgb, var(--popover-base) 96%, var(--background));
+  --border: color-mix(in srgb, var(--border-base) 82%, var(--foreground) 18%);
+  --shadow: var(--shadow-strong);
+  --popover-shadow: var(--popover-shadow-strong);
+  --card-shadow: var(--card-shadow-strong);
+  --card-shadow-hover: var(--card-shadow-hover-strong);
+  --overlay-shadow: var(--overlay-shadow-strong);
+  --control-shadow: var(--control-shadow-strong);
+  --control-shadow-hover: var(--control-shadow-hover-strong);
+  --panel-blur: 0px;
+}
+
+/* --tb-root-size carries the preference to the type scale; a Settings preview
+ * root sets its own, so previews scale like the page. */
+:root {
+  --tb-root-size: 18.5px;
+}
+
+html[data-font-scale="small"] {
+  font-size: 17px;
+  --tb-root-size: 17px;
+}
+
+html[data-font-scale="normal"] {
+  font-size: 18.5px;
+  --tb-root-size: 18.5px;
+}
+
+html[data-font-scale="large"] {
+  font-size: 20px;
+  --tb-root-size: 20px;
+}
+
+html[data-font-scale="x-large"] {
+  font-size: 22px;
+  --tb-root-size: 22px;
+}
+
+html[data-font-scale="xx-large"] {
+  font-size: 24px;
+  --tb-root-size: 24px;
+}
+
+.taskboard-settings-root[data-font-scale="small"] {
+  font-size: 17px;
+  --tb-root-size: 17px;
+}
+
+.taskboard-settings-root[data-font-scale="normal"] {
+  font-size: 18.5px;
+  --tb-root-size: 18.5px;
+}
+
+.taskboard-settings-root[data-font-scale="large"] {
+  font-size: 20px;
+  --tb-root-size: 20px;
+}
+
+.taskboard-settings-root[data-font-scale="x-large"] {
+  font-size: 22px;
+  --tb-root-size: 22px;
+}
+
+.taskboard-settings-root[data-font-scale="xx-large"] {
+  font-size: 24px;
+  --tb-root-size: 24px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-panel: var(--panel);
+  --color-panel-strong: var(--panel-strong);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-ui-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--background);
+  background: var(--background);
+  background: var(--page-background);
+  background-size: var(--page-background-size, auto);
+  color: var(--foreground);
+  overflow-y: scroll;
+  scrollbar-gutter: stable both-edges;
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: only light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+.taskboard-settings-root[data-theme="light"] {
+  color-scheme: only light;
+}
+
+.taskboard-settings-root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html[data-theme="light"] body {
+  color-scheme: only light;
+}
+
+html[data-theme="dark"] body {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--background);
+  background: var(--background);
+  background: var(--page-background);
+  background-size: var(--page-background-size, auto);
+  color: var(--foreground);
+  font-family: var(--font-ui-sans), sans-serif;
+  scrollbar-gutter: stable both-edges;
+}
+
+.taskboard-settings-root,
+main.taskboard-shell {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+button,
+input,
+select,
+textarea {
+  color-scheme: inherit;
+  color: inherit;
+  font-family: inherit;
+  -webkit-text-fill-color: currentColor;
+}
+
+html[data-theme="light"] .taskboard-shell button,
+html[data-theme="light"] .taskboard-shell input,
+html[data-theme="light"] .taskboard-shell select,
+html[data-theme="light"] .taskboard-shell textarea,
+.taskboard-settings-root[data-theme="light"] .taskboard-shell button,
+.taskboard-settings-root[data-theme="light"] .taskboard-shell input,
+.taskboard-settings-root[data-theme="light"] .taskboard-shell select,
+.taskboard-settings-root[data-theme="light"] .taskboard-shell textarea {
+  color-scheme: only light;
+}
+
+html[data-theme="light"] .taskboard-shell input,
+html[data-theme="light"] .taskboard-shell select,
+html[data-theme="light"] .taskboard-shell textarea,
+.taskboard-settings-root[data-theme="light"] .taskboard-shell input,
+.taskboard-settings-root[data-theme="light"] .taskboard-shell select,
+.taskboard-settings-root[data-theme="light"] .taskboard-shell textarea {
+  background-color: var(--control);
+  border-color: var(--border);
+  color: var(--foreground);
+  -webkit-text-fill-color: var(--foreground);
+}
+
+html[data-theme="dark"] .taskboard-shell button,
+html[data-theme="dark"] .taskboard-shell input,
+html[data-theme="dark"] .taskboard-shell select,
+html[data-theme="dark"] .taskboard-shell textarea,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell button,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell input,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell select,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell textarea {
+  color-scheme: dark;
+}
+
+html[data-theme="dark"] .taskboard-shell input,
+html[data-theme="dark"] .taskboard-shell select,
+html[data-theme="dark"] .taskboard-shell textarea,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell input,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell select,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell textarea {
+  background-color: var(--control);
+  border-color: var(--border);
+  color: var(--foreground);
+  -webkit-text-fill-color: var(--foreground);
+}
+
+::selection {
+  background: rgba(25, 104, 121, 0.2);
+}
+
+.panel-surface {
+  background: var(--panel);
+  backdrop-filter: blur(var(--panel-blur));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.panel-strong {
+  background: var(--panel-strong);
+}
+
+.taskboard-shell .taskboard-options-header.panel-strong {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: var(--popover) !important;
+}
+
+.drag-card {
+  touch-action: manipulation;
+}
+
+.pretty-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  scrollbar-gutter: stable;
+}
+
+.pretty-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.pretty-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pretty-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--scrollbar-thumb);
+}
+
+@media (min-width: 768px) {
+  .taskboard-task-sidebar {
+    height: calc(100dvh - var(--taskboard-sidebar-sticky-top, 0.75rem) - 0.75rem);
+    max-height: calc(100dvh - var(--taskboard-sidebar-sticky-top, 0.75rem) - 0.75rem);
+    top: var(--taskboard-sidebar-sticky-top, 0.75rem);
+  }
+}
+
+.taskboard-shell .ui-control,
+.taskboard-shell .ui-select,
+.taskboard-shell .ui-button,
+.taskboard-shell button,
+.taskboard-shell input,
+.taskboard-shell textarea,
+.taskboard-shell select,
+.taskboard-shell .ui-inline-input,
+.taskboard-shell .ui-inline-button,
+.taskboard-shell .ui-chip-button,
+.taskboard-shell .ui-menu-item,
+.taskboard-shell .taskboard-label-editor,
+.taskboard-shell .taskboard-label-edit-chip,
+.taskboard-shell .taskboard-card,
+.taskboard-shell .taskboard-section-card,
+.taskboard-shell .taskboard-meta-tile,
+.taskboard-shell .taskboard-popover {
+  transition:
+    background-color 80ms ease,
+    border-color 80ms ease,
+    color 80ms ease,
+    box-shadow 80ms ease,
+    opacity 80ms ease;
+}
+
+.taskboard-shell .ui-control,
+.taskboard-shell .ui-select,
+.taskboard-shell .ui-inline-input {
+  background: var(--control);
+  border-color: var(--border);
+  color: var(--foreground);
+}
+
+.taskboard-shell .ui-control:focus,
+.taskboard-shell .ui-select:focus,
+.taskboard-shell .ui-inline-input:focus {
+  border-color: var(--focus-ring);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring) 24%, transparent);
+}
+
+.taskboard-shell .ui-button,
+.taskboard-shell .ui-inline-button,
+.taskboard-shell .ui-chip-button {
+  border-color: var(--border);
+  color: var(--foreground);
+  box-shadow: var(--control-shadow);
+}
+
+.taskboard-shell .ui-button-surface,
+.taskboard-shell .ui-inline-button,
+.taskboard-shell .ui-chip-button {
+  background: var(--control);
+}
+
+.taskboard-shell .ui-button-surface:hover,
+.taskboard-shell .ui-inline-button:hover,
+.taskboard-shell .ui-chip-button:hover,
+.taskboard-shell .ui-menu-item:hover {
+  background: var(--control-hover);
+  color: var(--foreground);
+  box-shadow: var(--control-shadow-hover);
+}
+
+.taskboard-shell .ui-button-primary {
+  background: var(--control-active);
+  border-color: color-mix(in srgb, var(--control-active) 80%, transparent);
+  color: var(--control-active-fg);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--control-active) 24%, transparent);
+}
+
+.taskboard-shell .ui-button-primary:hover {
+  filter: brightness(1.04);
+  transform: none;
+}
+
+.taskboard-shell .ui-button:active,
+.taskboard-shell .ui-inline-button:active,
+.taskboard-shell .ui-chip-button:active,
+.taskboard-shell .ui-menu-item:active {
+  transform: translateY(0);
+  box-shadow: var(--control-shadow);
+}
+
+/* A control the user cannot use (no permission, or busy) has to look it. */
+.taskboard-shell :is(.ui-button, .ui-inline-button, .ui-chip-button, .ui-menu-item):disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.taskboard-shell .ui-button:focus-visible,
+.taskboard-shell .ui-inline-button:focus-visible,
+.taskboard-shell .ui-chip-button:focus-visible,
+.taskboard-shell .ui-menu-item:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--focus-ring) 28%, transparent),
+    var(--control-shadow-hover);
+}
+
+.taskboard-shell .ui-chip-active {
+  background: var(--control-active);
+  border-color: var(--control-active);
+  color: var(--control-active-fg);
+}
+
+/* Type scale: every text size in the app is one of these steps. Each step is a
+ * fixed share of Settings' root size (--tb-root-size, 18.5px at Normal), so the
+ * board, the task sidebar and the workspace scale together and every font
+ * preference differs. A step is named for its size at Normal. */
+.taskboard-shell {
+  --tb-fs-11: calc(var(--tb-root-size) * 11 / 18.5);
+  --tb-fs-11-5: calc(var(--tb-root-size) * 11.5 / 18.5);
+  --tb-fs-12: calc(var(--tb-root-size) * 12 / 18.5);
+  --tb-fs-12-5: calc(var(--tb-root-size) * 12.5 / 18.5);
+  --tb-fs-13: calc(var(--tb-root-size) * 13 / 18.5);
+  --tb-fs-14-5: calc(var(--tb-root-size) * 14.5 / 18.5);
+  --tb-fs-15: calc(var(--tb-root-size) * 15 / 18.5);
+  --tb-fs-17: calc(var(--tb-root-size) * 17 / 18.5);
+  --tb-fs-18: calc(var(--tb-root-size) * 18 / 18.5);
+  /* Board text on the scale. */
+  --tb-text-10px: var(--tb-fs-11-5);
+  --tb-text-11px: var(--tb-fs-12-5);
+  --tb-text-12px: var(--tb-fs-12);
+  --tb-text-13px: var(--tb-fs-14-5);
+  --tb-text-sm: var(--tb-fs-17);
+  --tb-board-title-size: var(--tb-fs-18);
+  --tb-board-title-line-height: calc(var(--tb-root-size) * 22 / 18.5);
+  --tb-header-control-size: var(--tb-fs-11-5);
+  --tb-bucket-title-size: var(--tb-fs-13);
+  --tb-bucket-title-line-height: calc(var(--tb-root-size) * 17 / 18.5);
+  --tb-card-title-size: var(--tb-fs-11-5);
+  --tb-card-title-line-height: calc(var(--tb-root-size) * 16 / 18.5);
+  --task-editor-font-size: var(--tb-card-title-size);
+  --task-editor-line-height: var(--tb-card-title-line-height);
+}
+
+.taskboard-shell [class*="text-[10px]"] {
+  font-size: var(--tb-text-10px) !important;
+}
+
+.taskboard-shell [class*="text-[11px]"] {
+  font-size: var(--tb-text-11px) !important;
+}
+
+.taskboard-shell [class*="text-[12px]"] {
+  font-size: var(--tb-text-12px) !important;
+}
+
+.taskboard-shell [class*="text-[13px]"] {
+  font-size: var(--tb-text-13px) !important;
+}
+
+.taskboard-shell [class~="text-sm"] {
+  font-size: var(--tb-text-sm) !important;
+}
+
+.taskboard-shell .taskboard-header-title {
+  font-size: var(--tb-board-title-size) !important;
+  line-height: var(--tb-board-title-line-height) !important;
+}
+
+.taskboard-shell :is(
+  .taskboard-board-controls,
+  .taskboard-header-search-region,
+  .taskboard-header-nav-row
+) :is(button, a, input) {
+  font-size: var(--tb-header-control-size) !important;
+}
+
+.taskboard-shell .taskboard-bucket-title {
+  font-size: var(--tb-bucket-title-size) !important;
+  line-height: var(--tb-bucket-title-line-height) !important;
+}
+
+.taskboard-shell .taskboard-card-title {
+  font-size: var(--tb-card-title-size) !important;
+  line-height: var(--tb-card-title-line-height) !important;
+}
+
+.taskboard-shell [data-testid="board-switcher-shell"] > button,
+.taskboard-shell .taskboard-board-settings-button,
+.taskboard-shell .taskboard-header-search-region .ui-control {
+  height: 32px !important;
+  min-height: 32px !important;
+}
+
+.taskboard-shell [data-testid="board-switcher-shell"] {
+  align-items: stretch;
+  display: flex;
+}
+
+.taskboard-shell .taskboard-header-search-region {
+  height: 32px;
+  min-height: 32px;
+}
+
+.taskboard-shell .taskboard-header-nav-row :is(
+  .taskboard-view-mode-button,
+  .taskboard-board-split-control,
+  .taskboard-board-split-button,
+  .taskboard-board-split-toggle
+),
+.taskboard-shell .taskboard-header-tools > button,
+.taskboard-shell .taskboard-header-tools > div > button {
+  height: 28px !important;
+  min-height: 28px !important;
+}
+
+.taskboard-shell .taskboard-bucket-menu :is(button, a) {
+  font-size: var(--tb-header-control-size) !important;
+}
+
+.taskboard-shell .taskboard-header-control-row {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .taskboard-shell .taskboard-header-control-row {
+    align-items: center;
+    flex-direction: row;
+    gap: 16px;
+    justify-content: space-between;
+  }
+
+  .taskboard-shell .taskboard-header-search-region {
+    align-items: stretch !important;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 639px) {
+  .taskboard-shell .taskboard-primary-nav {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 3px;
+    overflow-x: visible;
+    width: 100%;
+  }
+
+  .taskboard-shell .taskboard-primary-nav > * {
+    justify-content: center;
+    min-width: 0 !important;
+    padding-inline: 4px !important;
+    width: 100%;
+  }
+
+  .taskboard-shell .taskboard-primary-nav > * > svg {
+    display: none;
+  }
+}
+
+/* Editor type and control sizes live in skins/editor-scale.css. */
+.taskboard-shell .task-editor-root .task-editor-date-part-input {
+  display: block;
+  block-size: 30px;
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding-block: 3px;
+  padding-inline: 7px;
+}
+
+.taskboard-shell .ui-danger-banner {
+  background: var(--danger-bg);
+  border-color: var(--danger-border);
+  color: var(--danger-fg);
+}
+
+.taskboard-shell .ui-info-banner {
+  background: color-mix(in srgb, var(--surface-hover) 82%, transparent);
+  border-color: color-mix(in srgb, var(--focus-ring) 36%, transparent);
+  color: var(--foreground);
+}
+
+.taskboard-shell .taskboard-card,
+.taskboard-shell .taskboard-section-card,
+.taskboard-shell .taskboard-meta-tile,
+.taskboard-shell .taskboard-popover,
+.taskboard-shell .taskboard-agenda-badge {
+  background: var(--surface-raised);
+  border-color: var(--border);
+  color: var(--foreground);
+}
+
+.taskboard-shell .taskboard-card:hover {
+  transform: none;
+}
+
+.taskboard-shell .taskboard-popover {
+  box-shadow: var(--popover-shadow);
+}
+
+.taskboard-shell .ui-control,
+.taskboard-shell .ui-select,
+.taskboard-shell .ui-button,
+.taskboard-shell .ui-inline-input,
+.taskboard-shell .ui-inline-button,
+.taskboard-shell .ui-chip-button,
+.taskboard-shell .ui-menu-item,
+.taskboard-shell .taskboard-card,
+.taskboard-shell .taskboard-section-card,
+.taskboard-shell .taskboard-meta-tile,
+.taskboard-shell .taskboard-popover,
+.taskboard-shell .task-editor-root,
+.taskboard-shell .task-editor-root * {
+  animation-duration: 0ms !important;
+  transition-duration: 0ms !important;
+}
+
+.taskboard-shell .taskboard-subtle-surface,
+.taskboard-shell .taskboard-add-shell {
+  background: var(--surface-subtle);
+  border-color: var(--border);
+}
+
+.taskboard-shell .taskboard-add-button {
+  background: var(--surface-subtle);
+  border-color: var(--border);
+  color: var(--muted);
+}
+
+.taskboard-shell .taskboard-add-button:hover {
+  background: var(--surface-hover);
+  color: var(--foreground);
+}
+
+.taskboard-shell .taskboard-popover {
+  background: var(--popover);
+}
+
+.taskboard-shell select,
+.taskboard-shell select option {
+  background-color: var(--control-base);
+  color: var(--foreground);
+}
+
+.taskboard-shell .taskboard-add-split-control {
+  display: flex;
+  width: 100%;
+}
+
+.taskboard-shell .taskboard-add-split-main {
+  border-bottom-right-radius: 0;
+  border-right-width: 0;
+  border-top-right-radius: 0;
+  flex: 1 1 auto;
+}
+
+.taskboard-shell .taskboard-add-split-toggle {
+  align-items: center;
+  border: 1px dashed var(--border);
+  border-bottom-right-radius: 12px;
+  border-left-style: solid;
+  border-top-right-radius: 12px;
+  display: inline-flex;
+  flex: 0 0 2rem;
+  justify-content: center;
+  min-width: 2rem;
+  padding: 0;
+}
+
+.taskboard-shell .taskboard-add-split-main:focus-visible,
+.taskboard-shell .taskboard-add-split-toggle:focus-visible {
+  position: relative;
+  z-index: 1;
+}
+
+.taskboard-shell .taskboard-label-chip,
+.taskboard-shell .taskboard-inline-meta {
+  background: var(--chip);
+  color: var(--foreground);
+}
+
+.taskboard-shell .taskboard-status-chip {
+  background: var(--chip);
+}
+
+.taskboard-shell .taskboard-label-chip-muted {
+  color: var(--muted);
+}
+
+.taskboard-shell .taskboard-icon-surface {
+  background: var(--control-hover);
+  color: var(--foreground);
+}
+
+.taskboard-shell .taskboard-swatch-border {
+  border-color: color-mix(in srgb, var(--foreground) 26%, transparent);
+}
+
+.taskboard-shell .taskboard-drop-target {
+  background: color-mix(in srgb, var(--surface-hover) 84%, transparent);
+}
+
+.taskboard-shell .taskboard-bucket-drop-target {
+  outline: 2px solid color-mix(in srgb, var(--accent) 72%, var(--foreground));
+  outline-offset: 2px;
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.taskboard-shell .taskboard-task-drop-placeholder {
+  background: color-mix(in srgb, var(--surface-hover) 88%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 26%, transparent);
+  opacity: 0.82;
+}
+
+.taskboard-shell .taskboard-bucket-header {
+  background: var(--panel-strong);
+  border-bottom-color: var(--border);
+  color: var(--foreground);
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-muted,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-muted {
+  color: var(--muted);
+}
+
+.taskboard-shell .taskboard-card {
+  box-shadow: var(--card-shadow);
+}
+
+.taskboard-shell .taskboard-card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+.taskboard-shell .taskboard-card-selected {
+  outline: 2px solid color-mix(in srgb, var(--control-active) 86%, transparent);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--control-active) 22%, transparent),
+    var(--card-shadow-hover);
+}
+
+.taskboard-shell .taskboard-card-calendar-arrival {
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--control-active) 18%, transparent),
+      transparent 42%
+    ),
+    var(--surface-raised);
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--control-active) 18%, transparent),
+    0 14px 28px color-mix(in srgb, var(--control-active) 16%, transparent),
+    var(--card-shadow-hover);
+}
+
+.taskboard-shell .taskboard-calendar-handoff-note {
+  background: color-mix(in srgb, var(--control-active) 13%, var(--surface-raised));
+  border-color: color-mix(in srgb, var(--control-active) 34%, var(--border));
+  color: var(--foreground);
+}
+
+.taskboard-shell .taskboard-overlay-panel {
+  box-shadow: var(--overlay-shadow);
+}
+
+.taskboard-shell .taskboard-task-workspace-panel {
+  container-name: task-editor-expanded;
+  container-type: inline-size;
+  --task-workspace-surface: var(--panel-strong-base);
+  background-color: var(--background);
+  background-image: linear-gradient(var(--task-workspace-surface), var(--task-workspace-surface));
+  backdrop-filter: none;
+}
+
+/* Task workspace: persistent tabs and one shared details surface. */
+.taskboard-shell .task-workspace-header {padding:4px 8px;}
+.taskboard-shell .workspace-header-row {display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;min-width:0;}
+.taskboard-shell .workspace-title-field {display:flex;flex:1 1 32ch;min-width:min(100%,32ch);}
+.taskboard-shell .workspace-title-input,.taskboard-shell .workspace-title-text {width:100%;min-width:0;max-width:100%;margin:0;padding:3px 8px;border:0;border-radius:4px;background:transparent;color:var(--foreground);overflow-wrap:anywhere;}
+.taskboard-shell .workspace-title-input {field-sizing:content;min-height:28px;}
+.taskboard-shell .workspace-title-input:focus-visible {outline:2px solid var(--focus-ring);outline-offset:2px;}
+.taskboard-shell .workspace-seg {display:inline-flex;flex:none;}
+.taskboard-shell .workspace-seg > button {display:inline-flex;align-items:center;gap:4px;min-height:24px;padding:0 6px;border:1px solid transparent;background:transparent;color:var(--muted);font-size:var(--tb-text-11px);white-space:nowrap;}
+.taskboard-shell .workspace-seg > [data-status="active"] {--workspace-status-color:var(--status-active);}
+.taskboard-shell .workspace-seg > [data-status="waiting"] {--workspace-status-color:var(--status-waiting);}
+.taskboard-shell .workspace-seg > [data-status="done"] {--workspace-status-color:var(--status-done);}
+.taskboard-shell .workspace-status-dot {width:6px;height:6px;border-radius:2px;background:var(--workspace-status-color,var(--status-todo));}
+.taskboard-shell .workspace-status-select {display:none;max-width:100%;min-width:78px;min-height:28px;padding:2px 4px;border:1px solid var(--border);border-radius:4px;background:var(--control);color:var(--foreground);font-size:var(--tb-editor-input-size);}
+.taskboard-shell .workspace-chips {display:flex;flex-wrap:wrap;gap:4px;min-width:0;align-items:center;}
+.taskboard-shell .workspace-chip {display:inline-flex;align-items:center;min-height:24px;padding:2px 6px;border:1px solid transparent;border-radius:var(--tb-radius);background:var(--chip);box-shadow:var(--raise-highlight);color:var(--foreground);font-size:var(--tb-editor-meta-size);white-space:normal;}
+.taskboard-shell .workspace-chip[data-tone="muted"] {background:transparent;box-shadow:none;color:var(--muted);}
+.taskboard-shell .workspace-header-actions {display:flex;align-items:center;gap:2px;margin-left:auto;}
+.taskboard-shell .workspace-header-actions :is(button,a) {display:inline-flex;align-items:center;justify-content:center;gap:3px;min-width:28px;height:28px;min-height:28px;padding:0;}
+.taskboard-shell .workspace-header-actions svg {width:14px;height:14px;}
+.taskboard-shell .workspace-header-actions .workspace-attachments-button:not([data-count="0"]) {padding:0 7px;}
+.taskboard-shell .workspace-menu-navigation {display:grid;gap:2px;border-bottom:1px solid var(--border);padding-bottom:4px;margin-bottom:4px;}
+.taskboard-shell .workspace-menu-navigation > * {padding:6px 8px;text-align:left;}
+.taskboard-shell .task-workspace-layout {container:task-workspace / inline-size;display:flex;flex-direction:column;min-height:0;overflow:hidden;}
+.taskboard-shell .task-workspace-grid {display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);min-height:0;flex:1;overflow:hidden;}
+/* Tabs are buttons in an inset well, styled with the board's view switcher (skins/architecture.css). */
+.taskboard-shell .task-workspace-tabs {display:flex;grid-column:1;grid-row:1;justify-self:start;max-width:calc(100% - 16px);margin:8px 8px 0;overflow-x:auto;scrollbar-width:none;min-width:0;}
+.taskboard-shell .task-workspace-tabs > :is(button, a) {display:inline-flex;flex:0 0 auto;align-items:center;justify-content:center;height:28px;min-height:28px;padding:0 10px;border:1px solid transparent;border-radius:var(--tb-radius);color:var(--muted);font-size:var(--tb-text-13px);font-weight:500;white-space:nowrap;transition:background-color 120ms,color 120ms;}
+.taskboard-shell .task-workspace-tabs small {margin-left:3px;font-size:var(--tb-text-11px);font-weight:400;opacity:.75;}
+.taskboard-shell .task-workspace-tabs > :is([aria-selected="true"], [aria-current="page"]) {color:var(--foreground);}
+.taskboard-shell .task-workspace-slot {grid-column:1;grid-row:2;display:grid;grid-template-columns:minmax(0,1fr);align-content:start;gap:8px;min-width:0;min-height:0;padding:8px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;}
+.taskboard-shell .task-workspace-slot[hidden] {display:none!important;}
+.taskboard-shell .task-workspace-slot[data-destination="details"] {container:task-workspace-support / inline-size;}
+/* Property groups share the sidebar's compact fields, without nested cards. */
+.taskboard-shell .taskboard-task-workspace-panel .task-workspace-slot[data-destination="details"] > .taskboard-section-card,
+.taskboard-shell .taskboard-task-workspace-panel .task-workspace-slot[data-destination="details"] .taskboard-scheduling-panel,
+.taskboard-shell .taskboard-task-workspace-panel .task-workspace-slot[data-destination="details"] .workspace-outage-group {
+  padding:0;background:transparent;border:0;box-shadow:none;
+}
+.taskboard-shell [data-destination="details"] [data-testid="task-primary-note-section"] h2 {margin-bottom:4px;}
+/* Narrow Details (the wide-layout rail, phones) stacks each label above its
+ * field like Description and Start; wider Details puts labels inline. */
+.taskboard-shell [data-destination="details"] [data-testid="task-overview-status-bucket-row"] {display:flex;flex-wrap:wrap;align-items:end;gap:4px;}
+.taskboard-shell [data-destination="details"] [data-testid="task-overview-status-bucket-row"] > label {display:block;flex:1 1 10em;min-width:0;}
+/* Pair dates when their text fits; larger type reflows within the same rail. */
+.taskboard-shell [data-destination="details"] [data-testid="task-workspace-schedule-fields"] {--date-chrome:28px;grid-template-columns:repeat(auto-fit,minmax(min(100%,calc(9 * var(--tb-editor-input-size) + var(--date-chrome))),1fr));gap:4px 6px;}
+/* Touch date controls draw a wider picker button. */
+@media (pointer:coarse) {
+ .taskboard-shell [data-destination="details"] [data-testid="task-workspace-schedule-fields"] {--date-chrome:36px;}
+}
+.taskboard-shell [data-destination="details"] [data-testid="task-workspace-schedule-fields"] > label:has(input[type="checkbox"]) {grid-column:1 / -1;gap:5px;}
+.taskboard-shell [data-destination="details"] .task-editor-date-part-input {min-width:0;flex-basis:auto;}
+.taskboard-shell .task-workspace-scheduling-grid {gap:4px;}
+.taskboard-shell [data-destination="details"] details {padding-top:2px;}
+.taskboard-shell [data-destination="details"] summary {gap:6px;padding:4px 0;min-height:30px;font-size:var(--tb-editor-text-size);line-height:var(--tb-editor-line-height);}
+.taskboard-shell [data-destination="details"] summary > span:first-child {flex-shrink:0;white-space:nowrap;}
+.taskboard-shell [data-destination="details"] summary > span:last-child {text-align:right;}
+.taskboard-shell [data-destination="details"] .workspace-outage-group {display:grid;grid-template-columns:minmax(0,1fr);gap:2px 6px;align-items:center;border-top:1px solid var(--border);border-radius:0;padding-top:6px;}
+.taskboard-shell [data-destination="details"] .workspace-outage-group > span {grid-column:1 / -1;}
+.taskboard-shell [data-destination="details"] .workspace-outage-group > label {display:block;min-width:0;}
+.taskboard-shell [data-destination="details"] .workspace-outage-group > div {grid-column:1 / -1;}
+.taskboard-shell [data-destination="details"] .taskboard-label-editor {padding:0 5px;min-height:30px;}
+.taskboard-shell .task-workspace-slot .task-notes-toggle {pointer-events:none;}
+.taskboard-shell .task-workspace-slot .task-notes-toggle-icon {display:none;}
+.taskboard-shell .task-workspace-slot .task-working-notes-canvas .task-notes-body {display:block;}
+.taskboard-shell .task-workspace-slot[data-destination="updates"] > .task-working-notes-canvas > .task-notes-heading {display:none;}
+@container task-workspace-support (min-width:480px) {
+ .taskboard-shell [data-destination="details"] [data-testid="task-overview-status-bucket-row"] {align-items:center;}
+ .taskboard-shell [data-destination="details"] [data-testid="task-overview-status-bucket-row"] > label {display:grid;flex-basis:12em;grid-template-columns:max-content minmax(0,1fr);align-items:center;gap:6px;}
+ .taskboard-shell [data-destination="details"] [data-testid="task-overview-status-bucket-row"] > label > span {margin-bottom:0;}
+ .taskboard-shell [data-destination="details"] .workspace-outage-group {grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 6px;}
+}
+@container task-workspace-support (min-width:640px) {
+ .taskboard-shell .task-workspace-scheduling-grid {grid-template-columns:minmax(0,1.1fr) minmax(17rem,.9fr);}
+}
+@container task-workspace (min-width:1180px) {
+ .taskboard-shell .task-workspace-grid {grid-template-columns:minmax(0,1fr) clamp(260px,23%,310px);}
+ .taskboard-shell .task-workspace-slot[data-destination="details"] {grid-column:2;grid-row:1 / 3;border-left:1px solid var(--border);background:color-mix(in srgb,var(--foreground) 2%,var(--background));}
+}
+@container task-editor-expanded (max-width:1179px) {
+ .taskboard-shell .workspace-seg {display:none;}
+ .taskboard-shell .workspace-status-select {display:block;}
+ .taskboard-shell .workspace-chips > :not([data-testid="task-workspace-date-chip"]) {display:none;}
+}
+@container task-editor-expanded (max-width:767px) {
+ .taskboard-shell .task-workspace-header {padding:4px 8px;}
+ .taskboard-shell .workspace-header-row {display:grid;grid-template-columns:80px minmax(0,1fr) auto;gap:2px 4px;}
+ .taskboard-shell .workspace-title-field {grid-column:1 / 3;grid-row:1;min-width:0;}
+ .taskboard-shell .workspace-status-select {grid-column:1;grid-row:2;min-width:0;min-height:36px;padding-left:0;border:0;background:transparent;}
+ .taskboard-shell .workspace-chips {grid-column:2;grid-row:2;}
+ .taskboard-shell .workspace-chip {padding:0;border:0;background:transparent;box-shadow:none;}
+ .taskboard-shell .workspace-header-actions {grid-column:3;grid-row:1 / 3;align-self:start;}
+ .taskboard-shell .workspace-header-actions > :not([data-testid="task-inspector-header-controls"]) {display:none;}
+ .taskboard-shell .task-workspace-tabs {justify-self:stretch;margin:4px 8px 0;}
+ .taskboard-shell .task-workspace-tabs > :is(button, a) {flex:1 0 auto;padding:0 6px;}
+ .taskboard-shell .task-workspace-tabs small {display:none;}
+ .taskboard-shell .task-workspace-slot {padding:4px 8px 8px;}
+}
+
+.taskboard-shell .task-working-notes-canvas {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+  padding-top: 0;
+}
+
+.taskboard-shell .task-notes-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.taskboard-shell .task-notes-toggle-icon {
+  color: var(--muted);
+  transition: transform 120ms;
+}
+
+.taskboard-shell .task-notes-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.taskboard-shell .task-working-notes-composer {
+  flex: 0 0 auto;
+}
+
+.taskboard-shell .task-working-notes-composer textarea {
+  min-height: 56px;
+  max-height: 320px;
+}
+
+/* Subtasks and checklist. */
+.taskboard-shell .work-section-label {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--tb-work-small-size);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.taskboard-shell .work-muted {
+  color: var(--muted);
+  font-size: var(--tb-editor-meta-size);
+}
+
+/* The Work tab keeps 16px lines at Normal; its inputs and checklist use the editor body size. */
+.taskboard-shell .work-breakdown {
+  line-height: calc(var(--tb-root-size) * 16 / 18.5);
+}
+
+.taskboard-shell .work-subtasks,
+.taskboard-shell .work-subtask-header {display:grid;gap:inherit;min-width:0;}
+@container task-editor-expanded (min-width:768px) {
+ .taskboard-shell .task-workspace-slot[data-destination="work"] .work-subtask-header {
+  position:sticky;top:-8px;align-self:start;z-index:4;margin-top:-8px;padding:8px 0;
+  background:var(--task-workspace-surface);
+ }
+}
+
+.taskboard-shell .work-breakdown .work-muted {
+  font-size: var(--tb-work-text-size);
+}
+
+/* The skin draws this as the shared segmented well; sizing only here. */
+.taskboard-shell .work-seg {
+  display: inline-flex;
+}
+
+.taskboard-shell .work-seg > button {
+  height: 24px;
+  padding: 0 11px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font-size: var(--tb-work-text-size);
+  font-weight: 600;
+}
+
+.taskboard-shell .work-progress {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+
+.taskboard-shell .work-progress > i {
+  display: block;
+  height: 100%;
+  background: var(--status-done);
+}
+
+.taskboard-shell .work-list,
+.taskboard-shell .work-checklist {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--tb-radius-panel);
+}
+
+.taskboard-shell .work-checklist {
+  padding: 6px 10px;
+}
+
+/* Subtask rows: title, then schedule and actions on the right. Phone widths
+ * use a stacked grid; tablets keep these controls regardless of pointer type. */
+.taskboard-shell .work-row {--work-target:24px;position:relative;display:flex;align-items:center;gap:8px;min-height:36px;padding:3px 10px 3px calc(8px + var(--work-depth,0)*26px);border-top:1px solid color-mix(in srgb,var(--border) 70%,transparent);}
+.taskboard-shell .work-list > .work-node:first-child > .work-row {border-top:0;}
+.taskboard-shell .work-row:hover,.taskboard-shell .work-row:focus-within {background:color-mix(in srgb,var(--foreground) 4%,transparent);}
+.taskboard-shell .work-row[data-kind="window"] {min-height:40px;background:color-mix(in srgb,var(--work-color,var(--status-todo)) 10%,transparent);box-shadow:inset 3px 0 0 var(--work-color,var(--status-todo));}
+.taskboard-shell .work-row[data-top-level="true"] .work-title {font-weight:600;}
+/* Every row keeps the caret's width, so checkboxes line up by depth alone. */
+.taskboard-shell :is(.work-caret,.work-caret-spacer) {display:inline-grid;flex:none;place-items:center;width:24px;height:24px;}
+.taskboard-shell .work-caret {border:0;border-radius:var(--tb-radius);background:transparent;color:var(--muted);}
+.taskboard-shell .work-caret svg {transition:transform 120ms;}
+.taskboard-shell .work-caret[aria-expanded="false"] svg {transform:rotate(-90deg);}
+.taskboard-shell .work-check-target {display:inline-grid;flex:none;place-items:center;width:var(--work-target);height:var(--work-target);cursor:pointer;}
+.taskboard-shell .work-check {width:14px;height:14px;margin:0;accent-color:var(--status-done);}
+.taskboard-shell .work-checklist :is(button,[role="button"]) {min-height:24px;}
+.taskboard-shell .work-checklist-target {display:contents;}
+.taskboard-shell .work-checklist .work-checklist-target {position:relative;display:grid;place-items:center;width:24px;height:24px;flex:none;}
+.taskboard-shell .work-checklist .work-checklist-toggle {position:static;width:14px;height:14px;min-width:14px;min-height:14px;padding:0;border-radius:3px;}
+.taskboard-shell .work-checklist .work-checklist-toggle::after {content:'';position:absolute;inset:0;}
+.taskboard-shell .task-notes-heading {margin:0;}
+.taskboard-shell .work-row-content {display:flex;flex:1 1 auto;align-items:center;gap:8px;min-width:0;}
+.taskboard-shell .work-title,.taskboard-shell .work-title-input {min-width:0;max-width:100%;}
+.taskboard-shell .work-row .work-title {flex:1 1 auto;min-height:24px;overflow:hidden;padding:2px 4px;border:0;border-radius:var(--tb-radius);background:transparent;color:var(--foreground);font-size:var(--tb-work-title-size);line-height:1.3;text-align:left;text-overflow:ellipsis;white-space:nowrap;}
+.taskboard-shell .work-title:hover:not(:disabled) {background:color-mix(in srgb,var(--foreground) 7%,transparent);}
+.taskboard-shell .work-title-caret {display:none;}
+.taskboard-shell .work-row[data-done="true"] .work-title {color:var(--muted);text-decoration:line-through;}
+.taskboard-shell .work-input {flex:1;min-width:0;min-height:30px;padding:4px 8px;border:1px solid var(--border);border-radius:var(--tb-radius);background:var(--field,var(--control));color:var(--foreground);font-size:var(--tb-editor-input-size);line-height:inherit;}
+.taskboard-shell .work-row .work-title-input {flex:1 1 auto;field-sizing:content;height:auto;min-height:28px;resize:none;overflow:hidden;font-size:max(var(--tb-editor-input-size),var(--tb-work-title-size));line-height:1.3;}
+.taskboard-shell .work-row:has(.work-title-input) .work-row-meta {display:none;}
+.taskboard-shell .work-row-meta {display:flex;flex:none;align-items:center;gap:8px;white-space:nowrap;}
+.taskboard-shell .work-row-meta:empty {display:none;}
+.taskboard-shell .work-when {color:var(--muted);font-size:var(--tb-work-text-size);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.taskboard-shell .work-when[data-kind="window"] {color:var(--foreground);font-weight:700;}
+.taskboard-shell .work-tag {display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px dashed color-mix(in srgb,var(--muted) 70%,transparent);border-radius:var(--tb-radius);background:transparent;color:var(--muted);font-size:var(--tb-work-text-size);white-space:nowrap;}
+.taskboard-shell .work-tag-action {border-color:color-mix(in srgb,var(--status-active) 60%,transparent);color:color-mix(in srgb,var(--status-active) 75%,var(--foreground));font-weight:600;cursor:pointer;}
+.taskboard-shell .work-warn {color:var(--danger-solid);font-size:var(--tb-work-text-size);font-weight:600;white-space:nowrap;}
+.taskboard-shell .work-fill {display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:var(--tb-work-text-size);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.taskboard-shell .work-fill-bar {display:block;width:80px;height:6px;overflow:hidden;border-radius:var(--tb-radius);background:color-mix(in srgb,var(--foreground) 12%,transparent);}
+.taskboard-shell .work-fill-bar > i {display:block;height:100%;background:var(--work-color,var(--status-todo));}
+/* Reserve just one button's column. Its bare ellipsis appears on row hover;
+ * only the expanded three-button well overlays the content to the left. */
+.taskboard-shell .work-actions {position:relative;z-index:2;display:block;flex:0 0 26px;width:26px;height:26px;opacity:0;pointer-events:none;transition:opacity 100ms;}
+.taskboard-shell .work-row:hover .work-actions,.taskboard-shell .work-row:focus-within .work-actions {opacity:1;pointer-events:auto;}
+.taskboard-shell .work-actions button {display:inline-grid;flex:none;place-items:center;width:26px;height:26px;padding:0;border:0;border-radius:var(--tb-radius);background:transparent;color:var(--muted);}
+.taskboard-shell .work-actions-trigger {position:absolute;right:0;top:0;box-shadow:none;}
+.taskboard-shell .work-actions[data-expanded="true"] .work-actions-trigger {opacity:0;pointer-events:none;}
+.taskboard-shell .work-actions-panel:not([hidden]) {position:absolute;right:-4px;top:-4px;display:flex;flex-direction:row-reverse;gap:2px;width:90px;padding:3px;border:1px solid var(--border);border-radius:7px;background:var(--field);box-shadow:var(--well-shadow);animation:work-actions-expand 140ms ease-out;}
+.taskboard-shell .work-actions button:is(:hover,:focus-visible) {background:transparent;color:var(--foreground);box-shadow:none;}
+@keyframes work-actions-expand {
+ from {clip-path:inset(0 0 0 56px round 7px);}
+ to {clip-path:inset(0 round 7px);}
+}
+@media (prefers-reduced-motion:reduce) {
+ .taskboard-shell .work-actions {transition:none;}
+ .taskboard-shell .work-actions-panel {animation:none;}
+}
+.taskboard-shell .work-row-menu {display:none;}
+.taskboard-shell .work-mobile-actions {display:flex;flex-wrap:wrap;gap:4px;padding:4px;border-top:1px solid var(--border);background:var(--control);}
+.taskboard-shell .work-mobile-actions button {min-height:28px;padding:4px 8px;border:1px solid var(--border);border-radius:4px;font-size:var(--tb-work-text-size);}
+.taskboard-shell .work-children[hidden] {display:none!important;}
+
+/* Work tab board, drawn like the main board: bucket columns for top-level
+   subtasks, task cards in them, small cards for their work, and a side panel
+   for the selected item. */
+.taskboard-shell .subtask-board {container:subtask-board / inline-size;min-width:0;}
+.taskboard-shell .subtask-board-layout {display:grid;grid-template-columns:minmax(0,1fr);gap:10px;align-items:start;}
+.taskboard-shell .subtask-board-main {min-width:0;}
+.taskboard-shell .subtask-board-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:10px;align-items:start;}
+.taskboard-shell .subtask-board [data-dragging="true"] {opacity:.4;}
+/* A card dragged to another column: the column lights up in its color and a
+   line marks the card it will land before. */
+.taskboard-shell .subtask-box[data-drop-target="true"] {box-shadow:0 0 0 2px var(--bucket-color),0 0 0 6px color-mix(in srgb,var(--bucket-color) 18%,transparent) !important;}
+.taskboard-shell .subtask-card[data-drop-before="true"] {position:relative;}
+.taskboard-shell .subtask-card[data-drop-before="true"]::before {content:"";position:absolute;top:-6px;left:4px;right:4px;height:3px;border-radius:2px;background:var(--bucket-color,var(--control-active));}
+/* Columns reuse the main board's bucket column, header, and icon. */
+.taskboard-shell .subtask-box[data-selected="true"] {outline:2px solid color-mix(in srgb,var(--bucket-color) 70%,var(--control-active));outline-offset:2px;}
+.taskboard-shell .subtask-box-header {cursor:grab;touch-action:manipulation;}
+.taskboard-shell .subtask-box-header .subtask-when {display:flex;margin-top:1px;color:var(--muted);font-size:10px;letter-spacing:normal;text-transform:none;font-weight:500;line-height:1.35;}
+.taskboard-shell .subtask-box-header .subtask-when > .truncate {overflow:visible;white-space:normal;text-overflow:clip;}
+.taskboard-shell .subtask-outside {font-size:var(--tb-text-10px,10px);line-height:1.35;}
+.taskboard-shell .subtask-step-main .subtask-outside {display:block;margin-top:2px;}
+.taskboard-shell .subtask-box-title {padding:0;border:0;background:transparent;cursor:pointer;}
+.taskboard-shell .subtask-box-add {display:grid;flex:none;place-items:center;width:22px;height:22px;margin-top:-1px;padding:0;border:0;border-radius:var(--tb-radius);background:transparent;color:var(--muted);}
+.taskboard-shell .subtask-box-add:is(:hover,:focus-visible) {color:var(--foreground);background:color-mix(in srgb,var(--foreground) 8%,transparent);}
+@media (hover:hover) {
+ .taskboard-shell .subtask-box-add {opacity:0;transition:opacity 100ms;}
+ .taskboard-shell .subtask-box:is(:hover,:focus-within) .subtask-box-add {opacity:1;}
+}
+.taskboard-shell .subtask-box[data-done="true"] .taskboard-bucket-title {color:var(--muted);text-decoration:line-through;}
+.taskboard-shell .subtask-box-body {min-height:0 !important;}
+/* Cards reuse the main board's task card: status edge, title, date stamp. */
+.taskboard-shell .subtask-card {cursor:grab;touch-action:manipulation;}
+.taskboard-shell .subtask-card[data-done="true"] {background:color-mix(in srgb,var(--surface-subtle) 78%,transparent);filter:saturate(.62);opacity:.58;}
+.taskboard-shell .subtask-card[data-done="true"] .taskboard-card-title {text-decoration:line-through;text-decoration-thickness:1px;}
+.taskboard-shell .subtask-card[data-done="true"]:is(:hover,.taskboard-card-selected) {filter:saturate(.8);opacity:.78;}
+.taskboard-shell .subtask-card-title {padding:0;border:0;background:transparent;cursor:pointer;}
+.taskboard-shell .subtask-card-meta {margin-top:6px;}
+.taskboard-shell .subtask-progress-bar {display:block;width:40px;height:3px;overflow:hidden;border-radius:2px;background:color-mix(in srgb,var(--foreground) 12%,transparent);}
+.taskboard-shell .subtask-progress-bar > i {display:block;height:100%;background:var(--status-done);}
+.taskboard-shell .subtask-check {display:inline-grid;flex:none;place-items:center;width:20px;height:20px;margin:-3px -4px 0 4px;cursor:pointer;}
+.taskboard-shell .subtask-check .work-check {width:13px;height:13px;}
+/* A card's own work: a checklist on the card, split by hairlines like the
+   task sidebar's rows. Deeper work indents under its item. */
+.taskboard-shell .subtask-checklist {display:grid;min-width:0;margin:8px 0 0;padding:0;list-style:none;border-top:1px solid color-mix(in srgb,var(--border) 45%,transparent);cursor:default;}
+.taskboard-shell .subtask-step {min-width:0;}
+.taskboard-shell .subtask-step + .subtask-step {border-top:1px solid color-mix(in srgb,var(--border) 28%,transparent);}
+.taskboard-shell .subtask-step-main {display:flex;align-items:flex-start;gap:6px;min-width:0;padding:5px 0 4px;cursor:grab;touch-action:manipulation;}
+.taskboard-shell .subtask-step[data-selected="true"] > .subtask-step-main {margin:0 -4px;padding-right:4px;padding-left:4px;border-radius:var(--tb-radius);background:color-mix(in srgb,var(--control-active) 16%,transparent);}
+.taskboard-shell .subtask-step-title {display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;max-width:100%;padding:0;border:0;background:transparent;color:var(--foreground);font-size:var(--tb-text-10px,10px);font-weight:500;line-height:1.35;text-align:left;overflow-wrap:anywhere;cursor:pointer;}
+.taskboard-shell .subtask-step[data-done="true"] > .subtask-step-main .subtask-step-title {color:var(--muted);text-decoration:line-through;}
+.taskboard-shell .subtask-step-main .subtask-when {display:flex;margin-top:2px;}
+.taskboard-shell .subtask-step-status {display:inline-block;width:6px;height:6px;margin:0 5px 1px 0;border-radius:50%;background:var(--task-status-color,var(--status-active));vertical-align:middle;}
+.taskboard-shell :is(.subtask-card-title,.subtask-step-title,.subtask-box-title):hover {text-decoration:underline;text-underline-offset:2px;}
+.taskboard-shell .subtask-step-count {display:inline-flex;flex:none;align-items:center;gap:1px;padding:0;border:0;background:transparent;color:var(--muted);font-size:var(--tb-text-10px,10px);font-weight:600;font-variant-numeric:tabular-nums;line-height:1.35;}
+.taskboard-shell .subtask-step-count:is(:hover,:focus-visible) {color:var(--foreground);}
+.taskboard-shell .subtask-step-count svg {transform:rotate(-90deg);transition:transform 120ms;}
+.taskboard-shell .subtask-step-count[aria-expanded="true"] svg {transform:none;}
+.taskboard-shell .subtask-step > .subtask-checklist {margin:0 0 4px 12px;border-top:0;}
+/* Group rows: an item with work of its own, bold on a band of its column's
+   color. Its own hairlines give way to the band. */
+.taskboard-shell .subtask-step[data-group="true"] > .subtask-step-main {margin:3px -4px;padding:5px 4px;border-radius:var(--tb-radius);background:color-mix(in srgb,var(--bucket-color,var(--control-active)) 16%,transparent);}
+.taskboard-shell .subtask-step[data-group="true"] > .subtask-step-main .subtask-step-title {font-weight:700;}
+.taskboard-shell :is(.subtask-step[data-group="true"],.subtask-step[data-group="true"] + .subtask-step) {border-top-color:transparent;}
+.taskboard-shell .subtask-step[data-group="true"][data-selected="true"] > .subtask-step-main {background:color-mix(in srgb,var(--control-active) 22%,transparent);}
+.taskboard-shell .subtask-show-all {justify-self:start;padding:2px 0;border:0;background:transparent;color:var(--muted);font-size:var(--tb-text-10px,10px);font-weight:500;text-decoration:underline;text-underline-offset:2px;}
+.taskboard-shell .subtask-show-all:is(:hover,:focus-visible) {color:var(--foreground);}
+.taskboard-shell .subtask-board-drag-overlay {max-width:260px;padding:8px 10px;font-size:11px;font-weight:600;line-height:1.3;cursor:grabbing;}
+.taskboard-shell .subtask-add-box > button {min-height:52px;}
+/* The side panel is the main board's task sidebar: beside the board when
+   there is room, else a sheet along the bottom of the screen. */
+.taskboard-shell .subtask-inspector {position:fixed;inset:auto 0 0 0;z-index:60;max-height:72vh;border-radius:18px 18px 0 0 !important;}
+@container subtask-board (min-width:700px) {
+ .taskboard-shell .subtask-board-layout[data-panel-open="true"] {grid-template-columns:minmax(0,1fr) clamp(260px,32%,320px);}
+ .taskboard-shell .subtask-inspector {position:sticky;inset:auto;top:8px;z-index:auto;max-height:calc(100vh - 140px);border-radius:18px !important;}
+}
+.taskboard-shell .subtask-inspector-path button {max-width:14em;overflow:hidden;padding:0;border:0;background:transparent;color:var(--foreground);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--foreground) 35%,transparent);text-underline-offset:2px;text-overflow:ellipsis;white-space:nowrap;}
+/* The title edits in place, as in the task sidebar (see the skin). */
+.taskboard-shell .subtask-inspector .subtask-inspector-title {field-sizing:content;min-height:0;}
+/* The time editor sits in a narrow panel here, not indented under a row. */
+.taskboard-shell .subtask-inspector .work-time-editor {margin:0;}
+.taskboard-shell .subtask-inspector .work-time-field {flex:1 1 100%;min-width:0;}
+.taskboard-shell .subtask-inspector .work-time-field .work-input {min-width:0;}
+.taskboard-shell .subtask-inspector .work-date-time {flex-wrap:wrap;}
+.taskboard-shell .subtask-inspector-children {margin:0;padding:0;list-style:none;}
+.taskboard-shell .subtask-inspector-children li {min-height:24px;}
+.taskboard-shell .subtask-inspector-children li > button {padding:2px 0;border:0;background:transparent;cursor:pointer;}
+.taskboard-shell .subtask-inspector-children li > button:hover {text-decoration:underline;text-underline-offset:2px;}
+.taskboard-shell .subtask-inspector-children li[data-done="true"] > button {color:var(--muted);text-decoration:line-through;}
+.taskboard-shell .subtask-inspector-children .subtask-check {margin:0;}
+.taskboard-shell .subtask-inspector-children li[data-group="true"] {margin:0 -4px;padding:1px 4px;border-radius:var(--tb-radius);background:color-mix(in srgb,var(--bucket-color,var(--control-active)) 16%,transparent);}
+.taskboard-shell .subtask-inspector-children li[data-group="true"] > button {font-weight:700;}
+.taskboard-shell .subtask-inspector-delete {color:var(--danger-solid);}
+@media (pointer:coarse) {
+ .taskboard-shell .subtask-inspector-children li {min-height:36px;}
+ .taskboard-shell .subtask-check {width:32px;height:32px;margin:-9px -10px -6px 0;}
+ .taskboard-shell .subtask-step-count {min-height:28px;padding:0 6px;}
+}
+/* Phone controls: checkbox, title/schedule content, and a row menu. */
+@media (max-width:767px) {
+ .taskboard-shell .work-row {display:grid;grid-template-columns:var(--work-target) minmax(0,1fr) var(--work-target);gap:0 2px;padding:2px 3px 2px calc(3px + var(--work-depth,0)*10px);}
+ .taskboard-shell .work-row > :is(.work-drag-handle,.work-caret,.work-caret-spacer,.work-actions) {display:none;}
+ .taskboard-shell .work-check-target {grid-column:1;grid-row:1;min-height:var(--work-target);height:auto;}
+ .taskboard-shell .work-row-content {position:relative;grid-column:2;grid-row:1;}
+ .taskboard-shell .work-row .work-title {padding:0;}
+ .taskboard-shell .work-row-menu {display:grid;place-items:center;grid-column:3;grid-row:1;width:var(--work-target);height:100%;color:var(--muted);}
+ .taskboard-shell .work-row-menu svg {width:16px;height:16px;}
+ .taskboard-shell .work-title-caret {display:inline-block;width:12px;height:12px;margin-right:2px;}
+ .taskboard-shell .work-title-caret[data-open="false"] {transform:rotate(-90deg);}
+}
+@media (max-width:767px) and (pointer:coarse) {
+ .taskboard-shell .work-row {--work-target:30px;padding-block:0;}
+ .taskboard-shell .work-row .work-title {position:static;}
+ /* The title's tap area covers the row; the Set time pill stays on top of it. */
+ .taskboard-shell .work-title:after {content:'';position:absolute;inset:0;}
+ .taskboard-shell .work-tag-action {position:relative;z-index:1;}
+ .taskboard-shell .work-mobile-actions button {min-height:44px;}
+}
+@media (max-width:767px) {
+ .taskboard-shell .work-row {padding-left:calc(2px + var(--work-depth,0)*8px);}
+ .taskboard-shell .work-row-content {flex-direction:column;align-items:stretch;justify-content:center;gap:0;}
+ .taskboard-shell .work-row .work-title {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;overflow-wrap:normal;flex:none;}
+ .taskboard-shell .work-row-meta {min-width:0;flex-wrap:nowrap;gap:0 6px;white-space:normal;overflow:hidden;}
+ .taskboard-shell :is(.work-when,.work-tag,.work-fill) {white-space:normal;}
+ .taskboard-shell .work-row-meta > * {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+ .taskboard-shell .work-row:has(.work-title-input) {min-height:44px;}
+ .taskboard-shell .work-fill {gap:0;}
+ .taskboard-shell .work-fill-bar {display:none;}
+}
+
+.taskboard-shell .work-drag-handle {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 18px;
+  height: 26px;
+  margin-left: -6px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted);
+  cursor: grab;
+  opacity: 0;
+  touch-action: none;
+  transition: opacity 100ms;
+}
+
+.taskboard-shell .work-row:hover .work-drag-handle,
+.taskboard-shell .work-row:focus-within .work-drag-handle {
+  opacity: 1;
+}
+
+.taskboard-shell .work-drag-handle:active {
+  cursor: grabbing;
+}
+
+.taskboard-shell .work-row[data-dragging="true"] {
+  opacity: 0.4;
+}
+
+.taskboard-shell .work-row[data-drop="before"] {
+  box-shadow: inset 0 2px 0 var(--control-active);
+}
+
+.taskboard-shell .work-row[data-drop="after"] {
+  box-shadow: inset 0 -2px 0 var(--control-active);
+}
+
+.taskboard-shell .work-row[data-drop="inside"] {
+  background: color-mix(in srgb, var(--control-active) 14%, transparent);
+  box-shadow: inset 0 0 0 1px var(--control-active);
+}
+
+.taskboard-shell .work-drag-overlay {
+  max-width: 22rem;
+  overflow: hidden;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--tb-radius);
+  background: var(--panel-base, var(--panel));
+  box-shadow: 0 8px 24px color-mix(in srgb, #000 30%, transparent);
+  color: var(--foreground);
+  font-size: var(--tb-text-11px);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: grabbing;
+}
+
+.taskboard-shell .work-add-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 38px;
+  border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+.taskboard-shell .work-button {
+  height: var(--tb-editor-field-height);
+  padding: 0 7px;
+  border: 1px solid var(--border);
+  border-radius: var(--tb-radius);
+  background: var(--control);
+  color: var(--foreground);
+  font-size: var(--tb-editor-text-size);
+  font-weight: 500;
+  line-height: var(--tb-editor-line-height);
+  white-space: nowrap;
+}
+
+.taskboard-shell .work-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.taskboard-shell .work-button-primary {
+  background: var(--foreground);
+  border-color: var(--foreground);
+  color: var(--background);
+}
+
+.taskboard-shell .work-empty {
+  margin: 0;
+  padding: 10px 12px;
+  color: var(--muted);
+  font-size: var(--tb-text-11px);
+}
+
+.taskboard-shell .work-time-editor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px 12px;
+  margin: 2px 10px 8px calc(34px + var(--work-depth, 0) * 26px);
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--background) 40%, transparent);
+}
+
+.taskboard-shell .work-time-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--muted);
+  font-size: var(--tb-text-10px);
+  font-weight: 600;
+}
+
+.taskboard-shell .work-time-field .work-input {
+  min-width: 13rem;
+}
+
+.taskboard-shell .work-date-time {
+  display: flex;
+  gap: 6px;
+}
+
+@media (max-width: 767px) {
+  .taskboard-shell .work-time-editor {
+    margin-left: calc(2px + min(var(--work-depth, 0), 4) * 8px);
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .taskboard-shell .work-time-field {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .taskboard-shell .work-date-time {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  }
+
+  .taskboard-shell .work-time-field .work-date-time .work-input {
+    width: 100%;
+  }
+}
+
+.taskboard-shell .work-time-field .work-date-time .work-input {
+  min-width: 0;
+}
+
+.taskboard-shell .work-date-time .work-date-input {
+  width: 9.5rem;
+}
+
+.taskboard-shell .work-time-combobox {
+  position: relative;
+}
+
+.taskboard-shell .work-date-time .work-time-input {
+  width: 6.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.taskboard-shell .work-time-list {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  min-width: 7rem;
+  max-height: 12.5rem;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--panel-base, var(--panel));
+  box-shadow: 0 8px 24px color-mix(in srgb, #000 30%, transparent);
+}
+
+.taskboard-shell .work-time-option {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 8px;
+  border-radius: var(--tb-radius);
+  color: var(--foreground);
+  font-size: var(--tb-text-11px);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.taskboard-shell .work-time-option:hover,
+.taskboard-shell .work-time-option[data-active="true"] {
+  background: color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+
+.taskboard-shell .work-time-option[aria-selected="true"] {
+  font-weight: 700;
+}
+
+.taskboard-shell .work-time-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  color: var(--foreground);
+  font-size: var(--tb-text-11px);
+}
+
+/* Subtask timeline: one strip for the whole task, then each window by hour. */
+/* Subtask timeline: one strip for the whole task, then each window by hour.
+ * Strips keep a readable fixed width and scroll sideways; phones stack lanes. */
+.taskboard-shell .work-timeline {display:grid;gap:14px;min-width:0;}
+.taskboard-shell .work-timeline-strip {display:grid;gap:8px;min-width:0;padding:12px;border:1px solid var(--border);border-radius:var(--tb-radius-panel);}
+.taskboard-shell .work-timeline-strip[data-tone="window"] {border-color:color-mix(in srgb,var(--work-color) 40%,var(--border));border-left:3px solid var(--work-color);background:color-mix(in srgb,var(--work-color) 5%,transparent);}
+.taskboard-shell .work-timeline-title {margin:0;color:var(--foreground);font-size:var(--tb-work-title-size);font-weight:700;overflow-wrap:anywhere;}
+.taskboard-shell .work-timeline-scroll {min-width:0;overflow-x:auto;padding-bottom:4px;}
+.taskboard-shell .work-timeline-grid {display:grid;grid-template-columns:200px minmax(0,1fr);min-width:900px;column-gap:12px;row-gap:6px;}
+.taskboard-shell .work-timeline-axis {position:relative;height:22px;border-bottom:1px solid var(--border);}
+.taskboard-shell .work-timeline-axis > span {position:absolute;bottom:4px;padding-left:4px;border-left:1px solid var(--border);color:var(--muted);font-size:var(--tb-work-small-size);font-weight:600;white-space:nowrap;}
+.taskboard-shell .work-timeline-label {display:flex;align-items:center;min-width:0;min-height:34px;overflow:hidden;color:var(--foreground);font-size:var(--tb-work-text-size);font-weight:600;white-space:nowrap;}
+/* Ellipsis applies to the name's own box; the flex label cannot truncate. */
+.taskboard-shell .work-timeline-name {min-width:0;overflow:hidden;text-overflow:ellipsis;}
+.taskboard-shell .work-timeline-time {display:none;}
+.taskboard-shell .work-timeline-lane {position:relative;min-width:0;min-height:34px;overflow:hidden;border-radius:var(--tb-radius);background:color-mix(in srgb,var(--foreground) 3%,transparent);}
+.taskboard-shell .work-timeline-night {position:absolute;top:0;bottom:0;background:light-dark(rgba(0,0,0,.06),rgba(0,0,0,.16));}
+.taskboard-shell .work-timeline-bar {position:absolute;top:5px;display:flex;align-items:center;min-width:6px;height:24px;overflow:hidden;padding:0 6px;border:1px solid var(--work-color,var(--status-todo));border-radius:var(--tb-radius);background:color-mix(in srgb,var(--work-color,var(--status-todo)) 30%,var(--background));color:var(--foreground);font-size:var(--tb-work-small-size);font-weight:600;white-space:nowrap;}
+.taskboard-shell .work-timeline-bar[data-done="true"] {opacity:.5;}
+.taskboard-shell .work-timeline-window-bar {padding-inline:2px;}
+.taskboard-shell .work-timeline-window-label {display:block;min-width:0;overflow:hidden;white-space:nowrap;}
+.taskboard-shell .work-timeline-label-measures {position:absolute;visibility:hidden;pointer-events:none;}
+.taskboard-shell .work-timeline-label-measures > span {position:absolute;width:max-content;white-space:nowrap;}
+.taskboard-shell .work-timeline-unscheduled {position:absolute;top:6px;left:6px;}
+.taskboard-shell .work-tag.work-timeline-outside {border-color:color-mix(in srgb,var(--danger-solid) 55%,transparent);color:var(--danger-solid);}
+@media (max-width:767px) {
+ .taskboard-shell .work-timeline-grid {grid-template-columns:minmax(0,1fr);gap:2px;min-width:0;}
+ .taskboard-shell .work-timeline-axis-spacer {display:none;}
+ .taskboard-shell .work-timeline-axis > span[data-edge="end"] {transform:translateX(-100%);padding:0 4px 0 0;border-left:0;border-right:1px solid var(--border);}
+ .taskboard-shell .work-timeline-label {flex-wrap:wrap;gap:4px;min-height:20px;overflow:visible;white-space:normal;}
+ .taskboard-shell .work-timeline-name {overflow:visible;}
+ .taskboard-shell .work-timeline-time {display:inline;margin-left:auto;color:var(--muted);font-weight:400;}
+ .taskboard-shell .work-timeline-bar-time {display:none;}
+ .taskboard-shell .work-timeline-lane {min-height:28px;}
+ .taskboard-shell .work-timeline-bar {top:2px;}
+}
+
+
+/* Controls use the sidebar scale. Row content owns its interaction area;
+ * the checkbox glyph and title line do not determine the touch target size. */
+.taskboard-shell [data-testid="task-editor-expanded"] :where(button, a[href], [role="button"]) {
+  min-width: 24px;
+  min-height: 24px;
+}
+.taskboard-shell [data-testid="task-editor-expanded"] :where(label:has(input[type="checkbox"]), label:has(input[type="radio"])) {
+  min-height: 24px;
+}
+@media (pointer: coarse) {
+  .taskboard-shell .work-actions,
+  .taskboard-shell .work-drag-handle { opacity: 1; pointer-events: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .taskboard-shell .work-caret svg,
+  .taskboard-shell .task-notes-toggle-icon,
+  .taskboard-shell .work-actions {
+    transition: none;
+  }
+}
+
+@media (pointer: coarse) {
+  .taskboard-shell.taskboard-floating-menu-layer[data-compact-expanded-task-menu="true"]
+    .taskboard-expanded-task-menu :is(button, a[href], [role="button"]) {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-status-badge,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-status-badge {
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-status-badge.bg-slate-200,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-status-badge.bg-slate-200 {
+  background: rgba(71, 85, 105, 0.4);
+  color: #d8e1ed;
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-status-badge.bg-amber-200,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-status-badge.bg-amber-200 {
+  background: rgba(245, 158, 11, 0.28);
+  color: #f9d98a;
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-status-badge.bg-sky-200,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-status-badge.bg-sky-200 {
+  background: rgba(14, 165, 233, 0.25);
+  color: #8cd9ff;
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-status-badge.bg-emerald-200,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-status-badge.bg-emerald-200 {
+  background: rgba(16, 185, 129, 0.26);
+  color: #8ef0bf;
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-status-chip.text-slate-600,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-status-chip.text-slate-600 {
+  color: #d6dfeb;
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-status-chip.text-amber-800,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-status-chip.text-amber-800 {
+  color: #ffcf6e;
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-status-chip.text-sky-800,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-status-chip.text-sky-800 {
+  color: #7dd7ff;
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-status-chip.text-emerald-800,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-status-chip.text-emerald-800 {
+  color: #8ef0bf;
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-status-chip .bg-slate-400,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-status-chip .bg-slate-400 {
+  background: #94a3b8;
+}
+
+html[data-theme="dark"] .taskboard-shell .taskboard-section-card p,
+html[data-theme="dark"] .taskboard-shell .taskboard-section-card span,
+html[data-theme="dark"] .taskboard-shell .taskboard-meta-tile p,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-section-card p,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-section-card span,
+.taskboard-settings-root[data-theme="dark"] .taskboard-shell .taskboard-meta-tile p {
+  color: inherit;
+}
+
+/* Keep high-frequency board interactions immediate. The theme remains unchanged, but
+   click feedback should not wait on Tailwind/default transition shorthands. */
+.taskboard-shell button,
+.taskboard-shell input,
+.taskboard-shell textarea,
+.taskboard-shell select,
+.taskboard-shell .ui-control,
+.taskboard-shell .ui-select,
+.taskboard-shell .ui-button,
+.taskboard-shell .ui-inline-input,
+.taskboard-shell .ui-inline-button,
+.taskboard-shell .ui-chip-button,
+.taskboard-shell .ui-menu-item,
+.taskboard-shell .taskboard-card,
+.taskboard-shell .taskboard-section-card,
+.taskboard-shell .taskboard-meta-tile,
+.taskboard-shell .taskboard-popover,
+.taskboard-shell .task-editor-root,
+.taskboard-shell .task-editor-root * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Backdrop blur and large soft shadows are expensive during scroll and overlay
+   presentation. Keep the same surfaces/borders, but make Taskboard paint cheaper. */
+.taskboard-shell .panel-surface,
+.taskboard-shell .taskboard-overlay-panel,
+.taskboard-shell .taskboard-popover,
+.taskboard-shell .taskboard-card,
+.taskboard-shell [class*="backdrop-blur"],
+.taskboard-shell [class*="shadow-"] {
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.calendar-proof-page {
+  min-height: 100vh;
+  background: var(--page-background);
+  background-size: var(--page-background-size, auto);
+  color: var(--foreground);
+  padding: 0.9rem;
+}
+
+.calendar-proof-page__topbar {
+  margin: 0 auto 0.55rem;
+  max-width: 96rem;
+}
+
+.calendar-proof-page__back {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  color: var(--muted-foreground);
+  display: inline-flex;
+  font-size: 0.875rem;
+  font-weight: 650;
+  min-height: 2.1rem;
+  padding: 0 0.65rem;
+  text-decoration: none;
+}
+
+.calendar-proof-page__back:hover {
+  background: var(--surface-hover);
+  border-color: var(--border);
+  color: var(--foreground);
+}
+
+.taskboard-calendar-proof {
+  --calendar-proof-control-font: 0.7rem;
+  --calendar-proof-control-height: 1.75rem;
+  --calendar-proof-danger: #dc2626;
+  --calendar-proof-muted-text: color-mix(in srgb, var(--foreground) 66%, transparent);
+  --calendar-proof-subtle-bg: var(--surface-subtle);
+  --calendar-proof-grid-bg: color-mix(in srgb, var(--panel) 96%, var(--background) 4%);
+  --calendar-proof-grid-line: color-mix(in srgb, var(--border) 52%, transparent);
+  --calendar-proof-grid-major: color-mix(in srgb, var(--foreground) 10%, var(--border));
+  --calendar-proof-event-surface: color-mix(in srgb, var(--surface-raised) 92%, var(--panel));
+  --calendar-proof-event-text: var(--foreground);
+  --calendar-proof-event-muted: color-mix(in srgb, var(--foreground) 64%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0 auto;
+  max-width: 96rem;
+  width: 100%;
+}
+
+.taskboard-calendar-stage {
+  background: var(--panel);
+}
+
+.taskboard-calendar-proof--embedded {
+  gap: 0.35rem;
+  margin: 0;
+  max-width: none;
+  min-height: 100%;
+  padding: 0.2rem;
+}
+
+.taskboard-calendar-proof--loading {
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--calendar-proof-muted-text);
+  min-height: 16rem;
+  padding: 2rem;
+}
+
+.taskboard-calendar-proof__masthead,
+.taskboard-calendar-proof__workspace {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  box-shadow: var(--panel-shadow);
+  backdrop-filter: blur(var(--panel-blur));
+}
+
+.taskboard-calendar-proof--embedded .taskboard-calendar-proof__masthead,
+.taskboard-calendar-proof--embedded .taskboard-calendar-proof__workspace {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.taskboard-calendar-proof--embedded .taskboard-calendar-proof__masthead {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  grid-template-columns: 1fr;
+  padding: 0;
+}
+
+.taskboard-calendar-proof--embedded .taskboard-calendar-proof__masthead--compact {
+  align-items: center;
+}
+
+.taskboard-settings-root[data-header-pinned="true"] .taskboard-calendar-proof--embedded .taskboard-calendar-proof__masthead {
+  background: var(--panel-strong);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 0.35rem;
+  position: sticky;
+  top: var(--taskboard-sticky-header-offset, 7rem);
+  z-index: 24;
+}
+
+.taskboard-calendar-proof__masthead {
+  display: grid;
+  gap: 0.65rem 0.85rem;
+  grid-template-columns: minmax(13rem, 0.7fr) minmax(24rem, 1.8fr);
+  padding: 0.75rem 0.85rem;
+  position: relative;
+  z-index: 5;
+}
+
+.taskboard-calendar-proof__masthead p,
+.calendar-proof-inspector__eyebrow {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.taskboard-calendar-proof__masthead h1 {
+  font-size: clamp(1.2rem, 1.4vw, 1.55rem);
+  line-height: 1.1;
+  margin: 0.05rem 0 0;
+}
+
+.taskboard-calendar-proof__board {
+  color: var(--calendar-proof-muted-text);
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-top: 0.28rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.taskboard-calendar-proof__identity {
+  min-width: 0;
+}
+
+.taskboard-calendar-proof__controls {
+  align-items: end;
+  display: grid;
+  gap: 0.4rem;
+  grid-template-columns: minmax(0, 1fr) max-content max-content;
+  min-width: 0;
+}
+
+.taskboard-calendar-proof--embedded .taskboard-calendar-proof__controls {
+  align-items: center;
+  gap: 0.35rem;
+  grid-template-columns: minmax(0, 1fr) max-content max-content;
+}
+
+.taskboard-calendar-proof__context {
+  display: grid;
+  gap: 0.24rem;
+  min-width: 0;
+}
+
+.taskboard-calendar-proof__context label {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.taskboard-calendar-proof--embedded .taskboard-calendar-proof__context label,
+.taskboard-calendar-proof--embedded .taskboard-calendar-proof__context span,
+.taskboard-calendar-proof--embedded .calendar-proof-filters__label {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.taskboard-calendar-proof__context select {
+  appearance: none;
+  background:
+    linear-gradient(45deg, transparent 50%, var(--calendar-proof-muted-text) 50%) calc(100% - 1rem) 50% / 0.36rem 0.36rem no-repeat,
+    linear-gradient(135deg, var(--calendar-proof-muted-text) 50%, transparent 50%) calc(100% - 0.75rem) 50% / 0.36rem 0.36rem no-repeat,
+    var(--control);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  box-shadow: var(--control-shadow);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  min-height: 2.2rem;
+  padding: 0 2rem 0 0.75rem;
+  width: 100%;
+}
+
+.taskboard-calendar-proof--embedded .taskboard-calendar-proof__context select {
+  font-size: 0.76rem;
+  font-weight: 650;
+  min-height: 1.85rem;
+}
+
+.taskboard-calendar-proof__context span {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.73rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.taskboard-calendar-proof--embedded .taskboard-calendar-proof__context span {
+  font-size: 0.68rem;
+}
+
+.taskboard-calendar-proof__inline-toolbar {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.calendar-proof-new-entry-button {
+  align-items: center;
+  background: var(--control);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  box-shadow: var(--control-shadow);
+  color: var(--foreground);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--calendar-proof-control-font);
+  font-weight: 600;
+  gap: 0.35rem;
+  justify-content: center;
+  line-height: 1rem;
+  min-height: var(--calendar-proof-control-height);
+  padding: 0 0.58rem;
+  white-space: nowrap;
+}
+
+.calendar-proof-entry-actions {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.3rem;
+}
+
+.calendar-proof-clear-slot-button {
+  flex: 0 0 var(--calendar-proof-control-height);
+  padding: 0;
+  width: var(--calendar-proof-control-height);
+}
+
+.calendar-proof-clear-slot-button:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+.calendar-proof-new-entry-button:hover {
+  background: var(--control-hover);
+}
+
+.calendar-proof-new-entry-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.calendar-proof-new-entry-button svg {
+  height: 0.85rem;
+  width: 0.85rem;
+}
+
+.calendar-entry-form {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-shadow: var(--popover-shadow);
+  color: var(--foreground);
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.85rem;
+}
+
+.calendar-entry-form__header {
+  align-items: start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.calendar-entry-form__header-actions {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.35rem;
+}
+
+.calendar-entry-form--sidebar {
+  align-self: start;
+  max-height: calc(100vh - 9rem);
+  overflow-y: auto;
+  position: sticky;
+  top: 0.5rem;
+}
+
+.calendar-entry-form--sidebar .calendar-entry-form__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.calendar-entry-workspace {
+  align-items: stretch;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0.75rem;
+  position: fixed;
+  z-index: 70;
+}
+
+.calendar-entry-workspace__backdrop {
+  background: rgba(34, 26, 18, 0.22);
+  border: 0;
+  inset: 0;
+  position: absolute;
+  backdrop-filter: blur(2px);
+}
+
+.calendar-entry-workspace__panel {
+  display: flex;
+  height: 100%;
+  max-width: 88rem;
+  min-height: 0;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.calendar-entry-form--expanded {
+  align-content: start;
+  flex: 1 1 auto;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.calendar-entry-form__header p {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.66rem;
+  font-weight: 700;
+  margin: 0 0 0.12rem;
+  text-transform: uppercase;
+}
+
+.calendar-entry-form__header h2 {
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.calendar-entry-form__icon-button,
+.calendar-entry-form__primary,
+.calendar-entry-form__secondary {
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.74rem;
+  font-weight: 600;
+  justify-content: center;
+  min-height: 1.9rem;
+}
+
+.calendar-entry-form__icon-button {
+  background: var(--control);
+  color: var(--foreground);
+  padding: 0;
+  width: 1.9rem;
+}
+
+.calendar-entry-form__icon-button svg {
+  height: 0.9rem;
+  width: 0.9rem;
+}
+
+.calendar-entry-form__grid {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.calendar-entry-form label {
+  color: var(--calendar-proof-muted-text);
+  display: grid;
+  font-size: 0.68rem;
+  font-weight: 650;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.calendar-entry-form input,
+.calendar-entry-form select,
+.calendar-entry-form textarea {
+  background: var(--control);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 450;
+  min-height: 2rem;
+  padding: 0.42rem 0.55rem;
+}
+
+.calendar-entry-form input::placeholder,
+.calendar-entry-form textarea::placeholder {
+  color: var(--calendar-proof-muted-text);
+  font-weight: 450;
+}
+
+.calendar-entry-form input:disabled,
+.calendar-entry-form select:disabled,
+.calendar-entry-form textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
+.calendar-entry-form__color-control {
+  align-items: center;
+  background: var(--control);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--foreground);
+  display: flex;
+  font-size: 0.74rem;
+  font-weight: 600;
+  gap: 0.5rem;
+  min-height: 2rem;
+  padding: 0.3rem 0.5rem;
+}
+
+.calendar-entry-form .calendar-entry-form__color-control input[type="color"] {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  height: 1.35rem;
+  min-height: 1.35rem;
+  padding: 0;
+  width: 1.75rem;
+}
+
+html[data-theme="dark"] .calendar-entry-form input,
+html[data-theme="dark"] .calendar-entry-form select,
+html[data-theme="dark"] .calendar-entry-form textarea,
+.taskboard-settings-root[data-theme="dark"] .calendar-entry-form input,
+.taskboard-settings-root[data-theme="dark"] .calendar-entry-form select,
+.taskboard-settings-root[data-theme="dark"] .calendar-entry-form textarea {
+  color-scheme: dark;
+}
+
+html[data-theme="light"] .calendar-entry-form input,
+html[data-theme="light"] .calendar-entry-form select,
+html[data-theme="light"] .calendar-entry-form textarea,
+.taskboard-settings-root[data-theme="light"] .calendar-entry-form input,
+.taskboard-settings-root[data-theme="light"] .calendar-entry-form select,
+.taskboard-settings-root[data-theme="light"] .calendar-entry-form textarea {
+  color-scheme: light;
+}
+
+.calendar-entry-form input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  background-color: var(--control-hover);
+  border-radius: 0.25rem;
+  opacity: 1;
+}
+
+.calendar-entry-form textarea {
+  min-height: 4.8rem;
+  resize: vertical;
+}
+
+.calendar-entry-form__checkbox {
+  align-content: end;
+  grid-template-columns: auto 1fr;
+}
+
+.calendar-entry-form__checkbox input {
+  accent-color: var(--control-active);
+  min-height: 1rem;
+  width: 1rem;
+}
+
+.calendar-entry-form__wide,
+.calendar-entry-form__error,
+.calendar-entry-form__actions {
+  grid-column: 1 / -1;
+}
+
+.calendar-entry-form__notice {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.72rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.calendar-entry-form__error {
+  color: var(--calendar-proof-danger);
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.calendar-entry-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
+.calendar-entry-form__action-spacer {
+  flex: 1 1 auto;
+}
+
+.calendar-entry-form__actions button {
+  gap: 0.35rem;
+}
+
+.calendar-entry-form__actions svg,
+.calendar-entry-form__delete-confirmation svg {
+  height: 0.85rem;
+  width: 0.85rem;
+}
+
+.calendar-entry-form__delete-confirmation {
+  align-items: center;
+  background: color-mix(in srgb, var(--calendar-proof-danger) 8%, var(--surface-subtle));
+  border: 1px solid color-mix(in srgb, var(--calendar-proof-danger) 45%, var(--border));
+  border-radius: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: space-between;
+  padding: 0.65rem;
+}
+
+.calendar-entry-form__delete-confirmation > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.calendar-entry-form__delete-confirmation > div:first-child {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.calendar-entry-form__delete-confirmation strong {
+  font-size: 0.78rem;
+}
+
+.calendar-entry-form__delete-confirmation span {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.72rem;
+}
+
+.calendar-entry-form__danger,
+.calendar-entry-form__danger-link {
+  border-color: color-mix(in srgb, var(--calendar-proof-danger) 52%, var(--border));
+  color: var(--calendar-proof-danger);
+}
+
+.calendar-entry-form__danger:hover,
+.calendar-entry-form__danger-link:hover {
+  background: color-mix(in srgb, var(--calendar-proof-danger) 12%, var(--control));
+  color: var(--calendar-proof-danger);
+}
+
+.calendar-entry-form__primary {
+  background: var(--control-active);
+  border-color: color-mix(in srgb, var(--control-active) 72%, var(--border));
+  color: var(--control-active-fg);
+  padding: 0 0.8rem;
+}
+
+.calendar-entry-form__secondary {
+  background: var(--control);
+  color: var(--foreground);
+  padding: 0 0.8rem;
+}
+
+.calendar-entry-form__primary:hover,
+.calendar-entry-form__secondary:hover,
+.calendar-entry-form__icon-button:hover {
+  background: var(--control-hover);
+  color: var(--foreground);
+}
+
+.calendar-entry-form__primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+[data-slot="popover-content"],
+[data-slot="select-content"],
+[data-slot="dropdown-menu-content"] {
+  background: var(--popover) !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--popover-shadow) !important;
+  color: var(--foreground) !important;
+}
+
+[data-slot="popover-content"] [data-slot="calendar"],
+[data-slot="popover-content"] [data-slot="input"],
+[data-slot="popover-content"] input,
+[data-slot="select-trigger"],
+[data-slot="dropdown-menu-item"],
+[data-slot="select-item"] {
+  background-color: var(--control) !important;
+  color: var(--foreground) !important;
+}
+
+[data-slot="popover-content"] [data-slot="input"]:focus,
+[data-slot="popover-content"] input:focus,
+[data-slot="select-trigger"]:focus {
+  background-color: var(--control-hover) !important;
+}
+
+[data-slot="select-content"] [data-slot="select-item"]:focus,
+[data-slot="dropdown-menu-content"] [data-slot="dropdown-menu-item"]:focus,
+[data-slot="popover-content"] button:hover {
+  background-color: var(--control-hover) !important;
+  color: var(--foreground) !important;
+}
+
+.calendar-proof-inspector__source {
+  align-items: center;
+  color: var(--calendar-proof-muted-text);
+  display: inline-flex;
+  font-weight: 700;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.taskboard-calendar-proof svg {
+  height: 1rem;
+  width: 1rem;
+}
+
+.taskboard-calendar-proof__workspace {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 42rem;
+  padding: 0.7rem;
+  position: relative;
+  z-index: 1;
+}
+
+.taskboard-calendar-proof__workspace--with-inspector {
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 20rem);
+}
+
+.taskboard-calendar-proof--embedded .taskboard-calendar-proof__workspace {
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+}
+
+.taskboard-calendar-proof__calendar {
+  min-width: 0;
+}
+
+.taskboard-calendar-proof__calendar .fc {
+  --fc-border-color: var(--calendar-proof-grid-line);
+  --fc-button-bg-color: var(--control);
+  --fc-button-border-color: var(--border);
+  --fc-button-text-color: var(--foreground);
+  --fc-event-resizer-thickness: 8px;
+  --fc-highlight-color: color-mix(in srgb, var(--control-active) 16%, transparent);
+  --fc-neutral-bg-color: color-mix(in srgb, var(--surface-subtle) 82%, transparent);
+  --fc-neutral-text-color: var(--calendar-proof-muted-text);
+  --fc-non-business-color: color-mix(in srgb, var(--surface-subtle) 38%, transparent);
+  --fc-now-indicator-color: var(--control-active);
+  --fc-page-bg-color: var(--calendar-proof-grid-bg);
+  --fc-today-bg-color: color-mix(in srgb, var(--control-active) 8%, transparent);
+  background: var(--calendar-proof-grid-bg);
+  color: var(--foreground);
+  font-size: 0.78rem;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-highlight {
+  background: color-mix(in srgb, var(--control-active) 18%, transparent);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--control-active) 78%, var(--border));
+}
+
+.taskboard-calendar-proof__calendar:not(.taskboard-calendar-proof__calendar--slot-selected) .fc .fc-highlight {
+  display: none;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-scrollgrid {
+  background: var(--calendar-proof-grid-bg);
+  border-color: var(--calendar-proof-grid-major);
+  border-radius: 0.45rem;
+  overflow: visible;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-scrollgrid,
+.taskboard-calendar-proof__calendar .fc .fc-scrollgrid table {
+  min-width: 0;
+  table-layout: fixed;
+  width: 100% !important;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-col-header-cell,
+.taskboard-calendar-proof__calendar .fc .fc-daygrid-day,
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-col {
+  min-width: 0;
+}
+
+.taskboard-calendar-proof__calendar .fc-theme-standard td,
+.taskboard-calendar-proof__calendar .fc-theme-standard th {
+  border-color: var(--calendar-proof-grid-line);
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-col-header-cell {
+  background: color-mix(in srgb, var(--surface-subtle) 72%, var(--calendar-proof-grid-bg));
+  border-color: var(--calendar-proof-grid-major);
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-col-header-cell-cushion,
+.taskboard-calendar-proof__calendar .fc .fc-daygrid-day-number,
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-axis-cushion,
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-slot-label-cushion {
+  color: var(--calendar-proof-muted-text);
+  font-weight: 550;
+  text-decoration: none;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-col-header-cell-cushion {
+  padding: 0.48rem 0.35rem;
+}
+
+.taskboard-calendar-proof__calendar[data-calendar-active-view="week"]
+  .fc-scrollgrid-section-body:has(.fc-daygrid-body)
+  > td,
+.taskboard-calendar-proof__calendar[data-calendar-active-view="day"]
+  .fc-scrollgrid-section-body:has(.fc-daygrid-body)
+  > td {
+  background: var(--calendar-proof-grid-bg);
+  box-shadow: 0 1px 0 var(--calendar-proof-grid-major);
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-daygrid-day-number {
+  padding: 0.35rem 0.42rem;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-daygrid-day.fc-day-today,
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-col.fc-day-today {
+  background: var(--fc-today-bg-color);
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-daygrid-day.calendar-proof-day--selected {
+  background: color-mix(in srgb, var(--control-active) 14%, var(--calendar-proof-grid-surface));
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--control-active) 78%, var(--border));
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-slot {
+  border-color: var(--calendar-proof-grid-line);
+  height: 0.95rem;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-slot-minor {
+  border-top-color: color-mix(in srgb, var(--calendar-proof-grid-line) 55%, transparent);
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-slot-label-cushion {
+  font-size: 0.68rem;
+  padding: 0 0.45rem;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-daygrid-more-link {
+  color: var(--foreground);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-scroller {
+  scrollbar-color: color-mix(in srgb, var(--foreground) 24%, transparent) transparent;
+  scrollbar-width: thin;
+}
+
+/* The header and all-day rows keep a scrollbar gutter so their columns line
+   up with the time grid; only the time grid shows its scrollbar. */
+.taskboard-calendar-proof__calendar .fc .fc-scroller:not(.fc-scroller-liquid-absolute) {
+  scrollbar-color: transparent transparent;
+}
+
+.taskboard-calendar-proof__empty-note {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.9rem;
+  font-weight: 750;
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+}
+
+.taskboard-calendar-proof__filter-note {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.82rem;
+  font-weight: 800;
+  margin: -0.35rem 0 0;
+}
+
+.taskboard-calendar-proof__week-note {
+  display: none;
+}
+
+.taskboard-calendar-proof__focus-note {
+  align-items: center;
+  background: color-mix(in srgb, var(--surface-subtle) 88%, var(--panel));
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--calendar-proof-muted-text);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  font-weight: 800;
+  gap: 0.45rem;
+  margin: -0.25rem 0 0;
+  padding: 0.55rem 0.65rem;
+}
+
+.taskboard-calendar-proof__focus-note span {
+  min-width: 0;
+}
+
+.taskboard-calendar-proof__focus-note {
+  background: color-mix(in srgb, var(--control-active) 8%, var(--surface-subtle));
+  color: var(--foreground);
+}
+
+.taskboard-calendar-proof__focus-note > span {
+  flex: 1 1 16rem;
+}
+
+.taskboard-calendar-proof__focus-note button {
+  background: var(--control);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--foreground);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 850;
+  min-height: 1.8rem;
+  padding: 0 0.6rem;
+}
+
+.taskboard-calendar-proof__focus-note button:hover {
+  background: var(--control-hover);
+}
+
+.calendar-proof-sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.calendar-proof-filters {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.taskboard-calendar-proof--embedded .calendar-proof-filters {
+  align-items: center;
+  gap: 0.24rem;
+  justify-content: flex-end;
+  width: auto;
+}
+
+.calendar-proof-filters__label {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.calendar-proof-filters__buttons,
+.calendar-proof-filter-menu summary {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  display: flex;
+  min-width: 0;
+}
+
+.taskboard-calendar-proof--embedded .calendar-proof-filters__buttons,
+.taskboard-calendar-proof--embedded .calendar-proof-filter-menu summary {
+  border-radius: 0.5rem;
+}
+
+.calendar-proof-filter-menu {
+  min-width: 0;
+  position: relative;
+  width: auto;
+}
+
+.calendar-proof-filter-menu summary {
+  align-items: center;
+  color: var(--foreground);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--calendar-proof-control-font);
+  font-weight: 600;
+  gap: 0.4rem;
+  justify-content: space-between;
+  list-style: none;
+  line-height: 1rem;
+  min-height: var(--calendar-proof-control-height);
+  min-width: 5.75rem;
+  padding: 0 0.58rem;
+  white-space: nowrap;
+}
+
+.taskboard-calendar-proof--embedded .calendar-proof-filter-menu summary {
+  width: auto;
+}
+
+.calendar-proof-filter-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.calendar-proof-filter-menu summary::after {
+  border-left: 0.28rem solid transparent;
+  border-right: 0.28rem solid transparent;
+  border-top: 0.34rem solid currentColor;
+  content: "";
+  opacity: 0.72;
+}
+
+.calendar-proof-filter-menu summary:hover {
+  background: var(--control-hover);
+  border-color: color-mix(in srgb, var(--border) 70%, transparent);
+  color: var(--foreground);
+}
+
+.calendar-proof-filter-menu[open] summary {
+  background: var(--control-active);
+  border-color: color-mix(in srgb, var(--control-active) 72%, var(--border));
+  color: var(--control-active-fg);
+}
+
+.calendar-proof-filter-menu__panel {
+  background: var(--popover);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  box-shadow: var(--popover-shadow);
+  display: grid;
+  gap: 0.28rem;
+  min-width: 12rem;
+  padding: 0.35rem;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.3rem);
+  z-index: 40;
+}
+
+.calendar-proof-filter-menu__panel > div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.calendar-proof-filter-menu__option {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.35rem;
+  color: var(--foreground);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 500;
+  justify-content: space-between;
+  min-height: 1.85rem;
+  padding: 0 0.5rem;
+  text-align: left;
+}
+
+.calendar-proof-filter-menu__option:hover {
+  background: var(--control-hover);
+  border-color: color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+.calendar-proof-filter-menu__option.is-active {
+  background: var(--control-active);
+  border-color: color-mix(in srgb, var(--control-active) 72%, var(--border));
+  color: var(--control-active-fg);
+}
+
+.calendar-proof-filters__count {
+  align-items: center;
+  background: transparent;
+  border-left: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  display: inline-flex;
+  font-size: 0.6rem;
+  justify-content: center;
+  line-height: 1;
+  min-width: auto;
+  opacity: 0.74;
+  padding: 0 0 0 0.32rem;
+}
+
+.calendar-proof-filters__toggle {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  color: var(--foreground);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 500;
+  gap: 0.4rem;
+  min-height: 1.85rem;
+  padding: 0 0.5rem;
+  white-space: nowrap;
+}
+
+.taskboard-calendar-proof--embedded .calendar-proof-filters__toggle {
+  font-size: 0.72rem;
+  min-height: var(--calendar-proof-control-height);
+  padding: 0 0.5rem;
+}
+
+.calendar-proof-filters__toggle input {
+  accent-color: var(--control-active);
+  height: 0.9rem;
+  width: 0.9rem;
+}
+
+.taskboard-calendar-proof button:focus-visible,
+.taskboard-calendar-proof a:focus-visible,
+.taskboard-calendar-proof select:focus-visible,
+.calendar-proof-filter-menu summary:focus-visible,
+.calendar-proof-filters__toggle:focus-within {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-event:focus-visible {
+  outline-offset: -2px;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-event:focus-visible .calendar-proof-event {
+  box-shadow:
+    0 0 0 2px var(--focus-ring),
+    0 2px 5px color-mix(in srgb, #000 24%, transparent);
+}
+
+.calendar-proof-header {
+  align-items: center;
+  display: flex;
+  gap: 0.38rem;
+  justify-content: space-between;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0 0 0.55rem;
+}
+
+[data-testid="taskboard-calendar-toolbar-host"] {
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+[data-testid="taskboard-calendar-toolbar-host"]:empty {
+  display: none;
+}
+
+.taskboard-calendar-proof--embedded .calendar-proof-header,
+.taskboard-calendar-proof__inline-toolbar .calendar-proof-header {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.calendar-proof-header button,
+.calendar-proof-inspector__primary {
+  align-items: center;
+  background: var(--control);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  box-shadow: var(--control-shadow);
+  color: var(--foreground);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--calendar-proof-control-font);
+  font-weight: 600;
+  gap: 0.28rem;
+  line-height: 1rem;
+  min-height: var(--calendar-proof-control-height);
+  padding: 0 0.54rem;
+}
+
+.calendar-proof-header button:hover,
+.calendar-proof-inspector__primary:hover {
+  background: var(--control-hover);
+  box-shadow: var(--control-shadow-hover);
+}
+
+.calendar-proof-header button.is-active,
+.calendar-proof-inspector__primary {
+  background: var(--control-active);
+  border-color: color-mix(in srgb, var(--control-active) 72%, var(--border));
+  color: var(--control-active-fg);
+}
+
+.calendar-proof-header__nav,
+.calendar-proof-header__views,
+.calendar-proof-header__title {
+  align-items: center;
+  display: flex;
+  gap: 0.24rem;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.calendar-proof-header__nav {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.calendar-proof-header__views {
+  flex: 0 0 auto;
+}
+
+.calendar-proof-header__title {
+  color: var(--calendar-proof-muted-text);
+  flex: 1 1 auto;
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-left: 0.12rem;
+  min-width: 7rem;
+}
+
+.taskboard-calendar-proof--embedded .calendar-proof-header__title,
+.taskboard-calendar-proof__inline-toolbar .calendar-proof-header__title {
+  font-size: 0.72rem;
+}
+
+.calendar-proof-header__title span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-event.taskboard-calendar-event-shell,
+.taskboard-calendar-proof__calendar .fc .fc-event.taskboard-calendar-event-shell:hover,
+.taskboard-calendar-proof__calendar .fc .fc-event.taskboard-calendar-event-shell:focus {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: inherit;
+  cursor: pointer;
+  margin: 1px 2px;
+  padding: 0;
+  text-decoration: none;
+}
+
+.taskboard-calendar-proof__calendar .fc .taskboard-calendar-event-shell .fc-event-main {
+  color: inherit;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-event.taskboard-calendar-event-shell {
+  min-height: 1.35rem;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-daygrid-event.taskboard-calendar-event-shell {
+  display: block;
+  min-height: 1.4rem;
+  white-space: nowrap;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-daygrid-event.taskboard-calendar-event-shell .calendar-proof-event {
+  width: 100%;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-event-mirror.taskboard-calendar-event-shell {
+  opacity: 0.78;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-event-resizer {
+  display: block;
+  opacity: 0.72;
+  touch-action: none;
+  transition: opacity 100ms ease;
+  z-index: 8;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-event:hover .fc-event-resizer,
+.taskboard-calendar-proof__calendar .fc .fc-event:focus-within .fc-event-resizer,
+.taskboard-calendar-proof__calendar .fc .fc-event-selected .fc-event-resizer {
+  opacity: 1;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-event .fc-event-resizer-start,
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-event .fc-event-resizer-end {
+  cursor: ns-resize;
+  height: 0.72rem;
+  left: 0.3rem;
+  right: 0.3rem;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-event .fc-event-resizer-start::after,
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-event .fc-event-resizer-end::after {
+  background: color-mix(in srgb, var(--foreground) 82%, var(--calendar-proof-event-surface));
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--calendar-proof-event-surface) 72%, transparent);
+  content: "";
+  height: 3px;
+  left: 24%;
+  position: absolute;
+  right: 24%;
+  top: calc(50% - 1.5px);
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-daygrid-event .fc-event-resizer-start,
+.taskboard-calendar-proof__calendar .fc .fc-daygrid-event .fc-event-resizer-end {
+  bottom: 0.18rem;
+  cursor: ew-resize;
+  top: 0.18rem;
+  width: 0.7rem;
+}
+
+.calendar-proof-event {
+  --calendar-proof-event-accent: var(--task-accent-color, var(--control-active));
+  --task-accent-color: var(--calendar-proof-event-accent);
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--calendar-proof-event-accent) 7%, transparent),
+      transparent 34%
+    ),
+    var(--calendar-proof-event-surface);
+  border: 1px solid color-mix(in srgb, var(--calendar-proof-event-accent) 24%, var(--border));
+  border-left: 2px solid var(--calendar-proof-event-accent);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px color-mix(in srgb, #000 16%, transparent);
+  color: var(--calendar-proof-event-text);
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 0.06rem;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  padding: 0.14rem 0.3rem;
+  position: relative;
+}
+
+.calendar-proof-event__resize-handle {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  outline: none;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+  z-index: 4;
+}
+
+.calendar-proof-event__resize-handle:focus-visible {
+  background: color-mix(in srgb, var(--calendar-proof-event-accent) 18%, transparent);
+  border: 1px solid var(--focus-ring);
+  clip: auto;
+  height: 1rem;
+  margin: 0;
+  overflow: visible;
+  pointer-events: auto;
+  width: 1.5rem;
+  box-shadow: inset 0 0 0 1px var(--focus-ring);
+}
+
+.calendar-proof-event__resize-handle--start-time:focus-visible {
+  left: calc(50% - 0.75rem);
+  top: 0;
+}
+
+.calendar-proof-event__resize-handle--end-time:focus-visible {
+  bottom: 0;
+  left: calc(50% - 0.75rem);
+}
+
+.calendar-proof-event__resize-handle--start-date:focus-visible {
+  left: 0;
+  top: calc(50% - 0.5rem);
+}
+
+.calendar-proof-event__resize-handle--end-date:focus-visible {
+  right: 0;
+  top: calc(50% - 0.5rem);
+}
+
+.taskboard-calendar-proof__resize-error {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: var(--danger-fg);
+  font-size: 0.7rem;
+  line-height: 1.35;
+  margin: 0.35rem 0.55rem 0;
+  padding: 0.45rem 0.6rem;
+}
+
+.calendar-resize-dialog__backdrop {
+  align-items: center;
+  background: color-mix(in srgb, #000 48%, transparent);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 1rem;
+  position: fixed;
+  z-index: 120;
+}
+
+.calendar-resize-dialog {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  box-shadow: var(--shadow);
+  color: var(--foreground);
+  max-width: 28rem;
+  padding: 1rem;
+  width: 100%;
+}
+
+.calendar-resize-dialog__eyebrow {
+  color: var(--muted);
+  font-size: 0.64rem;
+  font-weight: 600;
+  margin: 0 0 0.2rem;
+  text-transform: uppercase;
+}
+
+.calendar-resize-dialog h2 {
+  font-size: 0.95rem;
+  font-weight: 650;
+  margin: 0;
+}
+
+.calendar-resize-dialog > p:not(.calendar-resize-dialog__eyebrow) {
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  margin: 0.45rem 0 0;
+}
+
+.calendar-resize-dialog__range {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  color: var(--foreground) !important;
+  padding: 0.5rem 0.6rem;
+}
+
+.calendar-resize-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+  margin-top: 0.8rem;
+}
+
+.calendar-resize-dialog__actions button {
+  background: var(--control);
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  color: var(--foreground);
+  font-size: 0.7rem;
+  font-weight: 550;
+  min-height: 2rem;
+  padding: 0.35rem 0.65rem;
+}
+
+.calendar-resize-dialog__actions button:first-child,
+.calendar-resize-dialog__actions button:nth-child(2) {
+  background: var(--control-active);
+  color: var(--control-active-fg);
+}
+
+.calendar-resize-dialog__actions button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.calendar-resize-dialog__actions button:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-event:hover .calendar-proof-event {
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--calendar-proof-event-accent) 10%, transparent),
+      transparent 38%
+    ),
+    color-mix(in srgb, var(--surface-hover) 56%, var(--calendar-proof-event-surface));
+  border-color: color-mix(in srgb, var(--calendar-proof-event-accent) 38%, var(--border));
+  box-shadow: 0 2px 5px color-mix(in srgb, #000 20%, transparent);
+}
+
+.calendar-proof-event__meta {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.24rem;
+  min-width: 0;
+  order: 1;
+}
+
+.calendar-proof-event__badge {
+  align-self: flex-start;
+  background: color-mix(in srgb, var(--calendar-proof-event-accent) 7%, var(--surface-subtle));
+  border: 1px solid color-mix(in srgb, var(--calendar-proof-event-accent) 20%, transparent);
+  border-radius: 999px;
+  color: var(--calendar-proof-event-muted);
+  flex: 0 1 auto;
+  font-size: 0.52rem;
+  font-weight: 500;
+  line-height: 1.1;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 0.08rem 0.3rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-proof-event__time {
+  color: var(--calendar-proof-event-muted);
+  flex: 1 1 auto;
+  font-size: 0.58rem;
+  font-weight: 500;
+  line-height: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-proof-event__time--compact {
+  display: none;
+}
+
+.calendar-proof-event__title {
+  color: var(--calendar-proof-event-text);
+  display: -webkit-box;
+  font-size: 0.69rem;
+  font-weight: 550;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-height: 1.15;
+  order: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.calendar-proof-event[data-calendar-view="month"],
+.calendar-proof-event[data-calendar-all-day="true"][data-calendar-view="week"],
+.calendar-proof-event[data-calendar-all-day="true"][data-calendar-view="day"] {
+  align-items: center;
+  flex-direction: row;
+  gap: 0.28rem;
+  min-width: 0;
+  padding-block: 0.1rem;
+}
+
+.calendar-proof-event[data-calendar-view="month"] .calendar-proof-event__meta,
+.calendar-proof-event[data-calendar-all-day="true"] .calendar-proof-event__meta {
+  flex: 0 1 auto;
+  max-width: 58%;
+}
+
+.calendar-proof-event[data-calendar-view="month"] .calendar-proof-event__badge {
+  display: none;
+}
+
+.calendar-proof-event[data-calendar-view="month"] .calendar-proof-event__time {
+  flex: 0 0 auto;
+  font-size: 0.58rem;
+}
+
+.calendar-proof-event[data-calendar-view="month"] .calendar-proof-event__title,
+.calendar-proof-event[data-calendar-all-day="true"] .calendar-proof-event__title {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-proof-event[data-calendar-all-day="true"][data-calendar-view="week"]
+  .calendar-proof-event__time,
+.calendar-proof-event[data-calendar-all-day="true"][data-calendar-view="day"]
+  .calendar-proof-event__time {
+  display: none;
+}
+
+.taskboard-calendar-proof__calendar[data-calendar-active-view="week"]
+  .fc-daygrid-event.taskboard-calendar-event-shell,
+.taskboard-calendar-proof__calendar[data-calendar-active-view="day"]
+  .fc-daygrid-event.taskboard-calendar-event-shell {
+  max-height: 1.8rem;
+  min-height: 1.45rem;
+  overflow: hidden;
+}
+
+.calendar-proof-event--sample {
+  --calendar-proof-event-accent: #3b82f6;
+}
+
+.calendar-proof-event--stored {
+  --calendar-proof-event-accent: #64748b;
+}
+
+.calendar-proof-event--task {
+  --calendar-proof-event-accent: #d97706;
+}
+
+.calendar-proof-event--converted {
+  --calendar-proof-event-accent: #0f766e;
+}
+
+/* Work windows: a striped band behind the work in Week and Day (split at
+ * midnight by the time grid), one chip on its start night in Month. */
+.taskboard-calendar-proof__calendar {
+  --calendar-window: #d9774a;
+  --calendar-window-text: color-mix(in srgb, var(--calendar-window) 72%, var(--foreground));
+  --calendar-window-stripe: color-mix(in srgb, var(--calendar-window) 16%, transparent);
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-bg-event.calendar-window-band {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--calendar-window-stripe) 0,
+    var(--calendar-window-stripe) 7px,
+    transparent 7px,
+    transparent 14px
+  );
+  border: 1px dashed var(--calendar-window);
+  border-radius: 0.3rem;
+  inset-inline: 2px;
+  opacity: 1;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-bg-event.calendar-window-band:not(.fc-event-start) {
+  border-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-bg-event.calendar-window-band:not(.fc-event-end) {
+  border-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-bg-event.calendar-window-band--focused {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.calendar-window-band__content {
+  height: 100%;
+  position: relative;
+}
+
+.calendar-window-band__label {
+  color: var(--calendar-window-text);
+  cursor: pointer;
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 0.15rem 0.35rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-window-band__label:hover {
+  text-decoration: underline;
+}
+
+.calendar-window-band__label:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.calendar-window-chip {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--calendar-window-stripe) 0,
+    var(--calendar-window-stripe) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  border: 1px dashed var(--calendar-window);
+  border-radius: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0.18rem 0.4rem;
+  width: 100%;
+}
+
+.calendar-window-chip[data-calendar-focused="true"] {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.calendar-window-chip__title {
+  color: var(--calendar-window-text);
+  font-size: 0.66rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-window-chip__fill {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.62rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Work inside an outage is tinted with its outage's color. */
+.calendar-proof-event[data-calendar-outage="work"] {
+  background: color-mix(in srgb, var(--calendar-proof-event-accent) 22%, var(--calendar-proof-event-surface));
+  border-color: color-mix(in srgb, var(--calendar-proof-event-accent) 55%, var(--border));
+}
+
+/* The viewer's own events laid over the Outages calendar. */
+.calendar-proof-event[data-calendar-overlay] {
+  --calendar-proof-event-accent: color-mix(in srgb, var(--foreground) 45%, transparent);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--calendar-proof-event-surface));
+  border: 1px dashed color-mix(in srgb, var(--foreground) 40%, transparent);
+  box-shadow: none;
+  color: var(--calendar-proof-muted-text);
+}
+
+/* An overnight Day: a line at midnight and a faint tint after it. */
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-slot-lane.calendar-slot--next-day {
+  background: color-mix(in srgb, var(--foreground) 3%, transparent);
+}
+
+.taskboard-calendar-proof__calendar .fc .fc-timegrid-slot.calendar-slot--midnight {
+  border-top: 2px solid color-mix(in srgb, var(--foreground) 45%, transparent);
+}
+
+.taskboard-calendar-proof__calendar .fc,
+.taskboard-calendar-proof__calendar .fc button,
+.taskboard-calendar-proof__calendar .fc a {
+  font-family: inherit;
+  font-weight: 500 !important;
+}
+
+@container (max-width: 14rem) {
+  .calendar-proof-event__badge {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .calendar-proof-event__time {
+    font-size: 0.66rem;
+  }
+
+  .calendar-proof-event__time--full {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .calendar-proof-event__time--compact {
+    display: inline-flex;
+  }
+}
+
+.calendar-proof-inspector {
+  background: color-mix(in srgb, var(--panel) 96%, var(--surface-raised));
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  box-shadow: var(--panel-shadow);
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  min-width: 0;
+  padding: 0.85rem;
+}
+
+.calendar-proof-inspector__empty {
+  align-items: center;
+  color: var(--calendar-proof-muted-text);
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  gap: 0.45rem;
+  justify-content: center;
+  min-height: 100%;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.calendar-proof-inspector__empty svg {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-sizing: content-box;
+  color: var(--foreground);
+  height: 1.3rem;
+  padding: 0.7rem;
+  width: 1.3rem;
+}
+
+.calendar-proof-inspector__empty h2 {
+  color: var(--foreground);
+  font-size: 1.05rem;
+  margin: 0.25rem 0 0;
+}
+
+.calendar-proof-inspector__empty p {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.84rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.calendar-proof-inspector__hidden-label {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.calendar-proof-inspector__eyebrow {
+  align-items: center;
+  display: flex;
+  gap: 0.4rem;
+}
+
+.calendar-proof-inspector__header {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.calendar-proof-inspector__status {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--foreground);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  font-weight: 600;
+  gap: 0.4rem;
+  justify-content: space-between;
+  padding: 0.55rem 0.65rem;
+}
+
+.calendar-proof-inspector__status span:first-child {
+  border-radius: 999px;
+  padding: 0.18rem 0.45rem;
+  text-transform: uppercase;
+}
+
+.calendar-proof-inspector__status--sample span:first-child {
+  background: color-mix(in srgb, #2563eb 20%, transparent);
+}
+
+.calendar-proof-inspector__status--stored span:first-child {
+  background: color-mix(in srgb, #64748b 22%, transparent);
+}
+
+.calendar-proof-inspector__status--task span:first-child {
+  background: color-mix(in srgb, #b45309 20%, transparent);
+}
+
+.calendar-proof-inspector__status--converted span:first-child {
+  background: color-mix(in srgb, #0f766e 22%, transparent);
+}
+
+.calendar-proof-inspector h2 {
+  font-size: 1.1rem;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.calendar-proof-inspector__summary {
+  background: transparent;
+  border: 0;
+  border-left: 3px solid color-mix(in srgb, var(--control-active) 54%, var(--border));
+  border-radius: 0;
+  color: var(--foreground);
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.35;
+  margin: 0;
+  padding: 0.1rem 0 0.1rem 0.65rem;
+}
+
+.calendar-proof-inspector dl {
+  display: grid;
+  gap: 0.45rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+}
+
+.calendar-proof-inspector dl div {
+  background: color-mix(in srgb, var(--surface-subtle) 86%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.55rem;
+}
+
+.calendar-proof-inspector dt {
+  color: var(--calendar-proof-muted-text);
+  font-size: 0.68rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.calendar-proof-inspector dd {
+  color: var(--foreground);
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.calendar-proof-inspector__actions {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.calendar-proof-inspector__primary {
+  justify-content: center;
+  min-height: 2.15rem;
+  text-decoration: none;
+  width: 100%;
+}
+
+.calendar-proof-inspector__secondary {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--foreground);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  min-height: 2.05rem;
+  padding: 0 0.75rem;
+}
+
+.calendar-proof-inspector__secondary:hover {
+  background: var(--surface-hover);
+}
+
+.calendar-proof-inspector__primary svg {
+  height: 1.05rem;
+  width: 1.05rem;
+}
+
+.calendar-proof-inspector__error {
+  color: var(--calendar-proof-danger);
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.calendar-proof-inspector__source {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  justify-content: flex-start;
+  min-height: 2.5rem;
+  padding: 0 0.7rem;
+  overflow-wrap: anywhere;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell [data-testid="board-header"] {
+  padding: 5px 8px;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-primary-nav,
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-header-tools {
+  gap: 4px;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-bucket-header {
+  padding: 7px 9px;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-bucket-body {
+  gap: 6px;
+  min-height: 92px;
+  padding: 6px;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-card,
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-section-card,
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-meta-tile {
+  padding: 7px;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-add-button {
+  padding-block: 2px;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-popover {
+  gap: 4px !important;
+  padding: 4px !important;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-popover .ui-menu-item {
+  min-height: 28px;
+  padding-bottom: 3px;
+  padding-top: 3px;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-popover > .grid,
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-popover .grid.content-start {
+  gap: 4px !important;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-popover .border-b {
+  padding-bottom: 4px !important;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-calendar-proof--embedded {
+  gap: 4px;
+  padding: 2px;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-calendar-proof__controls,
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-calendar-proof--embedded .taskboard-calendar-proof__controls,
+html:is([data-density="standard"], [data-density="tight"]) .calendar-proof-header,
+html:is([data-density="standard"], [data-density="tight"]) .calendar-proof-header__nav,
+html:is([data-density="standard"], [data-density="tight"]) .calendar-proof-header__views {
+  gap: 0.2rem;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-calendar-proof__workspace {
+  gap: 0.4rem;
+  padding: 0.4rem;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .calendar-proof-filter-menu__panel {
+  gap: 0.12rem;
+  padding: 0.25rem;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .calendar-proof-filter-menu__panel > div {
+  gap: 0.08rem;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .calendar-proof-filter-menu__option {
+  min-height: 1.55rem;
+  padding-inline: 0.4rem;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .calendar-proof-inspector,
+html:is([data-density="standard"], [data-density="tight"]) .calendar-entry-form {
+  gap: 0.45rem;
+  padding: 0.55rem;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .calendar-entry-form__grid {
+  gap: 0.45rem;
+}
+
+html[data-density="tight"] .taskboard-shell [data-testid="board-header"] {
+  padding: 4px 7px;
+}
+
+html[data-density="tight"] .taskboard-shell .taskboard-primary-nav,
+html[data-density="tight"] .taskboard-shell .taskboard-header-tools {
+  gap: 3px;
+}
+
+html[data-density="tight"] .taskboard-shell .taskboard-bucket-header {
+  padding: 6px 8px;
+}
+
+html[data-density="tight"] .taskboard-shell .taskboard-bucket-body {
+  gap: 5px;
+  min-height: 84px;
+  padding: 5px;
+}
+
+html[data-density="tight"] .taskboard-shell .taskboard-card,
+html[data-density="tight"] .taskboard-shell .taskboard-section-card,
+html[data-density="tight"] .taskboard-shell .taskboard-meta-tile {
+  padding: 6px;
+}
+
+html[data-density="tight"] .taskboard-shell .taskboard-add-button {
+  padding-block: 1px;
+}
+
+html[data-density="tight"] .taskboard-shell .taskboard-popover {
+  gap: 3px !important;
+  padding: 3px !important;
+}
+
+html[data-density="tight"] .taskboard-shell .taskboard-popover .ui-menu-item {
+  min-height: 26px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+
+html[data-density="tight"] .taskboard-calendar-proof--embedded {
+  gap: 3px;
+  padding: 1px;
+}
+
+html[data-density="tight"] .taskboard-calendar-proof__workspace {
+  gap: 0.3rem;
+  padding: 0.3rem;
+}
+
+html[data-density="tight"] .calendar-proof-inspector,
+html[data-density="tight"] .calendar-entry-form,
+html[data-density="tight"] .calendar-entry-form__grid {
+  gap: 0.35rem;
+}
+
+html[data-density="tight"] .calendar-proof-inspector,
+html[data-density="tight"] .calendar-entry-form {
+  padding: 0.45rem;
+}
+
+@media (max-width: 920px) {
+  .taskboard-calendar-proof__masthead {
+    grid-template-columns: 1fr;
+  }
+
+  .taskboard-calendar-proof__controls {
+    grid-template-columns: minmax(0, 1fr) max-content max-content;
+  }
+
+  .taskboard-calendar-proof--embedded .taskboard-calendar-proof__controls {
+    align-items: center;
+    grid-template-columns: minmax(0, 1fr) max-content max-content;
+  }
+
+  .taskboard-calendar-proof__workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-proof-inspector {
+    min-height: 0;
+  }
+
+  .calendar-proof-inspector--hidden,
+  .calendar-proof-inspector--selected,
+  .calendar-entry-form--sidebar {
+    order: -1;
+  }
+
+  .calendar-entry-form--sidebar {
+    max-height: none;
+    position: static;
+  }
+
+  .calendar-proof-header {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .calendar-proof-header__nav {
+    flex: 1 1 18rem;
+  }
+
+  .calendar-proof-header__views {
+    flex: 1 1 18rem;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .taskboard-primary-nav,
+  .taskboard-header-tools {
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+
+  .calendar-proof-page {
+    padding: 0.55rem;
+  }
+
+  .taskboard-calendar-proof {
+    gap: 0.6rem;
+  }
+
+  .taskboard-calendar-proof__masthead,
+  .taskboard-calendar-proof__workspace {
+    padding: 0.6rem;
+  }
+
+  .taskboard-calendar-proof--embedded .taskboard-calendar-proof__masthead {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+
+  .taskboard-calendar-proof__controls,
+  .taskboard-calendar-proof--embedded .taskboard-calendar-proof__controls {
+    align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
+    min-width: max-content;
+  }
+
+  .calendar-proof-entry-actions {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .calendar-proof-entry-actions .calendar-proof-new-entry-button:not(.calendar-proof-clear-slot-button) {
+    flex: 0 0 auto;
+  }
+
+  .calendar-entry-form__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .calendar-entry-form__actions {
+    justify-content: stretch;
+  }
+
+  .calendar-entry-form__primary,
+  .calendar-entry-form__secondary {
+    flex: 1 1 8rem;
+  }
+
+  .calendar-proof-header,
+  .calendar-proof-header__nav,
+  .taskboard-calendar-proof__inline-toolbar .calendar-proof-header__views {
+    flex-wrap: nowrap;
+    width: max-content;
+  }
+
+  .taskboard-calendar-proof__inline-toolbar .calendar-proof-header__views {
+    overflow: visible;
+  }
+
+  .calendar-proof-filter-menu {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .taskboard-calendar-proof--embedded .calendar-proof-filter-menu summary {
+    width: auto;
+  }
+
+  .taskboard-calendar-proof--embedded .calendar-proof-filters {
+    align-items: center;
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    width: auto;
+  }
+
+  .taskboard-calendar-proof--embedded .calendar-proof-filters__label,
+  .taskboard-calendar-proof--embedded .taskboard-calendar-proof__context span {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .taskboard-calendar-proof--embedded .calendar-proof-filters__toggle {
+    align-self: flex-start;
+    justify-content: flex-start;
+    width: auto;
+  }
+
+  .calendar-proof-filter-menu__panel {
+    left: 0;
+    right: auto;
+    width: min(100%, 18rem);
+  }
+
+  .calendar-proof-filters__count {
+    border-left: 0;
+    opacity: 0.82;
+    padding-left: 0;
+  }
+
+  .taskboard-calendar-proof__focus-note button {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .taskboard-calendar-proof__focus-note > span {
+    flex-basis: 100%;
+  }
+
+  .taskboard-calendar-proof__week-note {
+    background: color-mix(in srgb, var(--control-active) 10%, var(--surface-subtle));
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    color: var(--foreground);
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.35;
+    margin: 0 0 0.5rem;
+    padding: 0.55rem 0.65rem;
+  }
+
+  .calendar-proof-inspector dl {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* The header search has its own clear button; hide the browser's duplicate. */
+#taskboard-header-search::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Phones: one bucket per row should use the full width instead of a fixed
+   desktop column width. The inline grid template is replaced only here. */
+@media (max-width: 639px) {
+  .taskboard-shell .taskboard-bucket-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Notes workspace (/notes): folders, list, and editor, laid out by the width
+   of the Notes frame (a container, so the task inspector beside it counts).
+   960px and wider: all three panes with draggable separators; 680-959px: the
+   list or the folders beside the editor; narrower: one pane at a time
+   (data-pane on .notes-workspace). The thresholds mirror NOTES_LAYOUT in
+   src/lib/notes-layout.ts.
+   ------------------------------------------------------------------------- */
+
+.taskboard-notes-stage {
+  background: var(--panel);
+}
+
+.notes-frame {
+  container: notes-frame / inline-size;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+}
+
+.notes-workspace {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-areas: "sidebar sep-sidebar list sep-list editor";
+  grid-template-columns:
+    var(--notes-sidebar-width, 224px) 1px var(--notes-list-width, 300px) 1px
+    minmax(0, 1fr);
+  height: calc(100dvh - var(--taskboard-sticky-header-offset, 7rem) - 24px);
+  min-height: 28rem;
+  min-width: 0;
+}
+
+.notes-sidebar {
+  grid-area: sidebar;
+}
+
+.notes-list-pane {
+  grid-area: list;
+}
+
+.notes-editor-pane {
+  grid-area: editor;
+}
+
+/* A 1px border line with a wider invisible grab area. */
+.notes-separator {
+  cursor: col-resize;
+  margin-inline: -5px;
+  position: relative;
+  touch-action: none;
+  width: 11px;
+  z-index: 3;
+}
+
+.notes-separator[data-column="sidebar"] {
+  grid-area: sep-sidebar;
+}
+
+.notes-separator[data-column="list"] {
+  grid-area: sep-list;
+}
+
+.notes-separator::before {
+  background: var(--border);
+  content: "";
+  inset-block: 0;
+  left: 5px;
+  position: absolute;
+  transition: background-color 120ms, left 120ms, width 120ms;
+  width: 1px;
+}
+
+.notes-separator:hover::before,
+.notes-separator:focus-visible::before,
+.notes-separator[data-dragging="true"]::before {
+  background: var(--focus-ring);
+  left: 4px;
+  width: 3px;
+}
+
+.notes-separator:focus-visible {
+  outline: none;
+}
+
+body.notes-resizing,
+body.notes-resizing * {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+.notes-sidebar,
+.notes-list-pane,
+.notes-editor-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.notes-sidebar {
+  gap: 0.75rem;
+  overflow-y: auto;
+  padding: 8px 6px;
+}
+
+.notes-new-button {
+  align-items: center;
+  display: inline-flex;
+  font-size: var(--tb-text-11px);
+  font-weight: 600;
+  gap: 6px;
+  justify-content: center;
+  min-height: var(--tb-compact-control-height);
+  border-radius: 8px;
+}
+
+.notes-nav-group {
+  display: grid;
+  gap: 1px;
+}
+
+.notes-nav-heading {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-size: var(--tb-text-10px);
+  font-weight: 700;
+  justify-content: space-between;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  text-transform: uppercase;
+}
+
+.notes-nav-empty {
+  color: var(--muted);
+  font-size: var(--tb-text-11px);
+  margin: 0;
+  padding: 2px 8px;
+}
+
+.notes-nav-item {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  color: var(--foreground);
+  display: flex;
+  flex: 1 1 auto;
+  font-size: var(--tb-text-11px);
+  gap: 8px;
+  min-height: 28px;
+  min-width: 0;
+  padding: 3px 8px;
+  text-align: left;
+  width: 100%;
+}
+
+.notes-nav-item:hover {
+  background: var(--surface-hover);
+}
+
+.notes-nav-item[data-active="true"] {
+  background: var(--chip);
+  font-weight: 600;
+}
+
+.notes-nav-count {
+  color: var(--muted);
+  font-size: var(--tb-text-10px);
+  margin-left: auto;
+}
+
+.notes-nav-row {
+  align-items: center;
+  display: flex;
+  gap: 1px;
+  min-width: 0;
+}
+
+.notes-nav-toggle,
+.notes-nav-toggle-spacer {
+  flex: none;
+  height: 24px;
+  width: 18px;
+}
+
+.notes-nav-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  color: var(--muted);
+  display: inline-flex;
+  justify-content: center;
+}
+
+.notes-nav-toggle:hover {
+  background: var(--surface-hover);
+  color: var(--foreground);
+}
+
+/* Notes spacing for the shared inline name field. */
+.notes-inline-name {
+  padding: 0.15rem 0 0.15rem 1.2rem;
+}
+
+.notes-pane-rename {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+}
+
+.notes-pane-count {
+  color: var(--muted);
+  flex: none;
+  font-size: var(--tb-text-10px);
+}
+
+.notes-icon-button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  color: var(--muted);
+  display: inline-flex;
+  flex: none;
+  height: var(--tb-editor-icon-button-size);
+  justify-content: center;
+  width: var(--tb-editor-icon-button-size);
+}
+
+.notes-icon-button:hover {
+  background: var(--surface-hover);
+  color: var(--foreground);
+}
+
+.notes-pane-header,
+.notes-editor-toolbar {
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 6px;
+  min-height: calc(var(--tb-compact-control-height) + 12px);
+  padding: 6px 10px;
+}
+
+.notes-pane-title {
+  flex: 1 1 auto;
+  font-size: var(--tb-text-13px);
+  font-weight: 650;
+  margin: 0;
+  min-width: 0;
+}
+
+.notes-pane-actions {
+  display: flex;
+  gap: 2px;
+}
+
+.notes-list {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.notes-list-item {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  color: var(--foreground);
+  display: grid;
+  gap: 2px;
+  padding: 6px 8px;
+  text-align: left;
+  width: 100%;
+}
+
+.notes-list-item:hover {
+  background: var(--surface-hover);
+}
+
+.notes-list-item[data-active="true"] {
+  background: var(--surface-subtle);
+  border-color: var(--border);
+}
+
+.notes-list-title {
+  align-items: center;
+  display: flex;
+  font-size: var(--tb-text-11px);
+  font-weight: 650;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.notes-list-snippet {
+  color: var(--muted);
+  display: -webkit-box;
+  font-size: var(--tb-text-10px);
+  line-height: 1.4;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.notes-list-links {
+  align-items: center;
+  display: inline-flex;
+  gap: 3px;
+  margin-left: auto;
+}
+
+.notes-empty,
+.notes-editor-empty {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--tb-text-11px);
+  gap: 0.6rem;
+  justify-content: center;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.notes-editor-empty {
+  flex: 1 1 auto;
+}
+
+.notes-empty p,
+.notes-editor-empty p {
+  margin: 0;
+}
+
+.notes-empty-action {
+  align-items: center;
+  display: inline-flex;
+  font-size: var(--tb-text-11px);
+  gap: 0.3rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 8px;
+}
+
+.notes-notice,
+.notes-error {
+  border-radius: 8px;
+  font-size: var(--tb-text-11px);
+  margin: 0.5rem 0.75rem 0;
+  padding: 0.45rem 0.65rem;
+}
+
+.notes-notice {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.notes-error {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: var(--danger-fg);
+}
+
+.notes-inline-link {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.notes-editor-shell {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.taskboard-shell .notes-editor-shell .notes-editor-toolbar input.notes-title-input {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  box-shadow: none;
+  width: 100%;
+  color: var(--foreground);
+  flex: 1 1 auto;
+  font-size: var(--tb-text-sm);
+  font-weight: 700;
+  min-width: 0;
+  outline: none;
+  padding: 2px 6px;
+}
+
+.taskboard-shell .notes-editor-shell .notes-editor-toolbar input.notes-title-input:focus-visible {
+  border-color: var(--border);
+}
+
+.notes-title-input::placeholder {
+  color: var(--faint);
+}
+
+.notes-save-state {
+  color: var(--muted);
+  flex: none;
+  font-size: var(--tb-text-10px);
+  white-space: nowrap;
+}
+
+.notes-conflict {
+  align-items: center;
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  border-radius: 8px;
+  color: var(--foreground);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--tb-text-11px);
+  gap: 0.5rem;
+  margin: 0.5rem 0.75rem 0;
+  padding: 0.45rem 0.65rem;
+}
+
+.notes-conflict span {
+  flex: 1 1 14rem;
+}
+
+.notes-conflict .ui-button,
+.notes-convert .ui-button {
+  border-radius: 7px;
+  font-size: var(--tb-text-11px);
+  padding: 0.25rem 0.6rem;
+}
+
+.notes-meta {
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.5rem 0.9rem 0.6rem;
+}
+
+.notes-meta-row {
+  align-items: center;
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+}
+
+.notes-meta-label {
+  color: var(--muted);
+  font-size: var(--tb-text-10px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.notes-meta-empty {
+  color: var(--faint);
+  font-size: var(--tb-text-11px);
+}
+
+.notes-select {
+  background: var(--field);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--foreground);
+  font-size: var(--tb-text-11px);
+  max-width: 100%;
+  min-height: 1.75rem;
+  padding: 0.15rem 0.4rem;
+}
+
+.notes-chip-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.notes-chip {
+  align-items: center;
+  background: var(--chip);
+  border-radius: 999px;
+  color: var(--foreground);
+  display: inline-flex;
+  font-size: var(--tb-text-10px);
+  gap: 0.2rem;
+  max-width: 100%;
+  min-height: 1.5rem;
+  padding: 0.1rem 0.25rem 0.1rem 0.55rem;
+}
+
+.notes-chip a {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notes-chip a:hover {
+  text-decoration: underline;
+}
+
+.notes-chip button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--muted);
+  display: inline-flex;
+  height: 1.15rem;
+  justify-content: center;
+  width: 1.15rem;
+}
+
+.notes-chip button:hover {
+  background: var(--surface-hover);
+  color: var(--foreground);
+}
+
+.notes-task-chip::before {
+  background: var(--status-todo);
+  border-radius: 999px;
+  content: "";
+  flex: none;
+  height: 0.45rem;
+  width: 0.45rem;
+}
+
+.notes-task-chip[data-status="active"]::before {
+  background: var(--status-active);
+}
+
+.notes-task-chip[data-status="waiting"]::before {
+  background: var(--status-waiting);
+}
+
+.notes-task-chip[data-status="done"]::before {
+  background: var(--status-done);
+}
+
+.notes-chip-input {
+  background: var(--field);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--foreground);
+  font-size: var(--tb-text-10px);
+  min-height: 1.5rem;
+  min-width: 6rem;
+  padding: 0.1rem 0.6rem;
+  width: 8rem;
+}
+
+.notes-link-select {
+  border-radius: 999px;
+  max-width: 16rem;
+}
+
+.notes-convert {
+  background: var(--surface-subtle);
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.6rem 0.9rem;
+}
+
+.notes-convert-actions {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: flex-end;
+}
+
+.notes-editor-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px 0 24px;
+}
+
+.notes-editor-loading {
+  color: var(--muted);
+  font-size: var(--tb-text-11px);
+  padding: 1rem 1.5rem;
+}
+
+.notes-editor-footer {
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: var(--tb-text-10px);
+  padding: 5px 14px;
+}
+
+.notes-menu-root {
+  position: relative;
+}
+
+.notes-menu {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: grid;
+  min-width: 12rem;
+  padding: 0.3rem;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.25rem);
+  z-index: 40;
+}
+
+.notes-menu-item,
+.context-menu-item {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  color: var(--foreground);
+  display: flex;
+  font-size: var(--tb-text-11px);
+  gap: 0.5rem;
+  padding: 0.4rem 0.55rem;
+  text-align: left;
+}
+
+.notes-menu-item:hover:not(:disabled),
+.context-menu-item:hover:not(:disabled) {
+  background: var(--surface-hover);
+}
+
+.notes-menu-item:disabled,
+.context-menu-item:disabled {
+  opacity: 0.5;
+}
+
+.notes-menu-danger,
+.context-menu-danger {
+  color: var(--danger-fg);
+}
+
+.notes-context-menu,
+.context-menu {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: grid;
+  max-height: calc(100dvh - 16px);
+  max-width: calc(100vw - 16px);
+  min-width: min(12rem, calc(100vw - 16px));
+  overflow-y: auto;
+  padding: 4px;
+  z-index: 190;
+}
+
+.notes-context-heading,
+.context-menu-heading {
+  color: var(--muted);
+  font-size: var(--tb-text-10px);
+  padding: 4px 8px;
+}
+
+.notes-context-separated,
+.context-menu-separated {
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 7px 7px;
+  margin-top: 3px;
+}
+
+.notes-context-menu .notes-menu-item:focus-visible,
+.context-menu .context-menu-item:focus-visible {
+  background: var(--surface-hover);
+  outline: 2px solid var(--foreground);
+  outline-offset: -2px;
+}
+
+.notes-list-row { position: relative; }
+.notes-list-row:has(.notes-list-row-actions) > .notes-list-item { padding-right: calc(var(--tb-editor-icon-button-size) + 6px); }
+.notes-list-row-actions { position: absolute; right: 3px; top: 4px; }
+.notes-row-actions { flex: none; opacity: 0.6; }
+.notes-row-actions:hover, .notes-row-actions:focus-visible { opacity: 1; }
+.notes-nav-group > div { min-width: 0; }
+.notes-nav-row[data-notebook-row] > .notes-nav-item { flex: 1 1 0; width: 0; }
+.notes-nav-row[data-notebook-row] > .notes-nav-item > svg,
+.notes-nav-count { flex-shrink: 0; }
+.notes-row-rename { display: grid; flex: 1; min-width: 0; padding: 4px; }
+.notes-move-field { display: grid; gap: 8px; font-size: var(--tb-text-11px); }
+
+/* BlockNote picks up the Linen tokens in both Light and Dark. */
+.bn-root[data-taskboard-notes][data-color-scheme] {
+  --bn-colors-editor-text: var(--foreground);
+  --bn-colors-editor-background: transparent;
+  --bn-colors-menu-text: var(--foreground);
+  --bn-colors-menu-background: var(--popover);
+  --bn-colors-tooltip-text: var(--foreground);
+  --bn-colors-tooltip-background: var(--surface-raised-base);
+  --bn-colors-hovered-text: var(--foreground);
+  --bn-colors-hovered-background: var(--surface-hover);
+  --bn-colors-selected-text: var(--control-active-fg);
+  --bn-colors-selected-background: var(--control-active);
+  --bn-colors-disabled-text: var(--faint);
+  --bn-colors-disabled-background: var(--surface-subtle);
+  --bn-colors-border: var(--border);
+  --bn-colors-side-menu: var(--faint);
+  --bn-colors-shadow: rgba(0, 0, 0, 0.25);
+  --bn-font-family: inherit;
+  --bn-border-radius: 8px;
+}
+
+/* BlockNote's Ariakit menus hard-code their colors and type; match Taskboard. */
+html .bn-ak-menu,
+html .bn-ak-popover,
+html .bn-ak-toolbar,
+html .bn-ak-tooltip {
+  background-color: var(--popover);
+  border-color: var(--border);
+  box-shadow: var(--popover-shadow);
+  color: var(--foreground);
+}
+
+html .bn-ak-menu,
+html .bn-ak-popover {
+  border-radius: 10px;
+  min-width: 12rem;
+  padding: 0.3rem;
+}
+
+html .bn-ak-menu-item {
+  border-radius: 7px;
+  font-size: var(--tb-text-11px);
+  gap: 0.45rem;
+  padding: 0.3rem 0.45rem;
+}
+
+html .bn-ak-menu-item:hover,
+html .bn-ak-menu-item[aria-selected="true"],
+html .bn-ak-menu-item[data-active-item],
+html .bn-ak-menu-item[data-active] {
+  background-color: var(--surface-hover);
+  color: var(--foreground);
+  padding-block: 0.3rem;
+}
+
+html .bn-ak-group-label {
+  color: var(--muted);
+  font-size: var(--tb-text-10px);
+  letter-spacing: 0.08em;
+  opacity: 1;
+  padding: 0.4rem 0.45rem 0.2rem;
+  text-transform: uppercase;
+}
+
+html .bn-ak-suggestion-menu-item-title {
+  font-size: var(--tb-text-11px);
+  line-height: 1.3;
+}
+
+html .bn-ak-suggestion-menu-item-subtitle {
+  color: var(--muted);
+  font-size: var(--tb-text-10px);
+}
+
+html .bn-ak-badge {
+  background: var(--chip);
+  border-color: var(--border);
+  color: var(--muted);
+  font-size: var(--tb-text-10px);
+}
+
+html .bn-ak-toolbar {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  gap: 0.1rem;
+  max-width: min(100vw - 1rem, 40rem);
+  padding: 0.2rem;
+}
+
+html .bn-ak-button {
+  font-size: var(--tb-text-11px);
+  height: 1.9rem;
+}
+
+html .bn-ak-toolbar .bn-ak-button {
+  background: transparent;
+  box-shadow: none;
+  color: var(--foreground);
+  padding-inline: 0.4rem;
+}
+
+html .bn-ak-toolbar .bn-ak-button:hover,
+html .bn-ak-toolbar .bn-ak-button[aria-pressed="true"],
+html .bn-ak-toolbar .bn-ak-button[data-selected] {
+  background: var(--surface-hover);
+}
+
+html .bn-ak-toolbar .bn-ak-button svg {
+  height: 1rem;
+  width: 1rem;
+}
+
+html .bn-ak-tooltip {
+  font-size: var(--tb-text-10px);
+}
+
+html .bn-ak-input {
+  background: var(--field);
+  border-color: var(--border);
+  color: var(--foreground);
+  font-size: var(--tb-text-11px);
+}
+
+.notes-editor-view .bn-editor {
+  font-size: var(--tb-text-13px);
+  padding-inline: 3rem 1.25rem;
+}
+
+/* Back controls appear only where a pane can be hidden. */
+.notes-show-folders,
+.notes-back-to-list {
+  display: none;
+}
+
+.notes-load-more {
+  border-radius: 8px;
+  font-size: var(--tb-text-11px);
+  justify-self: center;
+  margin: 0.4rem 0;
+  padding: 0.3rem 0.8rem;
+}
+
+/* "Link a task": board chooser and a searchable task field. */
+.notes-task-picker {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  min-width: 0;
+  position: relative;
+}
+
+.notes-task-picker-board {
+  border-radius: 999px;
+  max-width: 11rem;
+}
+
+.notes-task-picker-field {
+  align-items: center;
+  background: var(--field);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  display: flex;
+  flex: 1 1 10rem;
+  gap: 0.3rem;
+  min-height: 1.75rem;
+  min-width: 8rem;
+  padding: 0 0.6rem;
+}
+
+.taskboard-shell .notes-frame input.notes-task-picker-input {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--foreground);
+  flex: 1 1 auto;
+  font-size: var(--tb-text-11px);
+  min-width: 0;
+  outline: none;
+  padding: 0;
+}
+
+.notes-task-picker-list {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  left: 0;
+  list-style: none;
+  margin: 0;
+  max-height: 16rem;
+  min-width: min(22rem, 100%);
+  overflow-y: auto;
+  padding: 0.3rem;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.25rem);
+  z-index: 40;
+}
+
+.notes-task-picker-option {
+  align-items: center;
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex;
+  font-size: var(--tb-text-11px);
+  gap: 0.6rem;
+  justify-content: space-between;
+  padding: 0.35rem 0.5rem;
+}
+
+.notes-task-picker-option[aria-selected="true"] {
+  background: var(--surface-hover);
+}
+
+.notes-task-picker-bucket,
+.notes-task-picker-status {
+  color: var(--muted);
+  flex: none;
+  font-size: var(--tb-text-10px);
+}
+
+.notes-task-picker-status {
+  padding: 0.35rem 0.5rem;
+}
+
+/* Medium frame: the list (or, from the back arrow, the folders) beside the
+   editor. */
+@container notes-frame (max-width: 959.98px) {
+  .notes-workspace {
+    grid-template-areas: "list sep-list editor";
+    grid-template-columns: var(--notes-list-width, 300px) 1px minmax(0, 1fr);
+  }
+
+  .notes-sidebar,
+  .notes-separator[data-column="sidebar"] {
+    display: none;
+  }
+
+  .notes-workspace[data-pane="nav"] {
+    grid-template-areas: "sidebar sep-sidebar editor";
+    grid-template-columns: var(--notes-sidebar-width, 224px) 1px minmax(0, 1fr);
+  }
+
+  .notes-workspace[data-pane="nav"] .notes-sidebar {
+    display: flex;
+  }
+
+  .notes-workspace[data-pane="nav"] .notes-separator[data-column="sidebar"] {
+    display: block;
+  }
+
+  .notes-workspace[data-pane="nav"] .notes-list-pane,
+  .notes-workspace[data-pane="nav"] .notes-separator[data-column="list"] {
+    display: none;
+  }
+
+  .notes-show-folders {
+    display: inline-flex;
+  }
+}
+
+/* Narrow frame: one pane at a time, and the page scrolls. */
+@container notes-frame (max-width: 679.98px) {
+  .notes-workspace,
+  .notes-workspace[data-pane="nav"] {
+    grid-template-areas: "pane";
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    min-height: calc(100dvh - 15rem);
+  }
+
+  .notes-workspace .notes-sidebar,
+  .notes-workspace .notes-list-pane,
+  .notes-workspace .notes-editor-pane,
+  .notes-workspace .notes-separator,
+  .notes-workspace[data-pane="nav"] .notes-separator[data-column="sidebar"] {
+    display: none;
+  }
+
+  .notes-workspace[data-pane="nav"] .notes-sidebar,
+  .notes-workspace[data-pane="list"] .notes-list-pane,
+  .notes-workspace[data-pane="note"] .notes-editor-pane {
+    display: flex;
+    grid-area: pane;
+  }
+
+  .notes-sidebar,
+  .notes-list,
+  .notes-editor-body {
+    overflow: visible;
+  }
+
+  .notes-show-folders,
+  .notes-back-to-list {
+    display: inline-flex;
+  }
+
+  .notes-icon-button {
+    height: 44px;
+    width: 44px;
+  }
+
+  .notes-nav-item,
+  .notes-list-item {
+    min-height: 44px;
+  }
+
+  .notes-nav-toggle,
+  .notes-nav-toggle-spacer {
+    height: 44px;
+    width: 32px;
+  }
+
+  .notes-meta-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.2rem;
+  }
+
+  .notes-editor-view .bn-editor {
+    padding-inline: 1.75rem 0.75rem;
+  }
+}
+
+/* In-app confirmation dialog (replaces browser confirm; see
+   src/components/ui/confirm-dialog.tsx). */
+.app-dialog-backdrop {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 1rem;
+  position: fixed;
+  z-index: 200;
+}
+
+.app-dialog {
+  background: var(--popover);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--overlay-shadow-base, var(--popover-shadow));
+  color: var(--foreground);
+  display: grid;
+  gap: 0.6rem;
+  max-width: 26rem;
+  padding: 1.1rem 1.2rem 1rem;
+  width: 100%;
+}
+
+.app-dialog-title {
+  font-size: var(--tb-text-13px);
+  font-weight: 700;
+  margin: 0;
+}
+
+.app-dialog-body {
+  color: var(--muted);
+  font-size: var(--tb-text-11px);
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.app-dialog-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.4rem;
+}
+
+.app-dialog-actions .ui-button {
+  border-radius: 8px;
+  font-size: var(--tb-text-11px);
+  min-height: 2rem;
+  padding: 0.3rem 0.9rem;
+}
+
+.app-dialog-actions .app-dialog-danger {
+  background: var(--danger-solid);
+  border-color: var(--danger-solid);
+  color: var(--danger-solid-fg);
+  font-weight: 600;
+}
+
+/* A name typed in place (replaces browser prompt; see
+   src/components/ui/inline-name-field.tsx). */
+.inline-name-field {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.taskboard-shell input.inline-name-field-input {
+  background: var(--field);
+  border: 1px solid var(--focus-ring);
+  border-radius: 7px;
+  color: var(--foreground);
+  font-size: var(--tb-text-11px);
+  min-height: 1.85rem;
+  padding: 0.2rem 0.5rem;
+  width: 100%;
+}
+
+.inline-name-field-error {
+  color: var(--danger-fg);
+  font-size: var(--tb-text-10px);
+}
+
+/* Desktop Notes geometry for the parts the phone also shows. The rules above
+   keep the phone's approved spacing; on desktop the editor scale owns text
+   size, so spacing here is fixed and only the text follows the font setting. */
+.notes-frame[data-editor-scale="true"] .notes-sidebar { gap: 10px; }
+
+.notes-frame[data-editor-scale="true"] :is(.notes-nav-item, .notes-nav-toggle, .notes-icon-button) {
+  border-radius: var(--tb-radius);
+}
+
+.taskboard-shell .notes-frame[data-editor-scale="true"] .notes-editor-toolbar input.notes-title-input {
+  border-radius: var(--tb-radius);
+}
+
+/* Desktop note rows: two lines (title and date, then where the note lives and
+   a preview), hairline dividers, and the sidebar's raised selection. */
+.notes-frame[data-editor-scale="true"] .notes-list {
+  gap: 0;
+  padding: 4px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-list-row + .notes-list-row {
+  border-top: 1px solid var(--architecture-divider, var(--border));
+}
+
+.notes-frame[data-editor-scale="true"] :is(
+  .notes-list-row:has(> .notes-list-item[data-active="true"]),
+  .notes-list-row:has(> .notes-list-item[data-active="true"]) + .notes-list-row
+) {
+  border-top-color: transparent;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-list-item {
+  border: 0;
+  border-radius: var(--tb-radius);
+  gap: 1px;
+  padding-block: 5px;
+  padding-left: 8px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-list-item:hover {
+  background: var(--architecture-hover-wash, var(--surface-hover));
+}
+
+.notes-frame[data-editor-scale="true"] .notes-list-item[data-active="true"] {
+  background: var(--chip);
+  box-shadow: var(--raise-highlight);
+}
+
+.notes-frame[data-editor-scale="true"] .notes-list-title {
+  font-size: var(--tb-card-title-size);
+  font-weight: 600;
+  gap: 5px;
+  line-height: var(--tb-card-title-line-height);
+}
+
+.notes-frame[data-editor-scale="true"] .notes-list-date {
+  color: var(--muted);
+  flex: none;
+  font-size: var(--tb-text-10px);
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-list-line {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-size: var(--tb-text-10px);
+  gap: 6px;
+  line-height: var(--tb-editor-line-height);
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-list-context {
+  flex: 0 1 auto;
+  font-weight: 500;
+  max-width: 60%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-list-preview {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-list-preview-empty { color: var(--faint); }
+
+.notes-frame[data-editor-scale="true"] .notes-list-links { flex: none; }
+
+/* Row actions sit centred beside both lines and show for the row being
+   pointed at, focused or selected, while their menu is open, and always on
+   devices without hover. */
+.notes-frame[data-editor-scale="true"] .notes-list-row-actions {
+  opacity: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.notes-frame[data-editor-scale="true"] :is(
+  .notes-list-row:hover,
+  .notes-list-row:focus-within,
+  .notes-list-row:has(> .notes-list-item[data-active="true"])
+) .notes-list-row-actions,
+.notes-frame[data-editor-scale="true"] .notes-list-row-actions[aria-expanded="true"] {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .notes-frame[data-editor-scale="true"] .notes-list-row-actions { opacity: 1; }
+}
+
+.notes-frame[data-editor-scale="true"] :is(.notes-empty, .notes-editor-empty) {
+  gap: 8px;
+  padding: 24px 16px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-empty-action {
+  gap: 5px;
+  padding: 4px 10px;
+}
+
+.notes-frame[data-editor-scale="true"] :is(.notes-notice, .notes-error, .notes-conflict) {
+  border-radius: var(--tb-radius-panel);
+  margin: 8px 12px 0;
+  padding: 6px 10px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-conflict { gap: 8px; }
+
+.notes-frame[data-editor-scale="true"] :is(.notes-conflict, .notes-convert) .ui-button {
+  padding: 3px 10px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-meta-row { gap: 10px; }
+
+.notes-frame[data-editor-scale="true"] .notes-chip-row { gap: 4px; }
+
+/* Desktop note properties on one line: Home, then labels and linked tasks as
+   chips. "+ Label" and "+ Link task" open their field in a popup placed
+   against the strip, above BlockNote's own menus. */
+.notes-property-strip {
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  min-height: calc(var(--tb-compact-control-height) + 12px);
+  padding: 6px 12px;
+  position: relative;
+}
+
+.notes-strip-home {
+  align-items: center;
+  color: var(--muted);
+  display: inline-flex;
+  gap: 5px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.notes-strip-home > svg {
+  flex: none;
+  height: 14px;
+  width: 14px;
+}
+
+.notes-strip-select {
+  max-width: min(24rem, 100%);
+  min-width: 0;
+  width: 14rem;
+}
+
+@supports (field-sizing: content) {
+  .notes-strip-select {
+    field-sizing: content;
+    width: auto;
+  }
+}
+
+.notes-strip-group {
+  align-items: center;
+  border-left: 1px solid var(--architecture-divider, var(--border));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+  padding-left: 10px;
+}
+
+/* At desktop widths, shrink the chips before wrapping whole property groups.
+   Otherwise a long linked-task title pushes the strip onto a second line even
+   though every chip already supports truncation. Narrow editors may wrap. */
+@container notes-frame (min-width: 1000px) {
+  .notes-property-strip,
+  .notes-strip-group {
+    flex-wrap: nowrap;
+  }
+}
+
+.notes-strip-add {
+  align-items: center;
+  background: transparent;
+  border: 1px dashed var(--architecture-control-border, var(--border));
+  border-radius: var(--tb-radius);
+  color: var(--muted);
+  display: inline-flex;
+  flex: none;
+  font-size: var(--tb-editor-meta-size);
+  font-weight: 500;
+  gap: 3px;
+  height: 22px;
+  padding: 0 7px;
+}
+
+.notes-strip-add:hover,
+.notes-strip-add[aria-expanded="true"] {
+  background: var(--architecture-hover-wash, var(--surface-hover));
+  color: var(--foreground);
+}
+
+.notes-strip-add:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.notes-strip-popup {
+  background: var(--popover);
+  border: 1px solid var(--border);
+  box-shadow: var(--popover-shadow);
+  display: grid;
+  gap: 6px;
+  max-width: 100%;
+  padding: 6px;
+  position: absolute;
+  top: calc(100% - 2px);
+  width: 16rem;
+  z-index: 60;
+}
+
+.notes-strip-popup-wide { width: min(30rem, 100%); }
+
+.notes-strip-popup .notes-chip-input {
+  min-width: 0;
+  width: 100%;
+}
+
+/* Chips use the label chip role; the remove button sits close to the edge.
+   The role keeps text on one line, so long labels and task titles shrink with
+   an ellipsis instead of pushing the remove button out. */
+.notes-frame[data-editor-scale="true"] .notes-chip {
+  border-radius: var(--tb-radius);
+  flex: 0 1 auto;
+  gap: 3px;
+  min-width: 0;
+  padding-inline-end: 3px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-chip > :is(.notes-chip-text, a) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-chip button { flex: none; }
+
+.notes-frame[data-editor-scale="true"] .notes-chip button {
+  height: 16px;
+  width: 16px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-task-chip::before {
+  height: 7px;
+  width: 7px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-convert {
+  gap: 8px;
+  padding: 10px 14px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-convert-actions { gap: 6px; }
+
+.notes-frame[data-editor-scale="true"] .notes-editor-loading { padding: 16px 24px; }
+
+.notes-frame[data-editor-scale="true"] .notes-menu {
+  padding: 4px;
+  top: calc(100% + 4px);
+}
+
+/* Menu rows use the shared menu role and the density setting's row size. */
+:is(.notes-frame, .notes-context-menu)[data-editor-scale="true"] .notes-menu-item { gap: 8px; }
+
+:is(.notes-frame, .notes-context-menu)[data-editor-scale="true"] .notes-menu-item.notes-menu-danger,
+:is(.notes-frame, .notes-context-menu)[data-editor-scale="true"] .notes-menu-item.notes-menu-danger:is(:hover, :focus-visible) {
+  color: var(--danger-fg);
+}
+
+.notes-frame[data-editor-scale="true"] .notes-load-more {
+  margin: 6px 0;
+  padding: 4px 12px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-task-picker { gap: 6px; }
+
+.notes-frame[data-editor-scale="true"] .notes-task-picker-field {
+  gap: 5px;
+  min-height: var(--tb-compact-control-height);
+  padding: 0 10px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-task-picker-list {
+  padding: 4px;
+  top: calc(100% + 4px);
+}
+
+.notes-frame[data-editor-scale="true"] .notes-task-picker-option {
+  border-radius: var(--tb-radius);
+  gap: 10px;
+  padding: 5px 8px;
+}
+
+.notes-frame[data-editor-scale="true"] .notes-task-picker-status { padding: 5px 8px; }
+
+.notes-frame[data-editor-scale="true"] .notes-inline-name:not(.notes-pane-rename) { padding: 2px 0 2px 22px; }
+
+.notes-frame[data-editor-scale="true"] .inline-name-field { gap: 3px; }
+
+.taskboard-shell .notes-frame[data-editor-scale="true"] input.inline-name-field-input {
+  min-height: var(--tb-compact-control-height);
+  padding: 3px 8px;
+}
+
+/* The note keeps its reading size; the editor scale only sets the chrome. The
+   left gutter holds BlockNote's 24px add and drag handles. */
+.notes-frame[data-editor-scale="true"] .notes-editor-view .bn-editor {
+  font-size: var(--tb-fs-14-5);
+  padding-inline: 52px 20px;
+}
+
+/* BlockNote's own radius token, and the Ariakit controls that hard-code theirs. */
+.notes-frame[data-editor-scale="true"] .bn-root[data-taskboard-notes] { --bn-border-radius: var(--tb-radius-panel); }
+
+.notes-frame[data-editor-scale="true"] :is(.bn-ak-menu, .bn-ak-popover, .bn-ak-toolbar) { border-radius: var(--tb-radius-panel); }
+
+.notes-frame[data-editor-scale="true"] :is(.bn-ak-button, .bn-ak-menu-item) { border-radius: var(--tb-radius); }
+
+.notes-frame[data-editor-scale="true"] :is(.bn-ak-menu, .bn-ak-popover) { padding: 4px; }
+
+.notes-frame[data-editor-scale="true"] .bn-ak-menu-item {
+  gap: 8px;
+  padding: 4px 8px;
+}
+
+.notes-frame[data-editor-scale="true"] .bn-ak-group-label { padding: 6px 8px 3px; }
+
+.notes-frame[data-editor-scale="true"] .bn-ak-toolbar {
+  gap: 2px;
+  padding: 3px;
+}
+
+.notes-frame[data-editor-scale="true"] .bn-ak-button { height: var(--tb-editor-icon-button-size); }
+
+.notes-frame[data-editor-scale="true"] .bn-ak-toolbar .bn-ak-button { padding-inline: 7px; }
+
+.notes-frame[data-editor-scale="true"] .bn-ak-toolbar .bn-ak-button svg {
+  height: 16px;
+  width: 16px;
+}
+
+/* Icons keep their size when the text grows; the utility classes in the
+   markup are rem-based. */
+:is(.notes-frame, .notes-context-menu)[data-editor-scale="true"] svg.h-3 { height: 12px; width: 12px; }
+:is(.notes-frame, .notes-context-menu)[data-editor-scale="true"] svg.h-3\.5 { height: 14px; width: 14px; }
+:is(.notes-frame, .notes-context-menu)[data-editor-scale="true"] svg.h-4 { height: 16px; width: 16px; }
+
+@container notes-frame (max-width: 679.98px) {
+  .notes-frame[data-editor-scale="true"] .notes-meta-row { gap: 3px; }
+
+  /* Row actions grow to 44px here; keep long titles clear of them. */
+  .notes-frame[data-editor-scale="true"] .notes-list-row:has(.notes-list-row-actions) > .notes-list-item {
+    padding-right: 50px;
+  }
+
+  .notes-frame[data-editor-scale="true"] .notes-editor-view .bn-editor {
+    padding-inline: 32px 12px;
+  }
+}
+
+/* Embedded Notes shares the existing editor and save store. */
+.taskboard-shell .task-embedded-notes {min-width:0;}
+.taskboard-shell .task-note-tools {display:flex;align-items:center;gap:4px;margin-bottom:8px;min-width:0;}
+.taskboard-shell .task-note-tools select {display:none;min-width:0;flex:1;min-height:28px;background:var(--control);color:var(--foreground);border:1px solid var(--border);border-radius:4px;padding:4px;font-size:var(--tb-editor-input-size);}
+.taskboard-shell .task-note-tools button {display:inline-flex;align-items:center;gap:4px;min-height:28px;padding:4px 8px;border:1px solid var(--border);border-radius:4px;font-size:var(--tb-text-11px);}
+.taskboard-shell .task-note-tools svg {width:14px;height:14px;}
+.taskboard-shell .task-note-grid {display:grid;grid-template-columns:190px minmax(0,1fr);border-top:1px solid var(--border);min-width:0;}
+.taskboard-shell .task-note-list {padding:8px 8px 0 0;border-right:1px solid var(--border);}
+.taskboard-shell .task-note-list button {display:block;width:100%;min-width:0;padding:6px;text-align:left;font-size:var(--tb-text-13px);overflow-wrap:anywhere;}
+.taskboard-shell .task-note-list button[aria-pressed="true"] {background:color-mix(in srgb,var(--foreground) 6%,transparent);border-radius:4px;}
+.taskboard-shell .task-note-list small,.taskboard-shell .task-note-picker small {display:block;font-size:var(--tb-editor-meta-size);color:var(--muted);margin-top:2px;}
+.taskboard-shell .task-note-editor {min-width:0;padding:8px 0 0 12px;}
+.taskboard-shell .task-note-title {display:block;width:100%;padding:4px 0;border:0;background:transparent;color:var(--foreground);}
+.taskboard-shell .task-note-info {display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;margin:4px 0 8px;color:var(--muted);font-size:var(--tb-editor-meta-size);}
+.taskboard-shell .task-note-footer {display:flex;justify-content:space-between;gap:8px;border-top:1px solid var(--border);margin-top:8px;padding-top:4px;font-size:var(--tb-editor-meta-size);color:var(--muted);}
+.taskboard-shell .task-note-footer > * {padding:4px 0;text-decoration:underline;text-underline-offset:3px;}
+.taskboard-shell .task-note-picker {padding:8px;border:1px solid var(--border);border-radius:4px;margin-bottom:8px;}
+.taskboard-shell .task-note-picker > div {display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;font-size:var(--tb-text-13px);}
+.taskboard-shell .task-note-picker input {width:100%;min-height:28px;padding:4px 7px;margin-bottom:4px;border:1px solid var(--border);border-radius:4px;background:var(--field);color:var(--foreground);font-size:var(--tb-editor-input-size);}
+.taskboard-shell .task-note-picker > button {display:flex;justify-content:space-between;align-items:center;width:100%;gap:8px;padding:8px 0;border-top:1px solid var(--border);text-align:left;overflow-wrap:anywhere;font-size:var(--tb-text-13px);}
+.taskboard-shell .task-note-picker > button > span:first-child {min-width:0;flex:1;}
+.taskboard-shell .task-note-picker > button > span:last-child {flex:none;white-space:nowrap;overflow-wrap:normal;}
+.taskboard-shell .task-embedded-notes .notes-error button {margin:4px;text-decoration:underline;}
+.taskboard-shell .task-embedded-notes .bn-container {min-width:0;background:transparent;color:var(--foreground);}
+.taskboard-shell .task-embedded-notes .bn-editor {padding:4px 0;min-height:100px;background:transparent;font-size:var(--tb-editor-input-size);line-height:var(--tb-editor-line-height);overflow-wrap:anywhere;}
+.taskboard-shell .task-embedded-notes .bn-block-content {padding:2px 0;}
+.taskboard-shell .task-embedded-notes .bn-editor p {margin:0;}
+@media (max-width:767px) {
+ .taskboard-shell .task-note-tools {gap:0;border-bottom:1px solid var(--border);margin-bottom:0;}
+ .taskboard-shell .task-note-tools select {display:block;border:0;background:transparent;}
+ .taskboard-shell .task-note-tools button {border:0;min-width:36px;padding:4px;}
+ .taskboard-shell .task-note-tools button span {display:none;}
+ .taskboard-shell .task-note-grid {display:block;border-top:0;}
+ .taskboard-shell .task-note-list {display:none;}
+ .taskboard-shell .task-note-editor {padding:4px 0 0;}
+ .taskboard-shell .workspace-header-actions > [role="alert"] {display:inline-flex;}
+ .taskboard-shell .task-note-info {margin:0 0 4px;}
+ .taskboard-shell .task-embedded-notes .bn-editor {min-height:44px;}
+ .taskboard-shell .task-note-footer {margin-top:4px;padding-top:0;}
+}
+
+.taskboard-shell .taskboard-task-workspace-panel {border-radius:8px;}
+.taskboard-shell .work-add-row {gap:8px;padding:6px 10px 6px calc(38px + var(--work-depth,0)*26px);}
+.taskboard-shell .work-breakdown {gap:8px;}
+.taskboard-shell .work-breakdown > .flex {column-gap:6px;}
+.taskboard-shell .work-seg > button {padding:0 8px;}
+.taskboard-shell .task-workspace-slot[data-destination="updates"] .task-notes-body {gap:8px;}
+.taskboard-shell .task-workspace-slot[data-destination="updates"] [data-testid="task-note-item"] {border:0;border-top:1px solid var(--border);border-radius:0;padding:8px 0;}
+.taskboard-shell .task-workspace-slot[data-destination="updates"] .task-working-notes-composer > div {display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:4px;padding-top:0;border:0;}
+.taskboard-shell .task-workspace-slot[data-destination="updates"] .task-working-notes-composer > div > div {margin:0;}
+.taskboard-shell .task-workspace-slot[data-destination="updates"] .task-working-notes-composer label > span {display:none;}
+.taskboard-shell .task-workspace-slot[data-destination="updates"] .task-working-notes-composer textarea {min-height:44px!important;height:44px;}
+.taskboard-shell .task-workspace-slot[data-destination="updates"] .task-working-notes-composer button {min-height:44px!important;}
+/* Desktop has room to write: a full-width composer with Post below it. */
+@media (min-width:768px) {
+ .taskboard-shell .task-workspace-slot[data-destination="updates"] .task-working-notes-composer > div {grid-template-columns:minmax(0,1fr);gap:6px;}
+ .taskboard-shell .task-workspace-slot[data-destination="updates"] .task-working-notes-composer textarea {min-height:144px!important;height:144px;padding-block:6px;}
+ .taskboard-shell .task-workspace-slot[data-destination="updates"] .task-working-notes-composer button {min-height:32px!important;}
+}
+@media (max-width:767px) {
+ .taskboard-shell.taskboard-workspace-overlay {padding:0;}
+ .taskboard-shell .taskboard-task-workspace-panel {width:100%;max-width:100%;border-radius:0;border:0;}
+ .taskboard-shell .work-add-row {gap:4px;padding:4px 4px 4px calc(4px + var(--work-depth,0)*8px);}
+}
+
+@media (max-width:767px) and (pointer:coarse) {
+ .taskboard-shell .work-row {--work-target:44px;grid-template-columns:44px minmax(0,1fr) 44px;min-height:44px;}
+ .taskboard-shell .work-row-content {min-height:44px;}
+ .taskboard-shell .work-row .work-row-menu {width:44px;min-height:44px;}
+ .taskboard-shell .work-row .work-check-target {min-height:44px;}
+ .taskboard-shell .work-checklist .work-checklist-target {width:44px;height:44px;}
+}
+
+/* Route subviews share the workspace-tab visual role, outside the desktop-only header. */
+.taskboard-shell .workspace-subviews {flex:none;align-self:flex-start;grid-column:auto;grid-row:auto;margin:0;max-width:100%;}
+.taskboard-shell .workspace-subviews > a {text-decoration:none;font-size:var(--tb-fs-12);}
+@media (max-width:767px) {
+ .taskboard-shell .workspace-subviews {align-self:stretch;margin:0 8px 8px;}
+ .taskboard-shell .workspace-subviews > a {flex:1;min-height:44px;height:44px;}
+}
+/* At tablet widths the date and presentation controls get their own row. */
+@media (min-width:768px) and (max-width:1100px) {
+ .taskboard-calendar-proof--embedded .taskboard-calendar-proof__controls {display:flex;flex-wrap:wrap;}
+ .taskboard-calendar-proof__inline-toolbar {flex:1 1 100%;min-width:0;}
+ .taskboard-calendar-proof__inline-toolbar .calendar-proof-header {width:100%;flex-wrap:wrap;}
+ .taskboard-calendar-proof__inline-toolbar .calendar-proof-header__nav {overflow:visible;flex:1 1 auto;}
+}

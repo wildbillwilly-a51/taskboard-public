@@ -1,0 +1,263 @@
+.page-mention {
+  display: inline;
+  border-radius: 4px;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  padding: 1px 4px;
+  overflow-wrap: anywhere;
+}
+.page-mention button { font: inherit; color: inherit; cursor: pointer; background: transparent; border: 0; padding: 0; text-align: start; }
+.page-mention small { font-size: .8em; }
+.page-mention-open { display: inline-block; margin-inline-start: .5em; padding: 8px; }
+.wiki-mention-menu {
+  position: fixed; z-index: 100; width: min(320px, calc(100vw - 16px)); max-height: 280px;
+  overflow: auto; border: 1px solid var(--border, #888); border-radius: 10px;
+  background: var(--surface, #fff); color: var(--foreground, #202020); padding: 8px;
+  box-shadow: 0 8px 30px #0003; font: 14px/1.4 system-ui;
+}
+[data-theme="dark"] .wiki-mention-menu { background: var(--surface, #242424); color: var(--foreground, #eee); }
+.wiki-mention-menu-heading { font-weight: 600; padding: 4px 8px; }
+.wiki-mention-menu button { min-height: 44px; text-align: start; padding: 8px; border-radius: 6px; cursor: pointer; font: inherit; color: inherit; background: transparent; border: 0; }
+.wiki-mention-menu [role="option"] { display: flex; flex-direction: column; width: 100%; overflow-wrap: anywhere; }
+.wiki-mention-menu [aria-selected="true"], .wiki-mention-menu [aria-pressed="true"] { background: color-mix(in srgb, currentColor 12%, transparent); }
+.wiki-mention-menu small { opacity: .75; }
+.wiki-mention-menu p { padding: 8px; }
+
+/*
+ * Task editor scale contract.
+ *
+ * The one owner of type and control sizes in the task sidebar, the expanded
+ * workspace and the menus they open. Components pick a role class (ed-*);
+ * tokens pick the size for the context. Settings' font preference scales the
+ * text tokens; control heights, icons and hit areas stay fixed.
+ *
+ * Outside the editor the same roles fall back to the board's compact scale,
+ * so shared controls (Agenda and editor controls) keep their size.
+ *
+ * Precedence: element defaults use :where() (specificity 0,1,0) so role
+ * classes (0,2,0) and component rules always win over them, while both still
+ * beat Tailwind's layered utilities. Nothing here needs !important.
+ */
+
+.taskboard-shell {
+  --tb-editor-text-size: var(--tb-text-10px);
+  --tb-editor-input-size: var(--tb-editor-text-size);
+  --tb-editor-line-height: 1rem;
+  --tb-editor-title-size: var(--tb-text-13px);
+  --tb-editor-title-line-height: 1.25rem;
+  --tb-editor-meta-size: var(--tb-text-10px);
+  --tb-editor-field-height: 1.75rem;
+  --tb-editor-field-padding: 0.125rem 0.5rem;
+  --tb-editor-field-weight: 400;
+  --tb-editor-icon-button-size: 28px;
+  --tb-editor-placeholder: color-mix(in srgb, var(--muted) 68%, transparent);
+}
+
+/* Editor context: the sidebar, the workspace, and portalled menus opened from
+ * them (FloatingMenuPortal and the attachment preview mark their own shell).
+ * Desktop Notes and its row menu opt in; the phone's Notes keeps its own sizes. */
+.taskboard-shell :is(
+  [data-testid="task-editor-sidebar"],
+  [data-testid="task-editor-expanded"],
+  [data-testid="task-editor"],
+  :is(.notes-frame, .notes-context-menu)[data-editor-scale="true"]
+),
+.taskboard-shell[data-editor-scale="true"] {
+  /* The editor reads on the board's type scale (globals.css): body text like
+   * the board's cards, 11px labels and metadata, a 15px task title at Normal. */
+  --tb-editor-text-size: var(--tb-fs-12);
+  --tb-editor-input-size: var(--tb-editor-text-size);
+  --tb-editor-line-height: calc(var(--tb-editor-text-size) + 4px);
+  --tb-editor-title-size: var(--tb-fs-15);
+  --tb-editor-title-line-height: calc(var(--tb-editor-title-size) + 4px);
+  --tb-editor-meta-size: var(--tb-fs-11);
+  /* The Work tab's subtask list and timeline use larger steps of the same scale. */
+  --tb-work-title-size: var(--tb-fs-14-5);
+  --tb-work-text-size: var(--tb-fs-12-5);
+  --tb-work-small-size: var(--tb-fs-11-5);
+  --tb-editor-field-height: var(--tb-compact-control-height);
+  --tb-editor-field-padding: 2px 7px;
+  --tb-editor-field-weight: 500;
+  --task-editor-font-size: var(--tb-editor-text-size);
+  --task-editor-line-height: var(--tb-editor-line-height);
+  /* Embedded components (work breakdown, Notes) still read board tokens. */
+  --tb-text-10px: var(--tb-editor-meta-size);
+  --tb-text-11px: var(--tb-editor-text-size);
+  --tb-text-13px: var(--tb-editor-text-size);
+  --tb-text-sm: var(--tb-editor-title-size);
+}
+
+/* Phone editing never drops a field below 16px, so iOS does not zoom on focus. */
+@media (max-width: 767px) {
+  .taskboard-shell [data-testid="task-editor-expanded"] {
+    --tb-compact-control-height: 32px;
+  }
+
+  .taskboard-shell :is(
+    [data-testid="task-editor-sidebar"],
+    [data-testid="task-editor-expanded"],
+    [data-testid="task-editor"]
+  ),
+  .taskboard-shell[data-editor-scale="true"] {
+    --tb-editor-input-size: max(16px, var(--tb-editor-text-size));
+  }
+}
+
+/* Element defaults for anything inside the editor that has no role. */
+.taskboard-shell :where([data-testid="task-editor"]),
+.taskboard-shell:where([data-editor-scale="true"]) {
+  font-size: var(--tb-editor-text-size);
+  line-height: var(--tb-editor-line-height);
+}
+
+.taskboard-shell :where([data-testid="task-editor"]) :where(input, textarea, select, button) {
+  font-size: var(--tb-editor-text-size);
+  line-height: var(--tb-editor-line-height);
+}
+
+.taskboard-shell :where([data-testid="task-editor"]) :where(input, textarea, select) {
+  font-size: var(--tb-editor-input-size);
+  font-weight: 500;
+}
+
+.taskboard-shell :where([data-testid="task-editor"]) :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select) {
+  block-size: var(--tb-editor-field-height);
+  padding-block: 2px;
+  padding-inline: 7px;
+}
+
+.taskboard-shell :where([data-testid="task-editor"]) :where(textarea) {
+  min-height: 52px;
+  padding: 5px 7px;
+}
+
+.taskboard-shell :where([data-testid="task-editor"]) :where(input, textarea)::placeholder,
+.taskboard-shell .ed-field::placeholder {
+  color: var(--tb-editor-placeholder);
+  font-weight: 400;
+  opacity: 1;
+}
+
+.taskboard-shell :where([data-testid="task-editor"]) :where(input[type="checkbox"], input[type="radio"]) {
+  block-size: 14px;
+  inline-size: 14px;
+  min-block-size: 14px;
+}
+
+.taskboard-shell :where([data-testid="task-editor-sidebar"]) :where(button, a) svg {
+  height: 14px;
+  width: 14px;
+}
+
+/* Roles. */
+.taskboard-shell .ed-title {
+  font-size: var(--tb-editor-title-size);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: var(--tb-editor-title-line-height);
+}
+
+.taskboard-shell .ed-label {
+  font-size: var(--tb-editor-meta-size);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.taskboard-shell .ed-body {
+  font-size: var(--tb-editor-text-size);
+  line-height: var(--tb-editor-line-height);
+}
+
+.taskboard-shell .ed-strong {
+  font-size: var(--tb-editor-text-size);
+  font-weight: 600;
+  line-height: var(--tb-editor-line-height);
+}
+
+.taskboard-shell .ed-meta {
+  font-size: var(--tb-editor-meta-size);
+  line-height: var(--tb-editor-line-height);
+}
+
+.taskboard-shell .ed-chip {
+  align-items: center;
+  display: inline-flex;
+  flex: none;
+  font-size: var(--tb-editor-meta-size);
+  font-weight: 600;
+  line-height: 16px;
+  min-height: 22px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+.taskboard-shell .ed-field {
+  font-size: var(--tb-editor-input-size);
+  font-weight: var(--tb-editor-field-weight);
+  line-height: var(--tb-editor-line-height);
+  min-height: var(--tb-editor-field-height);
+  padding: var(--tb-editor-field-padding);
+}
+
+.taskboard-shell :is(input, select, button).ed-field {
+  block-size: var(--tb-editor-field-height);
+}
+
+.taskboard-shell textarea.ed-field {
+  block-size: 52px;
+  min-height: 52px;
+  padding: 5px 7px;
+}
+
+.taskboard-shell .ed-button {
+  block-size: var(--tb-editor-field-height);
+  font-size: var(--tb-editor-text-size);
+  font-weight: 500;
+  line-height: var(--tb-editor-line-height);
+  min-height: var(--tb-editor-field-height);
+  padding: var(--tb-editor-field-padding);
+}
+
+.taskboard-shell .ed-icon-button,
+.taskboard-shell [data-testid="task-inspector-header-controls"] :is(button, a) {
+  align-items: center;
+  block-size: var(--tb-editor-icon-button-size);
+  display: inline-flex;
+  inline-size: var(--tb-editor-icon-button-size);
+  justify-content: center;
+  min-block-size: var(--tb-editor-icon-button-size);
+  min-inline-size: var(--tb-editor-icon-button-size);
+  padding: 0;
+}
+
+.taskboard-shell :is(.ed-button, .ed-icon-button, [data-testid="task-inspector-header-controls"] :is(button, a)) svg {
+  flex: none;
+  height: 14px;
+  width: 14px;
+}
+
+.taskboard-shell .ed-menu-item {
+  font-size: var(--tb-editor-text-size);
+  line-height: var(--tb-editor-line-height);
+  min-height: 28px;
+  padding: 4px 8px;
+}
+
+/* Titles edit in place: they take the title role, not field metrics. */
+.taskboard-shell textarea.ed-title {
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
+  resize: none;
+}
+
+.taskboard-shell [data-testid="task-inspector-title"] textarea.ed-title {
+  min-height: 44px;
+  padding: 5px 8px;
+}
+
+@media (max-width: 767px) {
+  .taskboard-shell textarea.ed-title {
+    font-size: max(16px, var(--tb-editor-title-size));
+  }
+}

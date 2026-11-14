@@ -1,0 +1,107 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.workspace {
+  grid-template-areas: "list editor";
+  grid-template-columns: minmax(0, var(--notes-list-width, 300px)) minmax(0, 1fr);
+  min-height: 0;
+  flex: 1;
+}
+
+.shell[data-phone-notes="true"] .workspace {
+  grid-template-areas: "pane";
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.status {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: var(--tb-text-11px);
+}
+
+.shell[data-phone-notes="true"] .status {
+  padding-top: calc(5px + env(safe-area-inset-top));
+}
+
+.search {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.search input {
+  width: 100%;
+}
+
+.shell[data-phone-notes="true"] .search input {
+  block-size: 44px;
+  min-height: 44px;
+  font-size: 16px;
+}
+
+.conflictCopy {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.draftActions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.workspaceNav {
+  flex-shrink: 0;
+}
+
+.workPanel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.workPanel > :global(.calendar-entry-form) {
+  min-height: 0;
+  order: 0;
+  overflow: auto;
+}
+
+.shell[data-phone-notes="true"] .workspaceNav:first-child {
+  padding-top: env(safe-area-inset-top);
+}
+
+.shell[data-phone-notes="true"] :is(.workspaceNav > button, .workPanel :global(.ui-button), .workPanel :global(.notes-icon-button)) {
+  min-height: 44px;
+}
+
+.shell[data-phone-notes="true"] .workPanel .status {
+  padding-top: 5px;
+}
+
+.shell[data-phone-notes="true"] .workPanel :global(.notes-icon-button) {
+  min-width: 44px;
+}
+
+.shell[data-phone-notes="true"] .workPanel > :global(.calendar-entry-form) {
+  align-self: stretch;
+}
+
+.shell[data-phone-notes="true"] .workPanel :global(.calendar-entry-form) :is(input, select) {
+  min-height: 44px;
+  max-width: 100%;
+  font-size: 16px;
+}
+
+.shell[data-phone-notes="true"] .workPanel :global(.calendar-entry-form__actions) > button {
+  min-height: 44px;
+  font-size: 15px;
+}

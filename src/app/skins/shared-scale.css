@@ -1,0 +1,836 @@
+/*
+ * Architecture scale contract.
+ *
+ * Shared Taskboard controls own their physical scale so global text
+ * preferences cannot independently inflate chips, menus, fields, or icons
+ * beyond the board typography.
+ */
+
+.taskboard-shell {
+  --tb-compact-control-height: 30px;
+  --tb-compact-icon-size: 14px;
+  --tb-bucket-control-size: 28px;
+  --tb-bucket-icon-size: 26px;
+}
+
+.taskboard-shell :is(
+  .taskboard-bucket-icon-button,
+  .taskboard-bucket-actions .ui-button,
+  .taskboard-add-split-toggle,
+  .taskboard-bucket-menu .grid-cols-4 > button
+) {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  line-height: 1;
+}
+
+.taskboard-shell :is(
+  .taskboard-bucket-actions .ui-button,
+  .taskboard-add-split-toggle,
+  .taskboard-bucket-menu .grid-cols-4 > button
+) > svg {
+  display: block;
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.taskboard-shell [data-testid="task-editor"] .taskboard-label-edit-chip {
+  gap: 4px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 2px 7px !important;
+}
+
+.taskboard-shell [data-testid="task-editor"] .taskboard-label-chip-remove {
+  height: 18px !important;
+  margin-right: -3px !important;
+  width: 18px !important;
+}
+
+.taskboard-shell [data-testid="task-editor"] button.taskboard-label-chip-remove svg {
+  height: 12px !important;
+  width: 12px !important;
+}
+
+.taskboard-shell [data-testid="task-editor"] .taskboard-label-editor input {
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 2px 4px !important;
+}
+
+.taskboard-shell .taskboard-status-badge:not(.ed-chip) {
+  align-items: center;
+  display: inline-flex;
+  font-size: var(--tb-header-control-size) !important;
+  line-height: 16px !important;
+  min-height: 22px;
+  padding: 2px 7px !important;
+}
+
+.taskboard-shell :is(.taskboard-card, .taskboard-section-card, .taskboard-meta-tile) [class~="leading-3"] {
+  line-height: calc(var(--tb-root-size) * 12 / 18.5) !important;
+}
+
+.taskboard-shell :is(.taskboard-card, .taskboard-section-card, .taskboard-meta-tile) [class~="leading-4"] {
+  line-height: calc(var(--tb-root-size) * 16 / 18.5) !important;
+}
+
+.taskboard-shell :is(.taskboard-card, .taskboard-section-card, .taskboard-meta-tile) [class~="leading-5"] {
+  line-height: calc(var(--tb-root-size) * 20 / 18.5) !important;
+}
+
+.taskboard-shell .taskboard-bucket-header {
+  min-height: 44px;
+  padding: 6px 8px !important;
+}
+
+.taskboard-shell .taskboard-bucket-header-row {
+  gap: 6px !important;
+}
+
+.taskboard-shell .taskboard-bucket-icon-button {
+  height: var(--tb-bucket-control-size) !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  width: var(--tb-bucket-control-size) !important;
+}
+
+.taskboard-shell .taskboard-bucket-icon {
+  height: var(--tb-bucket-icon-size) !important;
+  width: var(--tb-bucket-icon-size) !important;
+}
+
+.taskboard-shell .taskboard-bucket-icon svg {
+  height: 16px !important;
+  width: 16px !important;
+}
+
+.taskboard-shell .taskboard-bucket-actions .ui-button {
+  height: var(--tb-bucket-control-size) !important;
+  padding: 0 !important;
+  width: var(--tb-bucket-control-size) !important;
+}
+
+.taskboard-shell .taskboard-bucket-actions .ui-button svg {
+  height: var(--tb-compact-icon-size) !important;
+  width: var(--tb-compact-icon-size) !important;
+}
+
+.taskboard-shell .taskboard-bucket-task-count {
+  font-size: var(--tb-header-control-size) !important;
+  line-height: 16px !important;
+}
+
+.taskboard-shell .taskboard-add-split-control button {
+  font-size: var(--tb-header-control-size) !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  padding-block: 2px !important;
+}
+
+.taskboard-shell .taskboard-add-split-main {
+  padding-inline: 10px !important;
+}
+
+.taskboard-shell .taskboard-add-split-toggle {
+  flex-basis: 32px !important;
+  min-width: 32px !important;
+  padding-inline: 0 !important;
+}
+
+.taskboard-shell .taskboard-task-icon {
+  height: 26px !important;
+  width: 26px !important;
+}
+
+.taskboard-shell .taskboard-task-icon svg {
+  height: var(--tb-compact-icon-size) !important;
+  width: var(--tb-compact-icon-size) !important;
+}
+
+.taskboard-shell .taskboard-popover .ui-menu-item:not(.ed-menu-item) {
+  font-size: var(--tb-header-control-size) !important;
+  line-height: 16px !important;
+  min-height: 28px !important;
+  padding: 4px 8px !important;
+}
+
+.taskboard-shell .taskboard-bucket-menu {
+  gap: 4px !important;
+  padding: 5px !important;
+}
+
+.taskboard-shell .taskboard-bucket-menu .grid-cols-4 > button {
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0 !important;
+}
+
+.taskboard-shell .taskboard-bucket-menu .grid-cols-4 > button svg {
+  height: var(--tb-compact-icon-size) !important;
+  width: var(--tb-compact-icon-size) !important;
+}
+
+.taskboard-shell .taskboard-bucket-menu .taskboard-bucket-color-swatch,
+.taskboard-shell .taskboard-bucket-menu .taskboard-icon-picker-cell {
+  height: 28px !important;
+  min-height: 28px !important;
+}
+
+.taskboard-shell .taskboard-bucket-menu .taskboard-bucket-color-swatch {
+  width: 28px !important;
+}
+
+.taskboard-shell .taskboard-bucket-menu .taskboard-icon-picker-cell svg {
+  height: 12px !important;
+  width: 12px !important;
+}
+
+.taskboard-shell :is(
+  .taskboard-board-controls,
+  .taskboard-header-search-region,
+  .taskboard-header-nav-row,
+  .taskboard-header-tools
+) svg {
+  height: 16px !important;
+  width: 16px !important;
+}
+
+/* Calendar and Outages share this embedded workspace. Keep their controls and
+ * grid text on the board's semantic scale instead of inheriting root rem size. */
+.taskboard-shell .taskboard-calendar-proof {
+  --calendar-proof-control-font: var(--tb-header-control-size);
+  --calendar-proof-control-height: var(--tb-compact-control-height);
+}
+
+.taskboard-shell .calendar-proof-header__title {
+  font-size: var(--tb-header-control-size) !important;
+  line-height: 18px;
+}
+
+.taskboard-shell .calendar-proof-filters__label {
+  font-size: var(--tb-text-10px) !important;
+  line-height: 16px;
+}
+
+.taskboard-shell .taskboard-calendar-proof__calendar .fc .fc-col-header-cell-cushion {
+  font-size: var(--tb-text-11px);
+  line-height: 18px;
+  padding: 7px 5px;
+}
+
+.taskboard-shell .taskboard-calendar-proof__calendar .fc .fc-daygrid-day-number {
+  font-size: var(--tb-text-11px);
+  line-height: 18px;
+  padding: 5px 7px;
+}
+
+.taskboard-shell .taskboard-calendar-proof__calendar .fc .fc-timegrid-axis-cushion,
+.taskboard-shell .taskboard-calendar-proof__calendar .fc .fc-timegrid-slot-label-cushion,
+.taskboard-shell .taskboard-calendar-proof__calendar .fc .fc-daygrid-more-link {
+  font-size: var(--tb-text-10px);
+  line-height: 16px;
+}
+
+.taskboard-shell .taskboard-calendar-proof__calendar .fc .fc-timegrid-slot-label-cushion {
+  padding-inline: 7px;
+}
+
+.taskboard-shell .calendar-proof-event__badge {
+  font-size: 10px;
+  line-height: 12px;
+  padding: 1px 5px;
+}
+
+.taskboard-shell .calendar-proof-event__time {
+  font-size: 10.5px;
+  line-height: 12px;
+}
+
+.taskboard-shell .calendar-proof-event__title {
+  font-size: var(--tb-card-title-size);
+  line-height: var(--tb-card-title-line-height);
+}
+
+.taskboard-shell .calendar-proof-inspector__status {
+  font-size: var(--tb-header-control-size);
+  gap: 6px;
+  padding: 7px 8px;
+}
+
+.taskboard-shell .calendar-proof-inspector h2 {
+  font-size: var(--tb-board-title-size);
+  line-height: var(--tb-board-title-line-height);
+}
+
+.taskboard-shell .calendar-proof-inspector__summary,
+.taskboard-shell .calendar-proof-inspector dd,
+.taskboard-shell .calendar-proof-inspector__secondary,
+.taskboard-shell .calendar-proof-inspector__error {
+  font-size: var(--tb-card-title-size);
+}
+
+.taskboard-shell .calendar-proof-inspector dt {
+  font-size: var(--tb-text-10px);
+}
+
+.taskboard-shell .calendar-proof-inspector__primary,
+.taskboard-shell .calendar-proof-inspector__secondary {
+  min-height: var(--tb-compact-control-height);
+}
+
+.taskboard-shell .calendar-proof-inspector__primary svg {
+  height: var(--tb-compact-icon-size);
+  width: var(--tb-compact-icon-size);
+}
+
+.taskboard-shell .calendar-proof-inspector__source {
+  min-height: var(--tb-compact-control-height);
+  padding-inline: 8px;
+}
+
+.taskboard-shell .taskboard-calendar-proof__empty-note {
+  font-size: var(--tb-card-title-size);
+  line-height: var(--tb-card-title-line-height);
+  padding: 10px 12px;
+}
+
+.taskboard-shell .taskboard-calendar-proof__filter-note,
+.taskboard-shell .taskboard-calendar-proof__focus-note,
+.taskboard-shell .taskboard-calendar-proof__week-note,
+.taskboard-shell .taskboard-calendar-proof__resize-error {
+  font-size: var(--tb-header-control-size);
+  line-height: 18px;
+}
+
+.taskboard-shell .taskboard-calendar-proof__focus-note {
+  gap: 7px;
+  padding: 8px 9px;
+}
+
+.taskboard-shell .taskboard-calendar-proof__focus-note button {
+  font-size: var(--tb-header-control-size);
+  line-height: 16px;
+  min-height: var(--tb-compact-control-height);
+  padding-inline: 8px;
+}
+
+.taskboard-shell .taskboard-calendar-proof__resize-error {
+  margin: 6px 8px 0;
+  padding: 6px 8px;
+}
+
+.taskboard-shell .calendar-entry-form {
+  gap: 10px;
+  padding: 12px;
+}
+
+.taskboard-shell .calendar-entry-form--sidebar {
+  max-height: calc(100vh - 24px);
+  top: 12px;
+}
+
+.taskboard-shell .calendar-entry-form__header {
+  gap: 12px;
+}
+
+.taskboard-shell .calendar-entry-form__header-actions,
+.taskboard-shell .calendar-entry-form__actions {
+  gap: 6px;
+}
+
+.taskboard-shell .calendar-entry-form__header p {
+  font-size: var(--tb-text-10px);
+  line-height: 14px;
+}
+
+.taskboard-shell .calendar-entry-form__header h2 {
+  font-size: var(--tb-bucket-title-size);
+  line-height: var(--tb-bucket-title-line-height);
+}
+
+.taskboard-shell :is(
+  .calendar-entry-form__icon-button,
+  .calendar-entry-form__primary,
+  .calendar-entry-form__secondary
+) {
+  font-size: var(--tb-header-control-size);
+  line-height: 16px;
+  min-height: var(--tb-compact-control-height);
+}
+
+.taskboard-shell .calendar-entry-form__icon-button {
+  width: var(--tb-compact-control-height);
+}
+
+.taskboard-shell .calendar-entry-form__icon-button svg,
+.taskboard-shell .calendar-entry-form__actions svg,
+.taskboard-shell .calendar-entry-form__delete-confirmation svg {
+  height: var(--tb-compact-icon-size);
+  width: var(--tb-compact-icon-size);
+}
+
+.taskboard-shell .calendar-entry-form__grid {
+  gap: 9px;
+}
+
+.taskboard-shell .calendar-entry-form label {
+  font-size: var(--tb-header-control-size);
+  gap: 4px;
+  line-height: 16px;
+}
+
+.taskboard-shell .calendar-entry-form :is(input, select, textarea) {
+  font-size: var(--tb-card-title-size);
+  line-height: var(--tb-card-title-line-height);
+  min-height: var(--tb-compact-control-height);
+  padding: 5px 7px;
+}
+
+.taskboard-shell .calendar-entry-form textarea {
+  min-height: 72px;
+}
+
+.taskboard-shell .calendar-entry-form__color-control {
+  font-size: var(--tb-header-control-size);
+  gap: 6px;
+  min-height: var(--tb-compact-control-height);
+  padding: 4px 7px;
+}
+
+.taskboard-shell .calendar-entry-form .calendar-entry-form__color-control input[type="color"] {
+  height: 20px;
+  min-height: 20px;
+  width: 26px;
+}
+
+.taskboard-shell .calendar-entry-form__checkbox input {
+  height: 14px;
+  min-height: 14px;
+  width: 14px;
+}
+
+.taskboard-shell :is(
+  .calendar-entry-form__notice,
+  .calendar-entry-form__error,
+  .calendar-entry-form__delete-confirmation strong,
+  .calendar-entry-form__delete-confirmation span
+) {
+  font-size: var(--tb-header-control-size);
+  line-height: 16px;
+}
+
+.taskboard-shell :is(.calendar-entry-form__primary, .calendar-entry-form__secondary) {
+  padding-inline: 10px;
+}
+
+/* Main board polish contract. Skins keep their palette and shape language;
+ * these rules align hierarchy, density, and responsive behavior. */
+html .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]).taskboard-main-header,
+.taskboard-settings-root .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]).taskboard-main-header {
+  background: var(--panel-strong) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--foreground);
+  isolation: isolate;
+  padding: 0 !important;
+  top: 0 !important;
+}
+
+.taskboard-shell .taskboard-header-stack {
+  gap: 0 !important;
+}
+
+html .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]) .taskboard-header-utility-row,
+.taskboard-settings-root .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]) .taskboard-header-utility-row {
+  background: var(--panel-strong);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 34%, transparent);
+  padding: 7px 10px 6px;
+}
+
+html .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]) .taskboard-header-nav-row,
+.taskboard-settings-root .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]) .taskboard-header-nav-row {
+  background: color-mix(in srgb, var(--panel) 92%, var(--background));
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 48%, transparent);
+  border-top: 0 !important;
+  box-shadow: 0 5px 12px color-mix(in srgb, var(--background) 18%, transparent);
+  margin-left: var(--taskboard-view-stage-offset, 0);
+  padding: 4px 10px 5px !important;
+  /* Spans the header, not the board stage, so the right-aligned tools stay
+   * at the screen edge when the task sidebar narrows the stage. */
+  width: auto;
+}
+
+.taskboard-shell .taskboard-header-control-row {
+  align-items: center;
+  display: grid;
+  gap: 8px 16px;
+  grid-template-columns: minmax(12rem, max-content) minmax(14rem, 32rem);
+  justify-content: space-between;
+}
+
+.taskboard-shell .taskboard-board-controls {
+  flex-wrap: nowrap;
+}
+
+.taskboard-shell .taskboard-header-search-region {
+  height: auto;
+  justify-self: end;
+  max-width: 32rem;
+  min-height: 32px;
+  width: 100% !important;
+}
+
+.taskboard-shell .taskboard-header-nav-inner {
+  align-items: center;
+  min-width: 0;
+}
+
+.taskboard-shell .taskboard-primary-nav .taskboard-view-mode-button,
+.taskboard-shell .taskboard-header-tools > button,
+.taskboard-shell .taskboard-header-tools > div > button {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.taskboard-shell .taskboard-primary-nav .taskboard-view-mode-button:hover,
+.taskboard-shell .taskboard-header-tools > button:hover,
+.taskboard-shell .taskboard-header-tools > div > button:hover {
+  background: var(--control-hover);
+  box-shadow: none;
+}
+
+.taskboard-shell .taskboard-primary-nav .taskboard-view-mode-button.ui-chip-active {
+  background: var(--control-active);
+  border-color: color-mix(in srgb, var(--control-active) 72%, transparent);
+  color: var(--control-active-fg);
+}
+
+.taskboard-shell [data-testid="board-stage"] {
+  border-color: color-mix(in srgb, var(--border) 54%, transparent);
+  box-shadow: none;
+}
+
+.taskboard-shell .taskboard-board-scroll {
+  background: color-mix(in srgb, var(--background) 38%, transparent);
+}
+
+.taskboard-shell .taskboard-bucket-column {
+  border-color: color-mix(in srgb, var(--bucket-color) 26%, var(--border)) !important;
+  box-shadow: none;
+}
+
+.taskboard-shell .taskboard-bucket-header {
+  border-bottom-color: color-mix(in srgb, var(--bucket-color) 12%, var(--border)) !important;
+}
+
+.taskboard-shell .taskboard-bucket-body {
+  gap: 6px;
+  padding: 6px;
+}
+
+.taskboard-shell .taskboard-bucket-task-count {
+  opacity: 0.76;
+}
+
+.taskboard-shell .taskboard-add-button {
+  background: color-mix(in srgb, var(--surface-subtle) 62%, transparent);
+  border-color: color-mix(in srgb, var(--border) 42%, transparent);
+  color: var(--muted);
+}
+
+.taskboard-shell .taskboard-add-split-main {
+  border-left-style: solid;
+  border-top-style: solid;
+  border-bottom-style: solid;
+}
+
+.taskboard-shell .taskboard-add-split-toggle {
+  border-color: color-mix(in srgb, var(--border) 42%, transparent);
+  border-style: solid;
+}
+
+.taskboard-shell .taskboard-card {
+  border-color: var(--border) !important;
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--background) 26%, transparent);
+  padding: 8px 9px;
+}
+
+.taskboard-shell .taskboard-card:hover {
+  border-color: color-mix(in srgb, var(--foreground) 22%, var(--border)) !important;
+  box-shadow: 0 5px 16px color-mix(in srgb, var(--background) 34%, transparent);
+  transform: none;
+}
+
+/* A task card is one full-size button: click opens the task, drag moves it.
+ * The card's padding moves onto that button so the whole box is the target. */
+.taskboard-shell .taskboard-card:has(> .taskboard-task-card-surface) {
+  padding: 0 !important;
+}
+
+.taskboard-shell .taskboard-card > .taskboard-task-card-surface {
+  padding: 8px 9px;
+}
+
+html:is([data-density="standard"], [data-density="tight"]) .taskboard-shell .taskboard-card > .taskboard-task-card-surface {
+  padding: 7px;
+}
+
+html[data-density="tight"] .taskboard-shell .taskboard-card > .taskboard-task-card-surface {
+  padding: 6px;
+}
+
+/* Leave room for the 4px status bar on the card's left edge. */
+html:is([data-density]) .taskboard-shell .taskboard-card > .taskboard-task-card-surface {
+  padding-left: 12px;
+}
+
+.taskboard-shell .taskboard-task-card-surface[data-drag-activator="true"] {
+  cursor: pointer;
+}
+
+.taskboard-shell .taskboard-task-card-surface[data-drag-activator="true"]:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--focus-ring) 80%, transparent);
+  outline-offset: -2px;
+}
+
+/* Card date stamp: smaller than the description and set in small caps so it
+ * reads as metadata, with a matching small icon. Scales with the font setting. */
+.taskboard-shell .taskboard-card-date {
+  color: var(--muted);
+  font-size: calc(var(--tb-text-10px) * 0.84);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.taskboard-shell .taskboard-card-date-icon {
+  height: 0.95em;
+  width: 0.95em;
+}
+
+.taskboard-shell .taskboard-card-heading-row {
+  gap: 6px;
+}
+
+.taskboard-shell .taskboard-card-title {
+  letter-spacing: -0.005em;
+}
+
+.taskboard-shell .taskboard-card-summary {
+  line-height: 1.42 !important;
+  margin-top: 3px;
+}
+
+.taskboard-shell [data-testid="task-card"][data-task-status="done"] {
+  background: color-mix(in srgb, var(--surface-subtle) 78%, transparent);
+  filter: saturate(0.62);
+  opacity: 0.58;
+}
+
+.taskboard-shell [data-testid="task-card"][data-task-status="done"] .taskboard-card-title {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.taskboard-shell [data-testid="task-card"][data-task-status="done"]:hover,
+.taskboard-shell [data-testid="task-card"][data-task-status="done"].taskboard-card-selected {
+  filter: saturate(0.8);
+  opacity: 0.78;
+}
+
+.taskboard-shell .taskboard-card-selected {
+  outline: 1px solid color-mix(in srgb, var(--task-status-color, var(--control-active)) 74%, transparent);
+  outline-offset: 0;
+  box-shadow:
+    inset 4px 0 0 var(--task-status-color, var(--control-active)),
+    0 4px 14px color-mix(in srgb, var(--background) 34%, transparent);
+}
+
+.taskboard-shell .taskboard-inspector-shell {
+  background: var(--panel-strong);
+  border-color: color-mix(in srgb, var(--border) 58%, transparent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--background) 34%, transparent);
+}
+
+.taskboard-shell .taskboard-inspector-header {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface-subtle) 66%, transparent), transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 32%, transparent);
+}
+
+.taskboard-shell [data-testid="task-editor-sidebar"] [data-testid="task-editor"] .taskboard-inspector-header [data-testid="task-inspector-title"] textarea,
+.taskboard-shell .subtask-inspector .taskboard-inspector-header textarea.subtask-inspector-title {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.taskboard-shell [data-testid="task-editor-sidebar"] [data-testid="task-editor"] .taskboard-inspector-header [data-testid="task-inspector-title"] textarea:focus,
+.taskboard-shell .subtask-inspector .taskboard-inspector-header textarea.subtask-inspector-title:focus {
+  border-bottom-color: color-mix(in srgb, var(--focus-ring) 54%, transparent);
+  box-shadow: none;
+}
+
+.taskboard-shell .taskboard-inspector-body {
+  background: color-mix(in srgb, var(--background) 16%, transparent);
+}
+
+.taskboard-shell .taskboard-inspector-section + .taskboard-inspector-section {
+  border-top: 1px solid color-mix(in srgb, var(--border) 28%, transparent);
+  margin-top: 8px;
+  padding-top: 6px;
+}
+
+.taskboard-shell .taskboard-inspector-disclosure {
+  border-color: color-mix(in srgb, var(--border) 32%, transparent);
+}
+
+.taskboard-shell :is([data-testid="task-inspector-quick-actions"], .subtask-inspector-status) button:not([aria-pressed="true"]) {
+  background: color-mix(in srgb, var(--surface-subtle) 54%, transparent);
+  border-color: transparent !important;
+  box-shadow: none;
+}
+
+.taskboard-shell :is([data-testid="task-inspector-quick-actions"], .subtask-inspector-status) button[aria-pressed="true"] {
+  box-shadow: inset 3px 0 0 currentColor;
+}
+
+.taskboard-shell .taskboard-inspector-row {
+  border-color: color-mix(in srgb, var(--border) 28%, transparent);
+}
+
+.taskboard-shell .taskboard-inspector-footer {
+  background: color-mix(in srgb, var(--panel) 82%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--border) 30%, transparent);
+}
+
+@media (max-width: 920px) {
+  .taskboard-shell .taskboard-header-control-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .taskboard-shell .taskboard-header-search-region {
+    justify-self: stretch;
+    max-width: none;
+  }
+
+  .taskboard-shell .taskboard-header-nav-inner {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .taskboard-shell .taskboard-primary-nav {
+    flex: 1 1 100%;
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .taskboard-shell .taskboard-header-tools {
+    margin-left: auto;
+    width: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  html .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]) .taskboard-header-utility-row,
+  .taskboard-settings-root .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]) .taskboard-header-utility-row {
+    padding-inline: 8px !important;
+  }
+
+  html .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]) .taskboard-header-nav-row,
+  .taskboard-settings-root .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]) .taskboard-header-nav-row {
+    padding-inline: 8px !important;
+  }
+
+  .taskboard-shell .taskboard-board-controls {
+    flex-wrap: wrap;
+  }
+}
+
+/* Overdue: open tasks whose due date has passed. Red date text on full cards,
+ * a small red flag on title-only cards, and red headings in Agenda and Focus. */
+.taskboard-shell .taskboard-card-date--overdue,
+.taskboard-shell .taskboard-overdue-text {
+  color: var(--danger-solid);
+}
+
+.taskboard-shell .taskboard-card-overdue-label {
+  letter-spacing: 0.06em;
+}
+
+.taskboard-shell .taskboard-card-overdue-marker {
+  color: var(--danger-solid);
+  display: inline-flex;
+}
+
+/* Keyboard: every card, Focus card and Agenda row can take focus from J/K. */
+.taskboard-shell [data-task-nav]:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--focus-ring) 80%, transparent);
+  outline-offset: -2px;
+}
+
+/* Key hints shown in the palette, the shortcut sheet and the header button. */
+.taskboard-kbd {
+  background: var(--control);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  color: var(--muted);
+  display: inline-flex;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 14px;
+  min-width: 18px;
+  padding: 0 4px;
+}
+
+.taskboard-shell .taskboard-palette-button {
+  color: var(--muted);
+}
+
+/* Command palette. */
+.taskboard-shell .taskboard-command-group {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 14px;
+  text-transform: uppercase;
+}
+
+.taskboard-shell .taskboard-command-option[data-active="true"] {
+  background: var(--control-hover);
+}
+
+.taskboard-shell .taskboard-command-option[data-active="true"] .taskboard-kbd {
+  color: var(--foreground);
+}
+
+/* The calendar time a New entry will use, shown on the button itself. */
+.calendar-proof-new-entry-slot {
+  border-left: 1px solid var(--border);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  margin-left: 0.15rem;
+  padding-left: 0.45rem;
+}
+
+/* The palette's search field fills the dialog's top edge; the dialog itself
+ * marks focus, so the field drops the recessed well and focus outline. */
+.taskboard-shell input.taskboard-command-input,
+.taskboard-shell input.taskboard-command-input:focus {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  outline: none;
+}

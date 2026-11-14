@@ -1,0 +1,8 @@
+/* Shared structural treatment used by the Architecture skin (Linen look). */
+
+html[data-ui-skin="architecture"] .taskboard-shell .taskboard-add-split-main,
+html[data-ui-skin="architecture"] .taskboard-shell .taskboard-add-split-toggle,
+.taskboard-settings-root[data-ui-skin="architecture"] .taskboard-shell .taskboard-add-split-main,
+.taskboard-settings-root[data-ui-skin="architecture"] .taskboard-shell .taskboard-add-split-toggle {
+  border-radius: var(--tb-radius, 3px);
+}

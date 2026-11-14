@@ -1,0 +1,37 @@
+.taskboard-shell .workspace-share-button { position:relative; }
+.taskboard-shell .workspace-sharing-dot { position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:var(--status-done); }
+.taskboard-shell.workspace-share-dialog { position:fixed;inset:0;margin:auto;width:min(500px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;padding:0;border:1px solid var(--border);border-radius:var(--tb-radius-panel,4px);background:var(--popover-base,var(--panel));color:var(--foreground);font-size:var(--tb-editor-text-size);box-shadow:var(--elev-2); }
+.taskboard-shell.workspace-share-dialog::backdrop { background:rgb(0 0 0 / .2); }
+.taskboard-shell.workspace-share-dialog>header { display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--control); }
+.taskboard-shell.workspace-share-dialog h2 { margin:0;font-size:var(--tb-editor-title-size);font-weight:600; }
+.taskboard-shell.workspace-share-dialog header p { margin:2px 0 0;color:var(--muted);overflow-wrap:anywhere; }
+.taskboard-shell.workspace-share-dialog header button { display:flex;width:28px;min-height:28px;padding:4px;align-items:center;justify-content:center;flex:none; }
+.taskboard-shell .workspace-share-content { padding:10px 12px 12px; }
+.taskboard-shell .workspace-share-content>p { margin:0 0 10px; }
+.taskboard-shell .workspace-share-link { padding:0 0 12px; }
+.taskboard-shell .workspace-share-link+.workspace-share-link { border-top:1px solid var(--border);padding:12px 0 0; }
+.taskboard-shell .workspace-share-link-heading { display:flex;align-items:baseline;justify-content:space-between;gap:10px; }
+.taskboard-shell .workspace-share-link-heading h3 { margin:0;font-size:var(--tb-editor-text-size);font-weight:600; }
+.taskboard-shell .workspace-share-link-heading>span { font-size:var(--tb-editor-meta-size);color:var(--muted); }
+.taskboard-shell .workspace-share-link-heading>span[data-active="true"] { color:var(--status-done); }
+.taskboard-shell .workspace-share-link>p { margin:4px 0 7px; }
+.taskboard-shell .workspace-share-url { width:100%;min-width:0;height:30px;padding:4px 7px;font-size:var(--tb-editor-meta-size);text-overflow:ellipsis; }
+.taskboard-shell .workspace-share-expiry { display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin:7px 0; }
+.taskboard-shell .workspace-share-expiry label { display:flex;align-items:center;gap:7px;min-width:0; }
+.taskboard-shell .workspace-share-expiry select { width:145px;max-width:100%;height:28px;min-height:28px;padding:3px 6px;font-size:var(--tb-editor-meta-size); }
+.taskboard-shell .workspace-share-expiry small { font-size:var(--tb-editor-meta-size); }
+.taskboard-shell .workspace-share-custom { display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:7px 0; }
+.taskboard-shell .workspace-share-custom input { min-width:0;max-width:100%; }
+.taskboard-shell .workspace-share-buttons { display:flex;align-items:stretch;flex-wrap:wrap;gap:6px; }
+.taskboard-shell .workspace-share-buttons button { min-height:28px;padding:4px 8px;font-size:var(--tb-editor-meta-size); }
+.taskboard-shell .workspace-share-generate { background:var(--control-active);color:var(--control-active-fg); }
+.taskboard-shell .workspace-share-disable { color:var(--danger); }
+.taskboard-shell .workspace-share-link .workspace-share-hint { margin:6px 0 0;color:var(--muted);font-size:var(--tb-editor-meta-size); }
+.taskboard-shell .workspace-share-inventory { margin-top:10px;padding-top:8px;border-top:1px solid var(--border);color:var(--muted);font-size:var(--tb-editor-meta-size); }
+.taskboard-shell .workspace-share-inventory p { margin:6px 0; }
+.taskboard-shell.workspace-share-error { position:fixed;bottom:16px;right:16px;z-index:100;display:flex;align-items:center;gap:10px;max-width:min(450px,calc(100vw - 32px));padding:10px 12px;border:1px solid var(--border);border-radius:var(--tb-radius);background:var(--popover-base);color:var(--foreground);box-shadow:var(--elev-2); }
+.taskboard-shell.workspace-share-error button { background:transparent;border:0;color:inherit; }
+.taskboard-shell .workspace-header-actions { gap:4px; }
+.taskboard-shell .workspace-header-actions [data-testid="task-inspector-header-controls"] { display:contents; }
+.taskboard-shell .workspace-header-actions .taskboard-surface-close { border-color:var(--border);border-radius:var(--tb-radius); }
+@media(max-width:767px) { .taskboard-shell.workspace-share-dialog { width:calc(100vw - 16px);max-height:calc(100dvh - 16px); } .taskboard-shell.workspace-share-dialog :is(button,select) { min-height:44px; } .taskboard-shell.workspace-share-dialog header button { width:44px;min-height:44px; } .taskboard-shell.workspace-share-dialog .workspace-share-url { height:44px;font-size:16px; } .taskboard-shell .workspace-share-expiry select { height:44px;min-height:44px;font-size:16px;width:170px; } .taskboard-shell .workspace-share-buttons { display:grid;grid-template-columns:repeat(3,minmax(0,1fr)); } .taskboard-shell .workspace-share-custom input { font-size:16px;width:100%;height:44px; } .taskboard-shell .workspace-header-actions :is(button,a) { min-width:44px;height:44px;min-height:44px; } }

@@ -1,0 +1,14 @@
+{
+  "id": "/",
+  "name": "Taskboard",
+  "short_name": "Taskboard",
+  "start_url": "/?view=board",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#161819",
+  "theme_color": "#161819",
+  "icons": [
+    { "src": "/offline-notes/personal-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/offline-notes/personal-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

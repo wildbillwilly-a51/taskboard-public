@@ -1,0 +1,587 @@
+/* Architecture skin, Linen look: gently rounded geometry, surfaces that
+ * separate by lightness, and one four-step elevation scale from globals.css.
+ * Buttons sit raised with a top highlight; text fields and segmented tracks
+ * sit recessed. Buckets are tinted zones with a header in their color, and a
+ * selected task is filled with its bucket's color.
+ *
+ * Every selector starts with :is(html, .taskboard-settings-root)[data-ui-skin]
+ * so it outranks the shared polish contract in shared-scale.css, which loads
+ * after this file. */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] {
+  --tb-radius: 3px;
+  --tb-radius-panel: 4px;
+  --architecture-border: color-mix(in srgb, var(--border) 90%, transparent);
+  --architecture-control-border: color-mix(in srgb, var(--border) 85%, transparent);
+  --architecture-control-border-hover: color-mix(in srgb, var(--border) 60%, var(--foreground) 22%);
+  --architecture-divider: color-mix(in srgb, var(--border) 70%, transparent);
+  --architecture-hover-wash: color-mix(in srgb, var(--foreground) 7%, transparent);
+  --architecture-press-wash: color-mix(in srgb, var(--foreground) 11%, transparent);
+  --architecture-panel-shadow: var(--elev-1), var(--raise-highlight);
+  --architecture-control-shadow: var(--control-shadow);
+  --architecture-control-shadow-hover: var(--control-shadow-hover);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"][data-surface-style="low"] {
+  --architecture-panel-shadow: var(--raise-highlight);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"][data-surface-style="strong"] {
+  --architecture-panel-shadow: var(--elev-2), var(--raise-highlight);
+  --architecture-control-border: var(--border);
+}
+
+/* The page background shows through the app shell, so the scrollbar gutters
+ * and the shell read as one surface instead of a framed panel. */
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] main.taskboard-shell {
+  background-color: transparent;
+}
+
+/* The `background` shorthand in globals.css leaves the root background color
+ * transparent, so the reserved scrollbar gutters showed the browser's default
+ * canvas color as a frame. Give the root a real color and a matching
+ * scrollbar track. */
+html[data-ui-skin="architecture"] {
+  background-color: var(--background);
+  scrollbar-color: var(--scrollbar-thumb) var(--background);
+}
+
+/* ───── Geometry ───── */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell [class*="rounded-"],
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .ui-control, .ui-select, .ui-button, .ui-inline-input, .ui-inline-button, .ui-chip-button,
+  .ui-menu-item, .taskboard-label-editor, .taskboard-label-edit-chip, .taskboard-label-chip-remove,
+  .taskboard-section-card, .taskboard-meta-tile, .taskboard-subtle-surface, .taskboard-add-shell,
+  .taskboard-card, [data-testid="task-card"], .taskboard-bucket-body
+) {
+  border-radius: var(--tb-radius) !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .panel-surface, .taskboard-popover, .taskboard-overlay-panel, .taskboard-bucket-column
+),
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-bucket-drag-preview,
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] :is(
+  [data-slot="popover-content"], [data-slot="select-content"], [data-slot="dropdown-menu-content"]
+) {
+  border-radius: var(--tb-radius-panel) !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] :is(
+  [data-slot="popover-content"] [data-slot="calendar"], [data-slot="popover-content"] [data-slot="input"],
+  [data-slot="popover-content"] input, [data-slot="select-trigger"], [data-slot="select-item"],
+  [data-slot="dropdown-menu-item"]
+) {
+  border-radius: var(--tb-radius) !important;
+}
+
+/* ───── Panels ───── */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .panel-surface {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-color: transparent;
+  box-shadow: var(--architecture-panel-shadow) !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .taskboard-section-card, .taskboard-meta-tile, .taskboard-subtle-surface, .taskboard-add-shell
+) {
+  border-color: transparent !important;
+  background: var(--surface-subtle);
+  box-shadow: none;
+}
+
+/* ───── Buttons: raised ───── */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .ui-button, .ui-inline-button, .ui-chip-button, .taskboard-label-edit-chip, .taskboard-label-chip-remove
+) {
+  border-color: var(--architecture-control-border);
+  box-shadow: var(--architecture-control-shadow);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .ui-button-surface, .ui-inline-button, .ui-chip-button
+):hover {
+  border-color: var(--architecture-control-border-hover);
+  background: var(--control-hover);
+  box-shadow: var(--architecture-control-shadow-hover);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .ui-button, .ui-inline-button, .ui-chip-button
+):active:not(:disabled) {
+  box-shadow: var(--well-shadow);
+  transform: translateY(1px);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .ui-button-primary,
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .ui-chip-active {
+  background: var(--control-active);
+  border-color: var(--control-active);
+  color: var(--control-active-fg);
+  box-shadow: var(--elev-1), var(--ink-highlight);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .ui-button-primary:hover,
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .ui-chip-active:hover {
+  background: color-mix(in srgb, var(--control-active) 88%, var(--background));
+  border-color: color-mix(in srgb, var(--control-active) 88%, var(--background));
+  color: var(--control-active-fg);
+  filter: none;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .ui-button, .ui-inline-button, .ui-chip-button, .ui-menu-item
+):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring) 45%, transparent), var(--architecture-control-shadow);
+}
+
+/* Menu items are flat rows inside a raised surface. */
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .ui-menu-item {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .ui-menu-item:hover {
+  background: var(--architecture-hover-wash);
+  box-shadow: none;
+}
+
+/* ───── Fields: recessed ───── */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .ui-control, .ui-inline-input, textarea,
+  input:where(:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]))
+) {
+  background-color: var(--field);
+  border-color: var(--architecture-control-border);
+  box-shadow: var(--well-shadow);
+}
+
+/* Dropdowns behave like buttons, so they sit raised. */
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell select,
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell select.ui-control {
+  background-color: var(--control);
+  border-color: var(--architecture-control-border);
+  box-shadow: var(--architecture-control-shadow);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .ui-control, .ui-inline-input, textarea, select,
+  input:where(:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]))
+):focus,
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .ui-control:focus-within {
+  border-color: var(--focus-ring);
+  box-shadow: var(--well-shadow), 0 0 0 3px color-mix(in srgb, var(--focus-ring) 30%, transparent);
+}
+
+/* Inputs nested inside a field wrapper (header search) inherit the wrapper. */
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .ui-control :is(input, textarea),
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .ui-control :is(input, textarea):focus {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* Task titles edit in place and only show a field outline while focused. */
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  [data-testid="task-inspector-title"], [data-testid="task-overview-title-field"]
+) :is(textarea, input),
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell textarea.task-note-title {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  [data-testid="task-inspector-title"], [data-testid="task-overview-title-field"]
+) :is(textarea, input):focus,
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell textarea.task-note-title:focus {
+  background-color: var(--field);
+  border-color: var(--focus-ring);
+  box-shadow: var(--well-shadow);
+}
+
+/* ───── Header and view switcher ───── */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]).taskboard-main-header {
+  background: var(--panel) !important;
+  box-shadow: var(--elev-2) !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]) .taskboard-header-utility-row {
+  background: transparent;
+  border-bottom: 0;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is([data-testid="board-header"], [data-workspace-header]) .taskboard-header-nav-row {
+  background: transparent;
+  border-bottom: 0;
+  box-shadow: none;
+}
+
+/* Every segmented switch is one inset well: the board's view switcher, the
+ * task workspace tabs, the Work view switch (.work-seg, also People's
+ * filter), and the header status / Archives switches (.workspace-seg). The
+ * current choice is raised inside the well. Hosts own only their sizing. */
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(.taskboard-primary-nav, .task-workspace-tabs, .work-seg, .workspace-seg) {
+  flex: 0 1 auto;
+  gap: 2px;
+  max-width: 100%;
+  padding: 3px;
+  border: 0;
+  border-radius: calc(var(--tb-radius) + 2px);
+  background: var(--field);
+  box-shadow: var(--well-shadow);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(.taskboard-primary-nav .taskboard-view-mode-button, .task-workspace-tabs > :is(button, a), .work-seg > button, .workspace-seg > button) {
+  border-color: transparent;
+  border-radius: var(--tb-radius);
+  background: transparent;
+  box-shadow: none;
+  color: var(--muted);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(.taskboard-primary-nav .taskboard-view-mode-button, .task-workspace-tabs > :is(button, a), .work-seg > button, .workspace-seg > button):hover:not(:disabled, .ui-chip-active, [aria-selected="true"], [aria-pressed="true"]) {
+  background: var(--architecture-hover-wash);
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--foreground);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-primary-nav .taskboard-view-mode-button.ui-chip-active,
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-primary-nav .taskboard-view-mode-button.ui-chip-active:hover,
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .task-workspace-tabs > :is([aria-selected="true"], [aria-current="page"]),
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .task-workspace-tabs > :is([aria-selected="true"], [aria-current="page"]):hover,
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(.work-seg, .workspace-seg) > button[aria-pressed="true"],
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(.work-seg, .workspace-seg) > button[aria-pressed="true"]:hover {
+  background: var(--control-active);
+  border-color: var(--control-active);
+  color: var(--control-active-fg);
+  box-shadow: var(--elev-1), var(--ink-highlight);
+}
+
+/* The header status switch sits beside the title, so its current status is
+ * raised with its status color instead of ink (also on the read-only shared
+ * page, whose buttons are disabled). */
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .workspace-seg.workspace-status-seg > button[aria-pressed="true"],
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .workspace-seg.workspace-status-seg > button[aria-pressed="true"]:hover {
+  background: color-mix(in srgb, var(--workspace-status-color, var(--status-todo)) 24%, var(--field));
+  border-color: color-mix(in srgb, var(--workspace-status-color, var(--status-todo)) 50%, transparent);
+  color: var(--foreground);
+  box-shadow: var(--elev-1);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .taskboard-header-tools > button, .taskboard-header-tools > div > button
+):not(.ui-chip-active):not(.ui-button-primary) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .taskboard-header-tools > button, .taskboard-header-tools > div > button
+):not(.ui-chip-active):not(.ui-button-primary):hover {
+  background: var(--architecture-hover-wash);
+  box-shadow: none;
+}
+
+/* ───── Board stage: no frame around the board ───── */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell [data-testid="board-stage"] {
+  background: transparent;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-board-scroll {
+  background: transparent;
+}
+
+/* ───── Buckets: tinted zone with a header in the bucket color ───── */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-bucket-column,
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-bucket-drag-preview {
+  --bucket-ink: color-mix(in oklab, var(--bucket-color) var(--bucket-ink-mix), #ffffff);
+  --taskboard-bucket-icon-color: var(--bucket-ink);
+  --taskboard-bucket-icon-background: color-mix(in srgb, var(--bucket-color) 24%, transparent);
+  --taskboard-bucket-icon-border: transparent;
+  border-color: transparent !important;
+  background: color-mix(in srgb, var(--bucket-color) var(--bucket-zone-tint), var(--panel-strong));
+  box-shadow: var(--architecture-panel-shadow) !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-bucket-column.taskboard-bucket-drop-target {
+  box-shadow: 0 0 0 2px var(--bucket-color), var(--elev-2) !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-bucket-drag-preview {
+  box-shadow: 0 0 0 2px var(--bucket-color), var(--elev-3) !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-bucket-header {
+  position: relative;
+  background: color-mix(in srgb, var(--bucket-color) var(--bucket-header-tint), var(--panel)) !important;
+  border-bottom: 0 !important;
+  box-shadow: var(--raise-highlight);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-bucket-icon {
+  border-color: transparent !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-bucket-task-count {
+  color: var(--muted);
+  opacity: 1;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-bucket-actions button:not(.ui-button-primary) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--muted);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-bucket-actions button:not(.ui-button-primary):hover {
+  background: color-mix(in srgb, var(--foreground) 9%, transparent);
+  color: var(--foreground);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .taskboard-add-button, .taskboard-add-split-main, .taskboard-add-split-toggle
+) {
+  background: transparent;
+  border-color: transparent !important;
+  box-shadow: none;
+  color: var(--faint);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .taskboard-add-button, .taskboard-add-split-main, .taskboard-add-split-toggle
+):hover {
+  background: var(--architecture-hover-wash);
+  color: var(--foreground);
+}
+
+/* ───── Task cards ───── */
+
+/* Status is a full-height bar on the card's left edge. */
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell [data-task-status] {
+  --task-status-color: var(--status-todo);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell [data-task-status="active"] {
+  --task-status-color: var(--status-active);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell [data-task-status="waiting"] {
+  --task-status-color: var(--status-waiting);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell [data-task-status="done"] {
+  --task-status-color: var(--status-done);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(.taskboard-card, [data-testid="task-card"]) {
+  border: 0 !important;
+  box-shadow: inset 4px 0 0 var(--task-status-color, transparent), var(--card-shadow) !important;
+  background: var(--surface-raised);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(.taskboard-card, [data-testid="task-card"]):not(.taskboard-card-selected):hover {
+  background: var(--surface-hover);
+  box-shadow: inset 4px 0 0 var(--task-status-color, transparent), var(--card-shadow-hover) !important;
+}
+
+/* Selected task: filled with its bucket's color, no outline. */
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-card-selected {
+  outline: 0 !important;
+  background: color-mix(
+    in srgb,
+    var(--bucket-color, var(--foreground)) var(--bucket-selected-tint),
+    var(--surface-raised)
+  ) !important;
+  box-shadow: inset 4px 0 0 var(--task-status-color, transparent), var(--card-shadow) !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-card-selected :is(.taskboard-card-title, .line-clamp-2) {
+  font-weight: 650;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-task-drop-placeholder {
+  border: 1px dashed color-mix(in srgb, var(--bucket-color, var(--foreground)) 55%, transparent) !important;
+  background: color-mix(in srgb, var(--bucket-color, var(--foreground)) 8%, transparent);
+  box-shadow: none !important;
+}
+
+/* ───── Task sidebar and expanded workspace ───── */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  [data-testid="task-editor-sidebar"], [data-testid="task-editor-expanded"], .taskboard-inspector-shell
+) {
+  background: var(--panel);
+  border-color: transparent;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-inspector-shell {
+  box-shadow: var(--elev-2), var(--raise-highlight);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-task-workspace-panel {
+  --task-workspace-surface: var(--panel-base);
+  background-color: var(--panel);
+  background-image: none;
+}
+
+/* Overlay panels (task workspace, recycle bin, archives, weekly review) sit on
+ * top of the board, so they are always opaque. The Low surface treatment makes
+ * --panel partly transparent, which let board text show through. */
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .taskboard-overlay-panel, .taskboard-task-workspace-panel, [data-testid="task-editor-expanded"], .subtask-inspector
+) {
+  background-color: var(--panel-base);
+  background-image: none;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-inspector-header {
+  background: transparent;
+  border-bottom-color: var(--architecture-divider);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-inspector-body {
+  background: transparent;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-inspector-footer {
+  background: var(--panel);
+  border-top-color: var(--architecture-divider);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-inspector-section + .taskboard-inspector-section {
+  border-top-color: var(--architecture-divider);
+}
+
+/* Inspector status choices sit in a recessed track; the current status is
+ * raised. (The workspace header's status switch is a segmented well above.) */
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is([data-testid="task-inspector-quick-actions"], .subtask-inspector-status) {
+  gap: 2px;
+  padding: 0;
+  border-radius: var(--tb-radius);
+  background: var(--field);
+  box-shadow: var(--well-shadow);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is([data-testid="task-inspector-quick-actions"], .subtask-inspector-status) button:not([aria-pressed="true"]) {
+  background: transparent;
+  border-color: transparent !important;
+  box-shadow: none;
+  color: var(--muted);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is([data-testid="task-inspector-quick-actions"], .subtask-inspector-status) button:not([aria-pressed="true"]):hover {
+  background: var(--architecture-hover-wash);
+  color: var(--foreground);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is([data-testid="task-inspector-quick-actions"], .subtask-inspector-status) button[aria-pressed="true"] {
+  background: var(--control-active) !important;
+  border-color: var(--control-active) !important;
+  color: var(--control-active-fg) !important;
+  box-shadow: var(--elev-1), var(--ink-highlight);
+}
+
+/* ───── Labels ───── */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-label-chip {
+  border-color: transparent;
+  box-shadow: var(--raise-highlight);
+}
+
+/* ───── Floating surfaces ───── */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-popover,
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] :is(
+  [data-slot="popover-content"], [data-slot="select-content"], [data-slot="dropdown-menu-content"]
+) {
+  background: var(--popover) !important;
+  border-color: var(--architecture-border);
+  box-shadow: var(--elev-3), var(--raise-highlight) !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-overlay-panel {
+  border-color: var(--architecture-border);
+  box-shadow: var(--elev-4), var(--raise-highlight) !important;
+}
+
+/* ───── Calendar ───── */
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .taskboard-calendar-proof__context select, .calendar-proof-filter-menu summary,
+  .calendar-proof-filter-menu__panel, .calendar-proof-filter-menu__option, .calendar-proof-filters__toggle,
+  .calendar-proof-header, .calendar-proof-header button, .calendar-proof-new-entry-button,
+  .calendar-entry-form, .calendar-entry-form input, .calendar-entry-form select, .calendar-entry-form textarea,
+  .calendar-entry-form__icon-button, .calendar-entry-form__primary, .calendar-entry-form__secondary,
+  .calendar-resize-dialog, .calendar-resize-dialog__range, .calendar-resize-dialog__actions button,
+  .calendar-proof-inspector__primary, .taskboard-calendar-proof__empty-note,
+  .taskboard-calendar-proof__focus-note, .taskboard-calendar-proof__focus-note button,
+  .calendar-proof-event, .taskboard-calendar-proof__calendar .fc-scrollgrid
+) {
+  border-radius: var(--tb-radius) !important;
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .taskboard-calendar-proof__context select, .calendar-proof-filter-menu summary,
+  .calendar-proof-header button, .calendar-proof-new-entry-button, .calendar-entry-form__icon-button,
+  .calendar-entry-form__secondary, .calendar-resize-dialog__actions button,
+  .taskboard-calendar-proof__focus-note button
+) {
+  border-color: var(--architecture-control-border) !important;
+  box-shadow: var(--architecture-control-shadow);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .calendar-proof-filter-menu summary, .calendar-proof-header button, .calendar-proof-new-entry-button,
+  .calendar-entry-form__icon-button, .calendar-entry-form__secondary, .calendar-resize-dialog__actions button,
+  .taskboard-calendar-proof__focus-note button
+):hover {
+  border-color: var(--architecture-control-border-hover) !important;
+  box-shadow: var(--architecture-control-shadow-hover);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .calendar-entry-form__primary, .calendar-proof-inspector__primary
+) {
+  border-color: var(--control-active) !important;
+  box-shadow: var(--elev-1), var(--ink-highlight);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+  .calendar-proof-filter-menu__panel, .calendar-resize-dialog
+) {
+  box-shadow: var(--elev-3), var(--raise-highlight);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .calendar-proof-event {
+  box-shadow: var(--elev-1);
+}
+
+:is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell .taskboard-calendar-proof__context select {
+  background:
+    linear-gradient(45deg, transparent 50%, var(--calendar-proof-muted-text) 50%) calc(100% - 1rem) 50% / 0.36rem 0.36rem no-repeat,
+    linear-gradient(135deg, var(--calendar-proof-muted-text) 50%, transparent 50%) calc(100% - 0.75rem) 50% / 0.36rem 0.36rem no-repeat,
+    var(--control);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(html, .taskboard-settings-root)[data-ui-skin="architecture"] .taskboard-shell :is(
+    .ui-button, .ui-inline-button, .ui-chip-button
+  ):active:not(:disabled) {
+    transform: none;
+  }
+}
