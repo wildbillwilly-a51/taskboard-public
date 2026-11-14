@@ -19,7 +19,7 @@ ENV HOSTNAME=0.0.0.0
 
 COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/db ./db
-COPY --from=builder --chown=node:node /app/THIRD_PARTY_NOTICES.md ./
+COPY --from=builder --chown=node:node /app/LICENSE /app/THIRD_PARTY_NOTICES.md ./
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 

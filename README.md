@@ -20,4 +20,8 @@ Run `npm run lint` for lint checks. Individual tests can be run with
 `node --conditions react-server --import tsx --test tests/<file>.test.ts`.
 The browser suite uses `npm run test:visual` and requires an isolated test database.
 
-See the [third-party notices](THIRD_PARTY_NOTICES.md).
+## License
+
+Taskboard's own code is available under the [MIT License](LICENSE).
+Third-party components retain the licenses listed in the
+[third-party notices](THIRD_PARTY_NOTICES.md).
