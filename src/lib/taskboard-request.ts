@@ -6,7 +6,6 @@ import { taskPushDeviceCookie } from "@/lib/task-push-device-cookie";
 import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import {
   AUTH_COOKIE_NAME,
   getAuthMode,
@@ -102,7 +101,6 @@ export async function getCurrentTaskboardUser() {
   const headerUser = sessionUser ? null : resolveTaskboardUserFromHeaders(requestHeaders);
   const user = sessionUser ?? (headerUser && isExternalAuthOnly()
     ? await getOrCreateExternalTaskboardUser(headerUser) : headerUser);
-  if (!user && !isExternalAuthOnly()) redirect("/login");
   const deviceId = cookieStore.get(taskPushDeviceCookie)?.value;
   if (process.env.TASKBOARD_WEB_PUSH_ENABLED === "true" && user?.id && deviceId &&
       /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(deviceId)) {

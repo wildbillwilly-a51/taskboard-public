@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { TaskboardApp } from "@/components/taskboard";
 import { cookies, headers } from "next/headers";
 import { AUTH_COOKIE_NAME, verifySessionCookieValue } from "@/lib/auth";
@@ -40,7 +41,7 @@ export default async function NotesPage({
   const user = await getCurrentTaskboardUser();
 
   if (!user) {
-    throw new Error("Taskboard identity is unavailable.");
+    redirect("/login");
   }
 
   const params = (await searchParams) ?? {};

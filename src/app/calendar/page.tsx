@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { TaskboardApp } from "@/components/taskboard";
 import { getExternalAccountActions, isExternalAuthOnly } from "@/lib/auth";
 import { BoardAccessError, type AccessibleBoardSummary } from "@/lib/board-access";
@@ -75,7 +76,7 @@ export default async function CalendarPage({
   const user = await getCurrentTaskboardUser();
 
   if (!user) {
-    throw new Error("Taskboard identity is unavailable.");
+    redirect("/login");
   }
 
   const resolvedSearchParams = (await searchParams) ?? {};
