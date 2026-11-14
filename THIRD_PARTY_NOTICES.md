@@ -99,6 +99,7 @@ Sharp is Apache-2.0. Its libvips binaries carry LGPL-3.0-or-later terms.
 ## Fonts
 
 The build fetches Public Sans and IBM Plex Mono from Google Fonts. Both are
-available under the SIL Open Font License 1.1. Their source and copyright
-notices are available from Google Fonts. [Public Sans](https://github.com/google/fonts/tree/main/ofl/publicsans) ·
+available under the SIL Open Font License 1.1. Their license texts are in
+`public/licenses`. Their source is available from Google Fonts.
+[Public Sans](https://github.com/google/fonts/tree/main/ofl/publicsans) ·
 [IBM Plex Mono](https://github.com/google/fonts/tree/main/ofl/ibmplexmono)

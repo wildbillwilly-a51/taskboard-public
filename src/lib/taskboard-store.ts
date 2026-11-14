@@ -9052,6 +9052,9 @@ export async function uploadTaskAttachmentsForNoteInTransaction(client:PoolClien
       const attachmentId = mutationUUID();
       const diskKey = buildTaskAttachmentDiskKey(board.id, taskId, attachmentId);
       if(file.buffer.byteLength!==file.sizeBytes)throw new Error("Attachment length mismatch.");
+      const suppliedMime = file.mimeType || "application/octet-stream";
+      const mimeType = verifiedPreview(suppliedMime) !== "none" && verifiedPreview(suppliedMime, file.buffer) === "none"
+        ? "application/octet-stream" : suppliedMime;
       await writeMutationAttachment(Buffer.from(file.buffer),diskKey,file.mutationSource ?? "native:"+attachmentId);
       writtenDiskKeys.push(diskKey);
 
@@ -9080,7 +9083,7 @@ export async function uploadTaskAttachmentsForNoteInTransaction(client:PoolClien
           originalName,
           originalName,
           diskKey,
-          file.mimeType || "application/octet-stream",
+          mimeType,
           file.sizeBytes,
         ],
       );

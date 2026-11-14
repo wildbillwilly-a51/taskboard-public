@@ -47,7 +47,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
         "Content-Length": String(attachment.content.byteLength),
         "Content-Disposition": `${disposition}; filename*=UTF-8''${encodeURIComponent(attachment.displayName)}`,
         "Cache-Control": "private, no-store",
-        "Content-Security-Policy": "sandbox; default-src 'none'; frame-ancestors 'self'",
+        // Match the shared task viewer so Chromium can still render inline PDFs.
+        "Content-Security-Policy": "default-src 'none'; script-src 'none'; connect-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'self'",
         "X-Content-Type-Options": "nosniff",
       },
     });

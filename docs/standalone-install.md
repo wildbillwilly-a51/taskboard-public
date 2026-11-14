@@ -85,13 +85,16 @@ both volumes. To inspect startup, run `logs app db` with the same Compose option
 
 Stop the app before a backup so database records and uploaded files stay in
 sync. Keep the database dump, upload archive, and a protected copy of
-`.env.standalone` together. From a shell on the Docker host:
+`.env.standalone` together outside the checkout. From a shell on the Docker host:
 
 ```sh
 tb() { docker compose -p taskboard-standalone --env-file .env.standalone -f compose.standalone.yaml "$@"; }
+umask 077
+backup_dir=$(mktemp -d "$HOME/taskboard-backup.XXXXXX")
 tb stop app
-tb exec -T db pg_dump -U taskboard --no-owner --no-privileges taskboard > taskboard.sql
-tb run --rm --no-deps -T --entrypoint tar app -czf - -C /app/uploads . > uploads.tar.gz
+tb exec -T db pg_dump -U taskboard --no-owner taskboard > "$backup_dir/taskboard.sql"
+tb run --rm --no-deps -T --entrypoint tar app -czf - -C /app/uploads . > "$backup_dir/uploads.tar.gz"
+cp .env.standalone "$backup_dir/.env.standalone"
 tb start app
 ```
 
@@ -100,14 +103,15 @@ Rebuild with `tb up -d --build --wait`. Startup applies pending database
 migrations. The build needs internet access for npm packages and the Google
 Fonts it bundles.
 
-To restore, use empty volumes with the release that took the backup and its
-saved environment file. Start only the database and wait for it to be healthy.
-Restore the dump and uploads before starting the app.
+To restore, use empty volumes with the release that took the backup. Copy its
+saved environment file into the release checkout and set `backup_dir` to the
+backup's directory. Restore the dump and uploads before starting the app.
 
 ```sh
 tb up -d --wait db
-tb exec -T db psql -X -v ON_ERROR_STOP=1 -U taskboard taskboard < taskboard.sql
-tb run --rm --no-deps -T --entrypoint tar app -xzf - -C /app/uploads < uploads.tar.gz
+tb build app
+tb exec -T db psql -X -v ON_ERROR_STOP=1 -U taskboard taskboard < "$backup_dir/taskboard.sql"
+tb run --rm --no-deps -T --entrypoint tar app -xzf - -C /app/uploads < "$backup_dir/uploads.tar.gz"
 tb up -d --wait
 ```
 
