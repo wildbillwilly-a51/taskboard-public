@@ -38,7 +38,8 @@ are managed in Taskboard.
 ## Set up OpenID Connect
 
 In your provider, register a confidential web app using authorization code flow.
-Assign the people or groups who should be able to sign in to Taskboard. Configure
+Require assignment in the provider and assign only the people or groups who
+should be able to sign in to Taskboard. Configure
 the app to use PKCE (S256), a client secret sent in the token request body
 (`client_secret_post`), and an ID token with an email claim. Copy the following
 values into `.env.standalone` and restart the Compose service with the same

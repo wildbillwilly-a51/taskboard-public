@@ -1151,7 +1151,7 @@ async function trySignIn(page: Page, nextPath = "/") {
   });
 
   await page.goto(`/login?next=${encodeURIComponent(nextPath)}`);
-  await page.getByLabel("App password").fill(visualTestPassword);
+  await page.getByLabel("Password", { exact: true }).fill(visualTestPassword);
   await page.getByRole("button", { name: "Sign in" }).click();
 
   const result = await Promise.race([

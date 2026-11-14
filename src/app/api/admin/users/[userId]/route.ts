@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { TaskboardAuthenticationError } from "@/lib/taskboard-auth-errors";
 import { isDatabaseConfigured } from "@/lib/db";
 import { requireAdminTaskboardUserFromHeaders } from "@/lib/taskboard-request";
 import { updateAdminUser } from "@/lib/taskboard-store";
@@ -12,7 +13,7 @@ type RouteContext = {
 
 function adminUserErrorResponse(error: unknown) {
   const message = error instanceof Error ? error.message : "Unable to update user.";
-  const status = message === "Taskboard admin access is required." ? 403 : 400;
+  const status = error instanceof TaskboardAuthenticationError ? error.status : message === "Taskboard admin access is required." ? 403 : 400;
   return NextResponse.json({ error: message }, { status });
 }
 

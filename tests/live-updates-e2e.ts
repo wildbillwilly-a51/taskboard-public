@@ -44,7 +44,7 @@ const LIVE_TIMEOUT_MS = 16_000;
 
 async function openBoard(page: Page) {
   await page.goto(`${baseUrl}/login`, { waitUntil: "networkidle" });
-  await page.getByLabel("App password").fill(password);
+  await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Sign in" }).click();
   await page.getByTestId("taskboard-shell").waitFor();
   const expandAll = page.getByRole("button", { name: "Expand all visible buckets" });

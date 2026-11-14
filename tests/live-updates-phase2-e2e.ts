@@ -44,7 +44,7 @@ const liveChecks = (url: URL) => url.pathname === "/api/live";
 
 async function signIn(page: Page, path: string) {
   await page.goto(`${baseUrl}/login`, { waitUntil: "networkidle" });
-  await page.getByLabel("App password").fill(password);
+  await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Sign in" }).click();
   await page.getByTestId("taskboard-shell").waitFor();
   await page.goto(`${baseUrl}${path}`, { waitUntil: "networkidle" });

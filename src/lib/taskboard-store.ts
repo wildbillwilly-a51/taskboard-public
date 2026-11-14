@@ -1106,30 +1106,20 @@ export async function getOrCreateOidcAccount(identity: {
 
 export async function getOrCreateExternalTaskboardUser(user: TaskboardUserIdentity) {
   await ensureDatabaseReady();
-
   const pool = getPool();
-  if (!pool) {
-    return user;
-  }
+  if (!pool) return user;
 
-  const client = await pool.connect();
-
-  try {
-    const userId = await getOrCreateUserRecord(client, {
-      ...user,
-      authMode: "authelia",
-      authProvider: "authelia",
-    });
-    const row = await getUserAuthRowById(client, userId);
-
-    if (!row || row.is_disabled) {
-      return null;
-    }
-
-    return taskboardUserIdentityFromRow(row, "authelia");
-  } finally {
-    client.release();
-  }
+  const { rows: [row] } = await pool.query<Omit<DbUserAuthRow, "local_password_hash">>(
+    `INSERT INTO users (id, email, display_name, username, auth_provider)
+     VALUES ($1, $2, $3, NULLIF($4, ''), 'authelia')
+     ON CONFLICT (email) DO UPDATE
+     SET display_name = EXCLUDED.display_name, username = COALESCE(EXCLUDED.username, users.username),
+         updated_at = NOW()
+     WHERE users.auth_provider = 'authelia' AND NOT users.is_disabled
+     RETURNING id, email, username, display_name, role, is_disabled, is_reserved_local_admin, auth_provider`,
+    [randomUUID(), user.email, user.displayName, user.username ?? ""],
+  );
+  return row ? taskboardUserIdentityFromRow(row, "authelia") : null;
 }
 
 function mapAdminUserRow(row: DbAdminUserRow) {

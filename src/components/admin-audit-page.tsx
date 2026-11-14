@@ -4,6 +4,7 @@ import type { AdminAuditEventListItem } from "@/lib/taskboard-store";
 import type { AdminAuditEventFilters } from "@/lib/admin-audit-policy";
 
 const actionOptions = [
+  "user.created",
   "user.role_changed",
   "user.disabled_changed",
   "team.created",

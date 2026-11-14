@@ -23,7 +23,6 @@ export async function POST(request: NextRequest) {
     timeZone?: unknown;
   };
   const boardContext = getBoardContextFromRequest(request, body);
-  const user = await requireTaskboardUserFromHeaders(request);
 
   const title = body.title?.trim();
 
@@ -39,6 +38,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const user = await requireTaskboardUserFromHeaders(request);
     const taskId = await createRootTask(user, {
       bucketId: body.bucketId,
       title,

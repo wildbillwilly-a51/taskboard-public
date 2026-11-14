@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { TaskboardAuthenticationError } from "@/lib/taskboard-auth-errors";
 import { isDatabaseConfigured } from "@/lib/db";
 import { requireTaskboardUserFromHeaders } from "@/lib/taskboard-request";
 import { createTeam, listTeams } from "@/lib/taskboard-store";
 
 function teamErrorResponse(error: unknown) {
   const message = error instanceof Error ? error.message : "Unable to process team request.";
-  const status =
+  const status = error instanceof TaskboardAuthenticationError ? error.status :
     message === "Taskboard team creation requires manager or admin access." ||
     message === "Taskboard user is disabled."
       ? 403

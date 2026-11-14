@@ -15,15 +15,10 @@ export async function GET(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
-  const user = await requireTaskboardUserFromHeaders(request);
-  const body = (await request.json()) as {
-    boardId?: string;
-    title?: string;
-    description?: string;
-  };
-  const boardContext = getBoardContextFromRequest(request, body);
-
   try {
+    const user = await requireTaskboardUserFromHeaders(request);
+    const body = (await request.json()) as { boardId?: string; title?: string; description?: string };
+    const boardContext = getBoardContextFromRequest(request, body);
     await updateBoard(user, {
       title: typeof body.title === "string" ? body.title : undefined,
       description: typeof body.description === "string" ? body.description : undefined,
