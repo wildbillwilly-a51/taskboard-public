@@ -47,3 +47,5 @@ jobs:
         env:
           DATABASE_URL: postgresql://taskboard:disposable-ci-password@127.0.0.1:${{ job.services.postgres.ports[5432] }}/taskboard_visual_test_folio
         run: node scripts/check-tests.mjs database
+      - name: Type check
+        run: npm exec -- next typegen && npm exec -- tsc --noEmit

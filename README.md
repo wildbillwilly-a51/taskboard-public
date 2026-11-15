@@ -22,7 +22,7 @@ The browser suite uses `npm run test:visual` and requires an isolated test datab
 
 GitHub Actions reports advisory checks on pull requests and direct pushes to
 `main`. The fast job installs the lockfile and runs lint for the check scripts,
-unit tests, and selected PostgreSQL access tests. Run the same unit tests locally
+unit tests, selected PostgreSQL access tests, and type checking. Run the same unit tests locally
 with `node scripts/check-tests.mjs unit`. For the PostgreSQL checks, set
 `DATABASE_URL` to a disposable PostgreSQL 17 database named
 `taskboard_visual_test_folio` on loopback, then run

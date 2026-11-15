@@ -45,10 +45,14 @@ trap cleanup EXIT
 
 start_app() {
   compose build app
-  local image_id
+  local image_id running_image
   image_id=$(docker image inspect --format '{{.Id}}' "${project}-app")
   compose up -d --wait --wait-timeout 120
-  test "$image_id" = "$(docker inspect --format '{{.Image}}' "$(compose ps -q app)")"
+  running_image=$(docker inspect --format '{{.Image}}' "$(compose ps -q app)")
+  if [[ "$running_image" != "$image_id" ]]; then
+    echo "Expected image $image_id but found $running_image." >&2
+    exit 1
+  fi
   echo "Running image $image_id."
 }
 
@@ -60,7 +64,9 @@ fixture() {
 
 function_privileges() {
   compose exec -T db psql -X -A -t -v ON_ERROR_STOP=1 -U taskboard taskboard \
-    -c "SELECT p.oid::regprocedure::text, COALESCE(p.proacl::text, '<default>')
+    -c "SELECT p.oid::regprocedure::text, COALESCE(p.proacl::text, '<default>'),
+        EXISTS (SELECT 1 FROM aclexplode(COALESCE(p.proacl, acldefault('f', p.proowner))) a
+                WHERE a.grantee = 0 AND a.privilege_type = 'EXECUTE')
         FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
         WHERE n.nspname = 'public' AND p.prosecdef ORDER BY 1"
 }
@@ -78,7 +84,7 @@ if [[ -n "$previous" ]]; then
   start_app
   fixture verify
   if git diff --quiet "$previous" HEAD -- db/migrations db/baseline; then
-    echo "Existing-volume upgrade rehearsal passed. The recorded schema is unchanged from the baseline."
+    echo "Existing-volume upgrade rehearsal passed. The recorded schema is unchanged since $previous."
   else
     echo "Existing-volume upgrade rehearsal passed with schema changes."
   fi
@@ -92,6 +98,10 @@ if [[ "$restore" == true ]]; then
   compose stop app
   function_privileges > "$scratch/permissions.before"
   test -s "$scratch/permissions.before"
+  if grep -E '\|t$' "$scratch/permissions.before"; then
+    echo "A public schema SECURITY DEFINER function grants execution to PUBLIC." >&2
+    exit 1
+  fi
   compose exec -T db pg_dump -U taskboard --no-owner taskboard > "$scratch/taskboard.sql"
   compose run --rm --no-deps -T --entrypoint tar app -czf - -C /app/uploads . > "$scratch/uploads.tar.gz"
   compose down --volumes

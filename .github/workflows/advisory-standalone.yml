@@ -20,11 +20,17 @@ on:
       - src/app/api/health/**
       - src/app/api/tasks/**
       - src/app/api/teams/**
+      - src/instrumentation.ts
+      - src/proxy.ts
+      - src/lib/account-email.ts
       - src/lib/auth*.ts
       - src/lib/board-access.ts
+      - src/lib/board-route.ts
       - src/lib/db.ts
       - src/lib/local-*.ts
+      - src/lib/public-task-share-content.ts
       - src/lib/schema-*.ts
+      - src/lib/taskboard-data.ts
       - src/lib/taskboard-request*.ts
       - src/lib/taskboard-store.ts
   push:

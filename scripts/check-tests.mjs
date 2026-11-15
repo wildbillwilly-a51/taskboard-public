@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
+import { randomBytes } from "node:crypto";
+import { once } from "node:events";
 import { readdirSync } from "node:fs";
 
 const nodeArgs = ["--conditions=react-server", "--import=tsx"];
@@ -14,7 +16,18 @@ if (mode === "unit") {
   assert.ok(files.length, "No unit test files found.");
   const env = { ...process.env };
   delete env.DATABASE_URL;
-  run([...nodeArgs, "--test", "--test-concurrency=2", ...files], env);
+  // react-dom/server uses the normal React export, even for server rendering.
+  const renderingTests = new Set([
+    "tests/hydration-regression.test.tsx",
+    "tests/subtask-board-ui.test.ts",
+    "tests/task-workspace-ui.test.ts",
+    "tests/wiki-p2-editor.test.tsx",
+    "tests/wiki-p2-ui.test.tsx",
+    "tests/wiki-ui.test.tsx",
+  ]);
+  const testArgs = ["--test", "--test-concurrency=2"];
+  await run([...nodeArgs, ...testArgs, ...files.filter((file) => !renderingTests.has(file))], env);
+  await run(["--import=tsx", ...testArgs, ...files.filter((file) => renderingTests.has(file))], env);
 } else if (mode === "database") {
   const databaseName = "taskboard_visual_test_folio";
   const url = new URL(process.env.DATABASE_URL ?? "");
@@ -26,8 +39,9 @@ if (mode === "unit") {
     ...process.env,
     TASKBOARD_VISUAL_DATABASE_NAME: databaseName,
     DATABASE_POOL_IDLE_TIMEOUT_MS: "1000",
+    TASKBOARD_SHARE_LINK_SECRET: randomBytes(32).toString("hex"),
   };
-  run([...nodeArgs, "src/scripts/init-db.ts"], env);
+  await run([...nodeArgs, "src/scripts/init-db.ts"], env);
 
   const suites = [
     ["folio-db", "FOLIO_DB_TEST"],
@@ -37,10 +51,10 @@ if (mode === "unit") {
   ];
   for (const [suite, flag] of suites) {
     console.log("Database suite: " + suite);
-    const output = run([...nodeArgs, "--test", "--test-reporter=tap", "tests/" + suite + ".test.ts"], {
+    const output = await run([...nodeArgs, "--test", "--test-reporter=tap", "tests/" + suite + ".test.ts"], {
       ...env,
       [flag]: "1",
-    });
+    }, true);
     const count = (key) => Number(output.match(new RegExp("^# " + key + " (\\d+)$", "m"))?.[1]);
     assert.ok(count("tests") > 0 && count("skipped") === 0 && count("todo") === 0,
       suite + " must execute tests without skips or todos.");
@@ -49,17 +63,20 @@ if (mode === "unit") {
   throw new Error("Usage: node scripts/check-tests.mjs unit|database");
 }
 
-function run(args, env) {
-  const result = spawnSync(process.execPath, args, {
+async function run(args, env, readSummary = false) {
+  const child = spawn(process.execPath, args, {
     env,
-    encoding: "utf8",
-    maxBuffer: 8 * 1024 * 1024,
+    stdio: ["ignore", readSummary ? "pipe" : "inherit", "inherit"],
+    timeout: 180_000,
   });
-  if (result.stdout) process.stdout.write(result.stdout);
-  if (result.stderr) process.stderr.write(result.stderr);
-  if (result.error) throw result.error;
-  if (result.status !== 0) {
-    throw new Error("Node command failed (" + (result.signal ?? result.status) + ").");
+  let summary = "";
+  child.stdout?.setEncoding("utf8").on("data", (chunk) => {
+    process.stdout.write(chunk);
+    summary = (summary + chunk).slice(-4096);
+  });
+  const [status, signal] = await once(child, "close");
+  if (status !== 0) {
+    throw new Error("Node command failed (" + (signal ?? status) + ").");
   }
-  return result.stdout;
+  return summary;
 }

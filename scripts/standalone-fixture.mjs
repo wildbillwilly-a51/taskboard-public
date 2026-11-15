@@ -34,25 +34,26 @@ if (mode === "seed") {
     data: { username: outsider, email: "release-check@example.test", displayName: "Release Check Outsider", password },
   });
   const { team } = await json("/api/teams", { cookie, data: { name: "Release Check Team" } });
-  const { board } = await json("/api/teams/" + team.id + "/boards", {
+  const { board: { boardId } } = await json("/api/teams/" + team.id + "/boards", {
     cookie,
     data: { title: "Release Check Board" },
   });
-  const boardPath = "/api/board?boardId=" + board.id;
+  assert.ok(boardId, "Team board creation must return a board ID.");
+  const boardPath = "/api/board?boardId=" + boardId;
   const { board: detail } = await json(boardPath, { cookie });
   const { taskId } = await json("/api/tasks", {
     cookie,
-    data: { boardId: board.id, bucketId: detail.buckets[0].id, title },
+    data: { boardId, bucketId: detail.buckets[0].id, title },
   });
   const taskPath = "/api/tasks/" + taskId;
-  await json(taskPath + "/notes", { cookie, data: { boardId: board.id, body: note } });
+  await json(taskPath + "/notes", { cookie, data: { boardId, body: note } });
   const form = new FormData();
-  form.set("boardId", board.id);
+  form.set("boardId", boardId);
   form.set("files", new Blob([bytes], { type: "image/png" }), filename);
   const uploaded = await json(taskPath + "/attachments", { cookie, form });
   const file = findTask(uploaded.board, taskId).attachments.find((item) => item.originalName === filename);
   assert.ok(file?.id, "The upload must appear on the task.");
-  fixture = { boardId: board.id, taskId, fileId: file.id, schemaLevel: health.schemaLevel };
+  fixture = { boardId, taskId, fileId: file.id, schemaLevel: health.schemaLevel };
   await writeFile(fixturePath, JSON.stringify(fixture), { mode: 0o600 });
 } else {
   fixture = JSON.parse(await readFile(fixturePath, "utf8"));
