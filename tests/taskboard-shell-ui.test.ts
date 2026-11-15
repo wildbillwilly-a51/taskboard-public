@@ -25,7 +25,7 @@ test("the two-tier board header is always docked above the workspace", () => {
   assert.doesNotMatch(taskboardSource, /Pin header|Unpin header/);
   assert.match(
     sharedScaleStyles,
-    /\[data-testid="board-header"\]\.taskboard-main-header[\s\S]*padding: 0 !important;[\s\S]*top: 0 !important;/,
+    /:is\(\[data-testid="board-header"\], \[data-workspace-header\]\)\.taskboard-main-header\s*\{[^}]*padding: 0 !important;[^}]*top: 0 !important;/,
   );
   assert.match(
     sharedScaleStyles,
@@ -91,7 +91,7 @@ test("header utilities stay accessible without the global Board collapse control
   assert.match(taskboardSource, /aria-label="Add bucket"[\s\S]*title="Add bucket"/);
   assert.match(taskboardSource, /aria-label="Menu"[\s\S]*title="Menu"/);
   assert.match(taskboardSource, /<MoreHorizontal className="h-3\.5 w-3\.5" \/>/);
-  assert.match(taskboardSource, /<ViewButton[\s\S]*active=\{viewMode === "board"\}[\s\S]*label="Board"/);
+  assert.match(taskboardSource, /<WorkspacePrimaryNav\b[^>]*tasksHref=\{buildTaskboardWorkspaceHref\(isRoutedWorkspace \? lastTaskView : viewMode\)\}/);
   assert.doesNotMatch(taskboardSource, /taskboard-board-split-toggle|BulkCollapseIcon|bulkCollapseButtonLabel/);
 });
 

@@ -38,14 +38,17 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-      - run: npm ci
+      - id: install
+        run: npm ci
       - name: Lint release check scripts
         run: npm run lint -- scripts/*.mjs
       - name: Unit tests
         run: node scripts/check-tests.mjs unit
       - name: PostgreSQL access tests
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         env:
           DATABASE_URL: postgresql://taskboard:disposable-ci-password@127.0.0.1:${{ job.services.postgres.ports[5432] }}/taskboard_visual_test_folio
         run: node scripts/check-tests.mjs database
       - name: Type check
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: npm exec -- next typegen && npm exec -- tsc --noEmit
