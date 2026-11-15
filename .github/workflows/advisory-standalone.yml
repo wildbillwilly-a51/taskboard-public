@@ -1,0 +1,67 @@
+name: Advisory standalone checks
+
+on:
+  pull_request:
+    branches: [main]
+    paths: &standalone_paths
+      - .github/workflows/advisory-standalone.yml
+      - Dockerfile
+      - .dockerignore
+      - compose.standalone.yaml
+      - standalone.env.example
+      - next.config.ts
+      - package*.json
+      - db/**
+      - scripts/check-standalone.sh
+      - scripts/standalone-fixture.mjs
+      - src/app/api/auth/**
+      - src/app/api/admin/users/**
+      - src/app/api/board/**
+      - src/app/api/health/**
+      - src/app/api/tasks/**
+      - src/app/api/teams/**
+      - src/lib/auth*.ts
+      - src/lib/board-access.ts
+      - src/lib/db.ts
+      - src/lib/local-*.ts
+      - src/lib/schema-*.ts
+      - src/lib/taskboard-request*.ts
+      - src/lib/taskboard-store.ts
+  push:
+    branches: [main]
+    paths: *standalone_paths
+  workflow_dispatch:
+    inputs:
+      previous_revision:
+        description: Previous public commit SHA for an upgrade check. Leave empty for a fresh install.
+        type: string
+        default: '3936de45087a609b81a6ee8d9ecc2bab49d6df6b'
+      restore:
+        description: Also restore a backup into empty volumes.
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  standalone:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+      - name: Run standalone checks
+        env:
+          PREVIOUS_REVISION: ${{ inputs.previous_revision }}
+          CHECK_RESTORE: ${{ inputs.restore }}
+        run: bash scripts/check-standalone.sh "$PREVIOUS_REVISION" "${CHECK_RESTORE:-false}"

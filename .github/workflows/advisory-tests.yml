@@ -1,0 +1,49 @@
+name: Advisory tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: taskboard
+          POSTGRES_PASSWORD: disposable-ci-password
+          POSTGRES_DB: taskboard_visual_test_folio
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U taskboard -d taskboard_visual_test_folio"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Lint release check scripts
+        run: npm run lint -- scripts/*.mjs
+      - name: Unit tests
+        run: node scripts/check-tests.mjs unit
+      - name: PostgreSQL access tests
+        env:
+          DATABASE_URL: postgresql://taskboard:disposable-ci-password@127.0.0.1:${{ job.services.postgres.ports[5432] }}/taskboard_visual_test_folio
+        run: node scripts/check-tests.mjs database
