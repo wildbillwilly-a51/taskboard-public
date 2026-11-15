@@ -27,7 +27,12 @@ if (mode === "unit") {
   ]);
   const testArgs = ["--test", "--test-concurrency=2"];
   await run([...nodeArgs, ...testArgs, ...files.filter((file) => !renderingTests.has(file))], env);
-  await run(["--import=tsx", ...testArgs, ...files.filter((file) => renderingTests.has(file))], env);
+  await run([
+    "--require=./tests/helpers/render-styles.cjs",
+    "--import=tsx",
+    ...testArgs,
+    ...files.filter((file) => renderingTests.has(file)),
+  ], env);
 } else if (mode === "database") {
   const databaseName = "taskboard_visual_test_folio";
   const url = new URL(process.env.DATABASE_URL ?? "");
